@@ -60,7 +60,19 @@ Regras:
 
 ## 4. Commits
 
-Mensagens no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/), em português:
+Mensagens no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/), em português. A regra de ouro: **a mensagem diz o que mudou; a versão fica na tag**. Nunca usar um número de versão sozinho como mensagem (ex.: `v0.1.0`), porque isso não tem tipo e foge do padrão.
+
+O projeto usa três tipos de commit:
+
+| Momento | Formato | Exemplo |
+|---|---|---|
+| Dia a dia | `<tipo>(<área>): <o que mudou>` | `feat(agenda): adiciona visão semanal` |
+| Fechamento de sessão | `docs(sessao): fecha sessão N (<resumo>)` | `docs(sessao): fecha sessão 3 (Dia 3: pacientes e agenda)` |
+| Release de um marco | `chore(release): vX.Y.Z` + tag `vX.Y.Z` | `chore(release): v0.1.0` |
+
+O primeiro commit do projeto é uma exceção registrada: `chore(init): estrutura inicial do projeto e documentação base (v0.0.0)`, com a tag `v0.0.0`.
+
+Formato completo:
 
 ```
 <tipo>(<área>): <resumo no imperativo, até ~70 caracteres>
@@ -104,5 +116,8 @@ Nunca commitar segredos (`.env`, chaves do Supabase, da Meta ou do Asaas).
 
 Ao fechar um marco:
 1. Renomear `## [Não lançado]` para `## [0.x.0] - AAAA-MM-DD` e criar um `## [Não lançado]` vazio acima.
-2. Commit `docs(release): 0.x.0`.
-3. Criar a tag: `git tag -a v0.x.0 -m "0.x.0: <marco>"`.
+2. Commit `chore(release): v0.x.0`, só com essa mudança no changelog.
+3. Criar a tag anotada no commit de release: `git tag -a v0.x.0 -m "0.x.0: <marco>"`.
+4. Enviar commit e tag: `git push && git push origin v0.x.0`.
+
+Commits já enviados ao GitHub não são reescritos. Uma correção entra como commit novo.
