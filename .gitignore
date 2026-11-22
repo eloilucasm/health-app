@@ -1,0 +1,25 @@
+# Dependências e build
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+
+# Segredos (nunca commitar)
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code (configuração local)
+.claude/settings.local.json
