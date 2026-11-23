@@ -2,7 +2,7 @@
 
 ## Contexto
 
-Hoje existe um único arquivo, [index.html](../index.html) (~776 linhas, HTML + JS puro): um PWA mobile-first, guia de bolso de uma fisioterapeuta, com as abas **Hoje** (KPIs, alertas, gráfico), **Agenda** (dia/semana), **Pacientes** (ficha, WhatsApp, evolução com escala de dor EVA), **Pacotes** (sessões que descontam sozinhas) e **Financeiro** (entradas, saídas, pendências, saldo). Os dados ficam só no `localStorage`, com backup e restauração em JSON.
+Hoje existe um único arquivo, [legacy/index.html](../legacy/index.html) (~776 linhas, HTML + JS puro): um PWA mobile-first, guia de bolso de uma fisioterapeuta, com as abas **Hoje** (KPIs, alertas, gráfico), **Agenda** (dia/semana), **Pacientes** (ficha, WhatsApp, evolução com escala de dor EVA), **Pacotes** (sessões que descontam sozinhas) e **Financeiro** (entradas, saídas, pendências, saldo). Os dados ficam só no `localStorage`, com backup e restauração em JSON.
 
 Limites para virar produto:
 - Uma única usuária, com tudo fixo no código: nome, CREFITO, endereço, dias de atendimento `[1,3,5]` (linha 454), condutas de fisioterapia (`RECURSOS`, linha 259).
@@ -143,12 +143,14 @@ Se a aprovação não chegar até o dia 4, fica a ordem da tabela: WhatsApp no d
 - **Canais:** a Alanna como caso de sucesso e porta de indicação. Comunidades de fisioterapia no Instagram, conselhos regionais e faculdades. Programa de indicação (um mês grátis).
 - **Métricas:** ativação (primeiro agendamento + primeira evolução em 48 h), sessões registradas por semana, taxa de faltas antes e depois, conversão do teste para pago e churn mensal.
 
-## 8. Estrutura de pastas sugerida
+## 8. Estrutura de pastas (ajustada na Sessão 1, decisão D-08 do PRD)
 
 ```
-apps/web/                 Next.js (app/(auth), app/(app)/hoje|agenda|pacientes|pacotes|financeiro, app/[slug] = página pública)
-packages/domain/          regras portadas do protótipo + testes (packages, finance, alerts, kpis, availability)
-packages/ui/              tokens e componentes (Sheet, TabBar, Pill, Spine, EvaScale, Charts)
+src/app/                  Next.js (login, auth, (app)/hoje|agenda|pacientes|pacotes|financeiro, [slug] = página pública)
+src/domain/               regras portadas do protótipo + testes (packages, finance, alerts, kpis, availability)
+src/components/           tokens e componentes (Sheet, TabBar, Pill, Spine, EvaScale, Charts)
+src/lib/supabase/         clientes do Supabase (servidor, navegador, proxy)
+tests/db/                 testes de isolamento (RLS) contra o Supabase local
 supabase/migrations/      esquema + RLS
 supabase/functions/       send-reminders (cron), whatsapp-webhook, asaas-webhook, generate-pdf
 legacy/index.html         protótipo original preservado como referência

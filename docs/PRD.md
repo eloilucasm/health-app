@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.0 |
-| **Última atualização** | 2026-11-22 (Sessão 0) |
-| **Status do produto** | Planejamento concluído; desenvolvimento do MVP começa no Dia 1 |
+| **Versão do PRD** | 1.1 |
+| **Última atualização** | 2026-11-23 (Sessão 1) |
+| **Status do produto** | Dia 1 concluído: banco com RLS e login por e-mail funcionando no ambiente local |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -19,7 +19,7 @@ Profissionais de saúde autônomas organizam agenda, prontuário e dinheiro em c
 - sessões de pacote são esquecidas ou cobradas errado;
 - ninguém sabe quanto entrou no mês.
 
-O protótipo ([index.html](../index.html)) resolve isso para uma fisioterapeuta (Alanna Viana), mas serve só a ela. Os dados ficam presos em um aparelho, sem login, sem lembretes automáticos e sem agendamento pelo paciente.
+O protótipo ([legacy/index.html](../legacy/index.html)) resolve isso para uma fisioterapeuta (Alanna Viana), mas serve só a ela. Os dados ficam presos em um aparelho, sem login, sem lembretes automáticos e sem agendamento pelo paciente.
 
 ## 2. Visão
 
@@ -53,7 +53,7 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 ### 5.1 Conta e configuração
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
-| RF-01 | Cadastro e login por e-mail (link mágico) e Google | 1 | planejado |
+| RF-01 | Cadastro e login por e-mail (link mágico) e Google. E-mail: pronto e testado. Google: código pronto, aguarda credenciais do Google Cloud | 1 | em andamento |
 | RF-02 | Onboarding: nome, especialidade, conselho e registro, endereço, telefone, logo e cor | 2 | planejado |
 | RF-03 | Horários de atendimento configuráveis por dia da semana (substitui os dias fixos do protótipo) | 2 | planejado |
 | RF-04 | App instalável no celular (PWA) com tema claro e escuro | 2 | planejado |
@@ -117,6 +117,11 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-04 | 2026-11-22 | WhatsApp só pela API oficial da Meta | APIs não oficiais arriscam banir o número |
 | D-05 | 2026-11-22 | Cobrança da assinatura pelo Asaas | Pix recorrente, boleto e cartão com foco no Brasil |
 | D-06 | 2026-11-22 | MVP em 10 dias; WhatsApp no dia 5 se a Meta aprovar até o dia 4, senão no dia 7 | Prazo pedido; a aprovação externa dita a ordem |
+| D-07 | 2026-11-23 | Next.js 16 com `cacheComponents` desligado | Quase toda página lê a sessão e dados de saúde; renderizar a cada requisição é mais simples e não guarda dados sensíveis em cache no servidor |
+| D-08 | 2026-11-23 | App único na raiz do repositório (`src/`), em vez do monorepo previsto no PLANO §8 | Menos configuração para um dev solo em 10 dias; as regras de negócio ficam em `src/domain/`, testáveis do mesmo jeito |
+| D-09 | 2026-11-23 | Banco local no Docker para desenvolver e testar; projeto na nuvem (São Paulo) só para produção | Testes de RLS criam usuários falsos; local é isolado, grátis e recriável |
+| D-10 | 2026-11-23 | Chaves estrangeiras compostas `(org_id, id)` em todas as relações entre tabelas de cliente | RLS sozinho deixaria ligar um registro ao paciente de outra organização; o banco passa a recusar |
+| D-11 | 2026-11-23 | Exclusão física bloqueada por gatilho em pacientes, prontuário, documentos e auditoria, além da ausência de política de DELETE | Segunda barreira, que vale até para acesso administrativo (RNF-05) |
 
 ## 9. Perguntas em aberto
 
@@ -124,3 +129,6 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] Preço final (hipótese: R$ 59 a R$ 89/mês) e tamanho do pacote de WhatsApp incluso
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
+- [ ] Credenciais do Google Cloud para o login com Google (RF-01)
+- [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
+- [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel

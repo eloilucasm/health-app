@@ -6,6 +6,34 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 1 · 2026-11-23 · Dia 1: base, banco com RLS e login
+
+**Adicionado**
+- Login sem senha por link mágico no e-mail. O primeiro acesso cria a conta. Quem não está logado é levado ao login e, depois de entrar, volta para a página que tentou abrir (RF-01)
+- Botão "Entrar com Google" pronto no código, desligado até existirem as credenciais (RF-01)
+- Página inicial provisória que mostra quem está logado e se o consultório já foi configurado, com botão Sair
+- Banco de dados com todas as tabelas do plano: consultórios, vínculos, horários, pacientes, agenda, pacotes, prontuário, financeiro, documentos, lembretes, agendamento online e auditoria
+- Cada profissional só enxerga e altera os dados do próprio consultório, garantido no banco (RNF-01, D-10)
+- Prontuário que não pode ser editado nem apagado: correção vira nova versão e anulação acontece uma única vez. Pacientes e documentos também não podem ser apagados fisicamente (RNF-05, D-11)
+- Perfis de especialidade: fisioterapia completa (formulário de evolução e condutas do protótipo), fonoaudiologia e psicologia em esboço (D-03)
+- Criação do consultório e do vínculo de dona numa única operação, pronta para o onboarding do Dia 2 (RF-02)
+- 17 testes automáticos de segurança (`npm run test:db`)
+
+**Alterado**
+- Protótipo original movido para `legacy/index.html`
+- Estrutura do projeto: app único na raiz em vez de monorepo (D-08). Plano atualizado
+- Decisões técnicas registradas no PRD: D-07 a D-11
+
+**Pendências**
+- Login com Google: falta criar as credenciais no Google Cloud
+- E-mail do link de acesso ainda sai com o texto padrão do Supabase, em inglês
+- Projeto Supabase de produção e conta na Vercel ainda não criados
+- Processos externos do Dia 1, por conta do Lucas: verificação na Meta (WhatsApp), conta no Asaas e contato com advogado
+
+**Verificação:** lint, typecheck e build de produção passam. Os 17 testes de RLS passam no Supabase local, e o `supabase db lint` não acusa erros. Login testado no navegador em tamanho de celular: pedido do link, entrada, retorno à página pedida, saída e recusa de link reutilizado.
+
+**Próxima sessão:** Dia 2. Onboarding (nome, especialidade, conselho, horários, logo e cor), layout PWA com os tokens do protótipo, barra de abas e folhas (RF-02, RF-03, RF-04).
+
 ## [0.0.0] - 2026-11-22
 
 ### Sessão 0 · 2026-11-22 · Planejamento
