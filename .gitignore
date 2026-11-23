@@ -23,3 +23,13 @@ Thumbs.db
 
 # Claude Code (configuração local)
 .claude/settings.local.json
+
+# Next.js / TypeScript / testes
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+*.pem
+npm-debug.log*
+
+# Saídas do Playwright (testes no navegador)
+.playwright-mcp/
