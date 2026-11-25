@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { lerAtendimento } from "./agenda";
-import { dataLonga, dataValida, inicioDaSemana, noFuso, paraInstante, somarDias } from "./datas";
+import {
+  dataLonga,
+  dataValida,
+  diasDoCalendario,
+  inicioDaSemana,
+  mesAno,
+  noFuso,
+  paraInstante,
+  somarDias,
+  somarMeses,
+} from "./datas";
 import { iniciais, linkWhatsApp, normalizar } from "./pacientes";
 
 describe("fuso do consultório", () => {
@@ -42,5 +52,20 @@ describe("pacientes e atendimentos", () => {
     const ok = lerAtendimento({ descricao: "Massagem", data: "2026-11-25", hora: "08:00", status: "x", local: "y" });
     expect(ok.erro).toBeNull();
     expect(ok.dados).toMatchObject({ status: "agendado", local: "consultorio" });
+  });
+});
+
+describe("calendário do mês", () => {
+  it("navega entre meses sem pular fevereiro", () => {
+    expect(somarMeses("2027-01-31", 1)).toBe("2027-02-01");
+    expect(somarMeses("2026-01-15", -1)).toBe("2025-12-01");
+  });
+  it("monta semanas completas que cobrem o mês", () => {
+    const dias = diasDoCalendario("2026-11-25");
+    expect(dias[0]).toBe("2026-10-26");
+    expect(dias.at(-1)).toBe("2026-12-06");
+    expect(dias).toHaveLength(42);
+    expect(diasDoCalendario("2027-02-10")).toHaveLength(28);
+    expect(mesAno("2026-11-25")).toBe("Novembro de 2026");
   });
 });

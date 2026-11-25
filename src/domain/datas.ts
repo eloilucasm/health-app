@@ -77,3 +77,28 @@ export function dataLonga(data: string): string {
   }).format(new Date(`${data}T12:00:00Z`));
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
+
+/** Primeiro dia do mês, deslocado em n meses (sem estourar meses curtos). */
+export function somarMeses(data: string, n: number): string {
+  const d = new Date(`${data.slice(0, 7)}-01T12:00:00Z`);
+  d.setUTCMonth(d.getUTCMonth() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Dias do calendário do mês, em semanas completas de segunda a domingo. */
+export function diasDoCalendario(data: string): string[] {
+  const primeiro = somarMeses(data, 0);
+  const ultimo = somarDias(somarMeses(data, 1), -1);
+  const fim = somarDias(inicioDaSemana(ultimo), 6);
+  const dias: string[] = [];
+  for (let d = inicioDaSemana(primeiro); d <= fim; d = somarDias(d, 1)) dias.push(d);
+  return dias;
+}
+
+/** "2026-11-25" → "Novembro de 2026" */
+export function mesAno(data: string): string {
+  const texto = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(
+    new Date(`${data}T12:00:00Z`),
+  );
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}

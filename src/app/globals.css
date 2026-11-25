@@ -802,3 +802,59 @@ textarea.input {
   margin-top: 10px;
 }
 
+
+/* ---- Agenda: visão de mês ---- */
+.month-title {
+  margin: 4px 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.month-head,
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.month-head span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  padding-bottom: 4px;
+}
+.cell {
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+.cell.off {
+  background: transparent;
+}
+.cell.out {
+  opacity: 0.4;
+}
+.cell.today {
+  border: 2px solid var(--rose);
+  font-weight: 700;
+}
+.cell b {
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--rose);
+  color: var(--on-rose);
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+

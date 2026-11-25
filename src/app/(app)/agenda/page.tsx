@@ -2,9 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AtendimentoForm } from "@/components/atendimento-form";
 import { AtendimentoItem } from "@/components/atendimento-item";
+import { CalendarioMes } from "@/components/calendario-mes";
 import { Sheet } from "@/components/sheet";
 import type { Atendimento } from "@/domain/agenda";
-import { dataLonga, dataValida, diaDaSemana, diaMes, inicioDaSemana, noFuso, somarDias } from "@/domain/datas";
+import {
+  dataLonga,
+  dataValida,
+  diaDaSemana,
+  diaMes,
+  diasDoCalendario,
+  inicioDaSemana,
+  mesAno,
+  noFuso,
+  somarDias,
+  somarMeses,
+} from "@/domain/datas";
 import { DIAS_SEMANA } from "@/domain/horarios";
 import { listarAtendimentos } from "@/lib/agenda";
 import { carregarConsultorio } from "@/lib/consultorio";
@@ -16,15 +28,19 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
   const [params, { dados: consultorio }] = await Promise.all([searchParams, carregarConsultorio()]);
   const hoje = noFuso(new Date(), consultorio.fuso).data;
   const data = dataValida(params.data) ? params.data : hoje;
-  const semana = params.ver === "semana";
+  const ver = params.ver === "semana" || params.ver === "mes" ? params.ver : "dia";
+  const semana = ver === "semana";
+  const mes = ver === "mes";
 
-  const de = semana ? inicioDaSemana(data) : data;
-  const ate = semana ? somarDias(de, 6) : data;
+  const calendario = mes ? diasDoCalendario(data) : [];
+  const de = mes ? calendario[0] : semana ? inicioDaSemana(data) : data;
+  const ate = mes ? calendario[calendario.length - 1] : semana ? somarDias(de, 6) : data;
   const [atendimentos, pacientes] = await Promise.all([listarAtendimentos({ de, ate }), listarPacientes()]);
   const opcoes = pacientes.map(({ id, nome }) => ({ id, nome }));
 
-  const url = (d: string, ver = semana) => `/agenda?data=${d}${ver ? "&ver=semana" : ""}`;
-  const passo = semana ? 7 : 1;
+  const url = (d: string, visao: string = ver) => `/agenda?data=${d}${visao === "dia" ? "" : `&ver=${visao}`}`;
+  const mover = (sentido: 1 | -1) => (mes ? somarMeses(data, sentido) : somarDias(data, sentido * (semana ? 7 : 1)));
+  const rotulos = mes ? ["Mês anterior", "Próximo mês"] : semana ? ["Semana anterior", "Próxima semana"] : ["Dia anterior", "Próximo dia"];
   const periodosDo = (d: string) => consultorio.periodos.filter((p) => p.weekday === diaDaSemana(d));
 
   const grupo = (d: string, itens: Atendimento[], titulo: string) => {
@@ -66,27 +82,41 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
       <h1 className="title">Agenda</h1>
       <div className="toolbar">
         <nav className="seg" aria-label="Visualização">
-          <Link href={url(data, false)} aria-current={!semana ? "true" : undefined}>
-            Dia
-          </Link>
-          <Link href={url(data, true)} aria-current={semana ? "true" : undefined}>
-            Semana
-          </Link>
+          {[
+            ["dia", "Dia"],
+            ["semana", "Semana"],
+            ["mes", "Mês"],
+          ].map(([valor, nome]) => (
+            <Link key={valor} href={url(data, valor)} aria-current={ver === valor ? "true" : undefined}>
+              {nome}
+            </Link>
+          ))}
         </nav>
         <nav className="datenav" aria-label="Data">
-          <Link className="round" href={url(somarDias(data, -passo))} aria-label={semana ? "Semana anterior" : "Dia anterior"}>
+          <Link className="round" href={url(mover(-1))} aria-label={rotulos[0]}>
             ‹
           </Link>
           <Link className="small-btn" href={url(hoje)}>
             Hoje
           </Link>
-          <Link className="round" href={url(somarDias(data, passo))} aria-label={semana ? "Próxima semana" : "Próximo dia"}>
+          <Link className="round" href={url(mover(1))} aria-label={rotulos[1]}>
             ›
           </Link>
         </nav>
       </div>
 
-      {semana ? (
+      {mes ? (
+        <>
+          <h2 className="month-title">{mesAno(data)}</h2>
+          <CalendarioMes
+            dias={calendario}
+            mes={data.slice(0, 7)}
+            hoje={hoje}
+            atendimentos={atendimentos}
+            periodos={consultorio.periodos}
+          />
+        </>
+      ) : semana ? (
         <>
           <p className="muted">
             Semana de {diaMes(de)} a {diaMes(ate)}
