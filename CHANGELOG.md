@@ -6,6 +6,33 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 3 · 2026-11-25 · Dia 3: pacientes e agenda
+
+**Adicionado**
+- Pacientes: cadastro, edição e busca por nome, convênio ou diagnóstico, sem diferenciar acentos (RF-05)
+- Ficha do paciente com dados, botão do WhatsApp, total de sessões realizadas e faltas, próximos atendimentos e os anteriores (RF-05)
+- Arquivar paciente: sai das listas e os atendimentos futuros são cancelados; o prontuário é mantido (D-15)
+- Agenda por dia, semana e mês, com os horários de atendimento cadastrados. No mês, cada dia mostra a quantidade de atendimentos (RF-06, D-17)
+- Criar, editar e excluir atendimento, com paciente ou descrição avulsa, e mudar o status (agendado, confirmado, realizado, faltou, cancelado) (RF-06)
+- Página "não encontrada" em português
+
+**Alterado**
+- Atendimento com registro no prontuário não pode ser excluído, só cancelado (D-16)
+
+**Corrigido**
+- Falha no esquema do Dia 1: excluir um atendimento com evolução daria um erro sem explicação
+
+**Pendências**
+- Evolução das sessões, pacotes e a tela Hoje completa são do Dia 4
+- As abas Pacotes e Financeiro são telas provisórias
+- Sem aviso quando dois atendimentos caem no mesmo horário
+- A lista de pacientes carrega no máximo 1000 por consultório
+- Pendências das sessões anteriores continuam: instalação em celular, login com Google, e-mail de acesso em inglês, Supabase de produção, Vercel, Meta, Asaas e advogado
+
+**Verificação:** lint, typecheck e build de produção passam, assim como os 16 testes de regras e os 26 de banco; `supabase db lint` sem erros. Fluxos de pacientes e agenda testados no navegador em tamanho de celular.
+
+**Próxima sessão:** Dia 4. Evolução pelo formulário da especialidade (EVA), pacotes de sessões e tela Hoje com indicadores e alertas (RF-07, RF-08, RF-09). Se a Meta aprovar o WhatsApp até o fim do Dia 4, ele sobe para o Dia 5 (D-06).
+
 ### Sessão 2 · 2026-11-25 · Dia 2: cadastro do consultório e moldura do app
 
 **Adicionado**

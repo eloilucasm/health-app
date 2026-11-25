@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.2 |
-| **Última atualização** | 2026-11-25 (Sessão 2) |
-| **Status do produto** | Dia 2 concluído: cadastro do consultório, horários, moldura do app e logo do produto, no ambiente local |
+| **Versão do PRD** | 1.3 |
+| **Última atualização** | 2026-11-25 (Sessão 3) |
+| **Status do produto** | Dia 3 concluído: pacientes e agenda (dia, semana e mês), no ambiente local |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -61,8 +61,8 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 ### 5.2 Rotina do consultório (paridade com o protótipo)
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
-| RF-05 | Pacientes: cadastro, busca por nome, convênio ou diagnóstico, ficha com histórico, botão WhatsApp | 3 | planejado |
-| RF-06 | Agenda por dia e por semana; status agendado, confirmado, realizado, faltou e cancelado; local consultório, domicílio ou online | 3 | planejado |
+| RF-05 | Pacientes: cadastro, busca por nome, convênio ou diagnóstico, ficha com histórico, botão WhatsApp | 3 | pronto |
+| RF-06 | Agenda por dia, semana e mês; status agendado, confirmado, realizado, faltou e cancelado; local consultório, domicílio ou online | 3 | pronto |
 | RF-07 | Evolução da sessão por formulário da especialidade (fisio: queixa, EVA 0–10, condutas, observações); salvar já marca a sessão como realizada | 4 | planejado |
 | RF-08 | Pacotes de sessões que descontam sozinhos ao marcar "realizado"; aviso quando restam 2 ou menos | 4 | planejado |
 | RF-09 | Tela Hoje: atendimentos do dia, indicadores do mês e alertas (sem baixa, pacote acabando, pendências) | 4 | planejado |
@@ -126,6 +126,9 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-12 | 2026-11-25 | Cor do app escolhida entre 6 opções fixas, não por seletor livre | Garante contraste legível (RNF-06) e impede que texto arbitrário vá para o CSS da página pública |
 | D-13 | 2026-11-25 | App instalável sem service worker (não funciona offline) | Evita guardar dados de saúde em cache no aparelho; a instalação não exige offline |
 | D-14 | 2026-11-25 | Logo próprio de cada consultório fica fora do MVP; no futuro, cada usuária configura o seu nos ajustes | Pedido do Lucas; o app já identifica o consultório pelo nome, pela inicial e pela cor |
+| D-15 | 2026-11-25 | "Excluir" paciente é arquivar: some das listas, o prontuário é mantido e os atendimentos futuros são cancelados | Guarda obrigatória do prontuário (RNF-05) |
+| D-16 | 2026-11-25 | Atendimento com registro no prontuário não pode ser excluído, só cancelado | Excluir deixaria a evolução sem a sessão e alteraria um registro imutável |
+| D-17 | 2026-11-25 | Agenda ganha a visão de mês (calendário com a quantidade por dia), além de dia e semana | Pedido do Lucas no teste do Dia 3; amplia o RF-06 |
 
 ## 9. Perguntas em aberto
 
@@ -135,5 +138,6 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
+- [ ] Avisar quando dois atendimentos caírem no mesmo horário?
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel
