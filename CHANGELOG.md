@@ -6,6 +6,30 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 4 · 2026-11-25 · Dia 4: evolução, pacotes e tela Hoje
+
+**Adicionado**
+- Evolução da sessão pelo formulário da especialidade, com escala de dor, condutas e curva de dor na ficha. Registrar a partir de um atendimento já o marca como realizado (RF-07)
+- Editar uma evolução cria nova versão e preserva a anterior; anular exige motivo (D-18)
+- Pacotes de sessões: criar, editar, encerrar e excluir. Cada sessão realizada desconta sozinha (RF-08)
+- Tela Hoje com atendimentos do dia, pacotes acabando, atendimentos sem baixa e indicadores (RF-09)
+
+**Alterado**
+- Pacote novo vincula os próximos atendimentos só até as sessões que restam (D-19)
+- WhatsApp automático confirmado para o Dia 7 (D-21)
+
+**Corrigido**
+- O banco passa a recusar pacote de um paciente em atendimento de outro, evolução em atendimento de outro paciente e troca de paciente em atendimento com evolução
+
+**Pendências**
+- Parte financeira da tela Hoje vai com o Financeiro (D-20)
+- A parte do prontuário foi feita com o Sonnet; vale uma revisão com o Opus antes do lançamento
+- Pendências das sessões anteriores continuam: instalação em celular, login com Google, e-mail de acesso em inglês, Supabase de produção, Vercel, Meta, Asaas e advogado
+
+**Verificação:** lint, typecheck e build de produção passam, assim como os 22 testes de regras e os 35 de banco; `supabase db lint` sem erros. Fluxos testados no navegador em tamanho de celular.
+
+**Próxima sessão:** Dia 5. Financeiro, importação do backup do protótipo e exportação de dados (RF-10, RF-11, RF-12) e a parte financeira da tela Hoje (RF-09).
+
 ### Sessão 3 · 2026-11-25 · Dia 3: pacientes e agenda
 
 **Adicionado**

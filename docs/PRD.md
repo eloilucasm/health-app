@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.3 |
-| **Última atualização** | 2026-11-25 (Sessão 3) |
-| **Status do produto** | Dia 3 concluído: pacientes e agenda (dia, semana e mês), no ambiente local |
+| **Versão do PRD** | 1.4 |
+| **Última atualização** | 2026-11-25 (Sessão 4) |
+| **Status do produto** | Dia 4 concluído: evolução, pacotes e tela Hoje (sem a parte financeira), no ambiente local |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -63,9 +63,9 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 |---|---|---|---|
 | RF-05 | Pacientes: cadastro, busca por nome, convênio ou diagnóstico, ficha com histórico, botão WhatsApp | 3 | pronto |
 | RF-06 | Agenda por dia, semana e mês; status agendado, confirmado, realizado, faltou e cancelado; local consultório, domicílio ou online | 3 | pronto |
-| RF-07 | Evolução da sessão por formulário da especialidade (fisio: queixa, EVA 0–10, condutas, observações); salvar já marca a sessão como realizada | 4 | planejado |
-| RF-08 | Pacotes de sessões que descontam sozinhos ao marcar "realizado"; aviso quando restam 2 ou menos | 4 | planejado |
-| RF-09 | Tela Hoje: atendimentos do dia, indicadores do mês e alertas (sem baixa, pacote acabando, pendências) | 4 | planejado |
+| RF-07 | Evolução da sessão por formulário da especialidade (fisio: queixa, EVA 0–10, condutas, observações); salvar já marca a sessão como realizada | 4 | pronto |
+| RF-08 | Pacotes de sessões que descontam sozinhos ao marcar "realizado"; aviso quando restam 2 ou menos | 4 | pronto |
+| RF-09 | Tela Hoje: atendimentos do dia, indicadores do mês e alertas (sem baixa, pacote acabando, pendências) (indicador de recebimentos, gráfico e pendências entram com o Financeiro) | 4 | em andamento |
 | RF-10 | Financeiro: entradas, saídas, pendências, saldo do mês e acumulado, gráfico mensal | 5 | planejado |
 | RF-11 | Importar o backup JSON do protótipo (`app: "alanna-fisio", v: 1`) | 5 | planejado |
 | RF-12 | Exportar todos os dados da profissional (portabilidade, LGPD) | 5 | planejado |
@@ -129,6 +129,10 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-15 | 2026-11-25 | "Excluir" paciente é arquivar: some das listas, o prontuário é mantido e os atendimentos futuros são cancelados | Guarda obrigatória do prontuário (RNF-05) |
 | D-16 | 2026-11-25 | Atendimento com registro no prontuário não pode ser excluído, só cancelado | Excluir deixaria a evolução sem a sessão e alteraria um registro imutável |
 | D-17 | 2026-11-25 | Agenda ganha a visão de mês (calendário com a quantidade por dia), além de dia e semana | Pedido do Lucas no teste do Dia 3; amplia o RF-06 |
+| D-18 | 2026-11-25 | Anular uma evolução exige motivo e já está disponível no Dia 4 | Sem isso, um registro no paciente errado não teria correção (o prontuário não se apaga) |
+| D-19 | 2026-11-25 | Pacote novo vincula os próximos atendimentos só até o número de sessões que restam (o protótipo vinculava todos) | Evita sessões além do pacote contando nele |
+| D-20 | 2026-11-25 | Partes financeiras da tela Hoje (recebido no mês, gráfico, pendências) ficam para o Dia 5 | Sem o Financeiro não há como lançar valores; mostrariam sempre zero |
+| D-21 | 2026-11-25 | O WhatsApp automático fica no Dia 7; o Dia 5 é Financeiro e importação (aplica a regra da D-06) | A aprovação da Meta não saiu até o fim do Dia 4 |
 
 ## 9. Perguntas em aberto
 
