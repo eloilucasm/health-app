@@ -6,6 +6,24 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 5 · 2026-11-25 · Dia 5: financeiro, importação e exportação
+
+**Adicionado**
+- Financeiro: entradas, saídas, pendências, saldo do mês e acumulado, gráfico do ano e saldo inicial. Lançar recebimento a partir de um atendimento (RF-10)
+- Tela Hoje com o recebido no mês, as pendências e o gráfico de entradas (RF-09)
+- Importar o backup do app antigo: mostra antes o que vai entrar e o que ficará de fora, e repetir não duplica (RF-11, D-22)
+- Exportar todos os dados do consultório em um arquivo, só para a dona, com registro na auditoria (RF-12, D-23)
+
+**Pendências**
+- **Marco do Dia 5 não atingido:** a Alanna ainda não migrou, porque o app não está publicado (faltam Supabase de produção, Vercel e envio de e-mail). A versão `0.1.0` fica para quando ela migrar
+- A importação foi testada com um backup fictício montado a partir do código do protótipo, não com um backup real: conferir contagens e saldos com o arquivo da Alanna
+- O app passa a aceitar envios de até 5 MB nas ações do servidor, por causa do backup
+- Pendências das sessões anteriores continuam: instalação em celular, login com Google, e-mail de acesso em inglês, revisão do prontuário com o Opus, Meta, Asaas e advogado
+
+**Verificação:** lint, typecheck e build de produção passam, assim como os 26 testes de regras e os 39 de banco; `supabase db lint` sem erros. Importação, financeiro e exportação testados no navegador em tamanho de celular, com os saldos conferidos à mão.
+
+**Próxima sessão:** Dia 6. Agendamento online: página pública com horários livres, consentimento LGPD e confirmação (RF-13). Recomendado usar o Opus.
+
 ### Sessão 4 · 2026-11-25 · Dia 4: evolução, pacotes e tela Hoje
 
 **Adicionado**

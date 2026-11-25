@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.4 |
-| **Última atualização** | 2026-11-25 (Sessão 4) |
-| **Status do produto** | Dia 4 concluído: evolução, pacotes e tela Hoje (sem a parte financeira), no ambiente local |
+| **Versão do PRD** | 1.5 |
+| **Última atualização** | 2026-11-25 (Sessão 5) |
+| **Status do produto** | Dia 5 concluído no ambiente local: financeiro, importação e exportação. Marco da migração da Alanna pendente da publicação |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -65,10 +65,10 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 | RF-06 | Agenda por dia, semana e mês; status agendado, confirmado, realizado, faltou e cancelado; local consultório, domicílio ou online | 3 | pronto |
 | RF-07 | Evolução da sessão por formulário da especialidade (fisio: queixa, EVA 0–10, condutas, observações); salvar já marca a sessão como realizada | 4 | pronto |
 | RF-08 | Pacotes de sessões que descontam sozinhos ao marcar "realizado"; aviso quando restam 2 ou menos | 4 | pronto |
-| RF-09 | Tela Hoje: atendimentos do dia, indicadores do mês e alertas (sem baixa, pacote acabando, pendências) (indicador de recebimentos, gráfico e pendências entram com o Financeiro) | 4 | em andamento |
-| RF-10 | Financeiro: entradas, saídas, pendências, saldo do mês e acumulado, gráfico mensal | 5 | planejado |
-| RF-11 | Importar o backup JSON do protótipo (`app: "alanna-fisio", v: 1`) | 5 | planejado |
-| RF-12 | Exportar todos os dados da profissional (portabilidade, LGPD) | 5 | planejado |
+| RF-09 | Tela Hoje: atendimentos do dia, indicadores do mês e alertas (sem baixa, pacote acabando, pendências) | 4 | pronto |
+| RF-10 | Financeiro: entradas, saídas, pendências, saldo do mês e acumulado, gráfico mensal | 5 | pronto |
+| RF-11 | Importar o backup JSON do protótipo (`app: "alanna-fisio", v: 1`) | 5 | pronto |
+| RF-12 | Exportar todos os dados da profissional (portabilidade, LGPD) | 5 | pronto |
 
 ### 5.3 Diferenciais
 | ID | Requisito | Dia | Status |
@@ -133,6 +133,8 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-19 | 2026-11-25 | Pacote novo vincula os próximos atendimentos só até o número de sessões que restam (o protótipo vinculava todos) | Evita sessões além do pacote contando nele |
 | D-20 | 2026-11-25 | Partes financeiras da tela Hoje (recebido no mês, gráfico, pendências) ficam para o Dia 5 | Sem o Financeiro não há como lançar valores; mostrariam sempre zero |
 | D-21 | 2026-11-25 | O WhatsApp automático fica no Dia 7; o Dia 5 é Financeiro e importação (aplica a regra da D-06) | A aprovação da Meta não saiu até o fim do Dia 4 |
+| D-22 | 2026-11-25 | A importação do backup grava tudo de uma vez, pode ser repetida sem duplicar e mostra antes o que ficará de fora | Dados reais podem ter falhas; nada some em silêncio e uma segunda tentativa é segura |
+| D-23 | 2026-11-25 | Exportação em um arquivo JSON, só para a dona do consultório, com registro na auditoria | Portabilidade (LGPD) sem permitir saída de dados de saúde por outros papéis |
 
 ## 9. Perguntas em aberto
 
@@ -143,5 +145,6 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
+- [ ] Publicar o app (Supabase de produção + Vercel): sem isso a Alanna não consegue migrar (marco do Dia 5)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel
