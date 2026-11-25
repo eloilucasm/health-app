@@ -20,6 +20,11 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - `src/app/`: rotas do Next.js (App Router). `src/proxy.ts` renova a sessão e redireciona para `/login`.
 - `src/lib/supabase/`: clientes `server.ts` (Server Components/Actions), `client.ts` (navegador), `proxy.ts`.
 - `src/lib/auth.ts`: `requireUser()` e `getMembership()`; chame em toda página/ação protegida.
+- `src/app/(app)/`: telas com cabeçalho e barra de abas; o layout exige consultório cadastrado e aplica a cor escolhida. `src/app/onboarding/` fica fora dele.
+- `src/domain/`: regras puras (horários, slug, tema, dados do consultório) com testes ao lado. Regra de negócio nova entra aqui.
+- `src/components/`: `Sheet` (folha sobre `<dialog>`), `TabBar`, `ConsultorioForm`. Estilos em `src/app/globals.css`.
+- `src/lib/consultorio.ts` (leitura, `requireMembership()`) e `consultorio-actions.ts` (Server Actions).
+- Logo do produto em `public/icons/*.svg`; os PNG saem de `node scripts/gerar-icones.mjs`.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
 - `tests/db/`: testes de isolamento (RLS) contra o Supabase local.
 
