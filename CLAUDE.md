@@ -21,10 +21,11 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - `src/lib/supabase/`: clientes `server.ts` (Server Components/Actions), `client.ts` (navegador), `proxy.ts`.
 - `src/lib/auth.ts`: `requireUser()` e `getMembership()`; chame em toda página/ação protegida.
 - `src/app/(app)/`: telas com cabeçalho e barra de abas; o layout exige consultório cadastrado e aplica a cor escolhida. `src/app/onboarding/` fica fora dele.
-- `src/domain/`: regras puras (horários, datas e fuso, agenda, pacientes, slug, tema, consultório) com testes ao lado. Regra de negócio nova entra aqui.
+- `src/domain/`: regras puras (horários, datas e fuso, agenda, pacientes, pacotes, evolução, indicadores, dinheiro, slug, tema, consultório) com testes ao lado. Regra de negócio nova entra aqui.
 - `src/components/`: `Sheet` (folha sobre `<dialog>`; feche com `useFecharFolha()`), `TabBar`, `BotaoConfirmar`, formulários de consultório, paciente e atendimento. Estilos em `src/app/globals.css`.
-- `src/lib/`: leitura em `consultorio.ts`, `pacientes.ts`, `agenda.ts`; Server Actions nos arquivos `*-actions.ts`. Converta data/hora só com `src/domain/datas.ts`.
+- `src/lib/`: leitura em `consultorio.ts`, `pacientes.ts`, `agenda.ts`, `pacotes.ts`, `evolucao.ts`; Server Actions nos arquivos `*-actions.ts`. Converta data/hora só com `src/domain/datas.ts`.
 - Logo do produto em `public/icons/*.svg`; os PNG saem de `node scripts/gerar-icones.mjs`.
+- Evolução e pacote são gravados pelas funções `salvar_evolucao` e `criar_pacote` do banco; o uso dos pacotes vem da visão `pacotes_com_uso`.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
 - `tests/db/`: testes de isolamento (RLS) contra o Supabase local.
 

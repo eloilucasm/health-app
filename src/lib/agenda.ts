@@ -7,7 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 
 type Filtro =
   | { de: string; ate: string } // datas no fuso do consultório, inclusivas
-  | { pacienteId: string };
+  | { pacienteId: string }
+  | { semBaixaAntes: string }; // passados ainda em aberto
 
 /** Atendimentos do consultório, já com data e hora no fuso dele, em ordem. */
 export async function listarAtendimentos(filtro: Filtro): Promise<Atendimento[]> {
@@ -16,16 +17,23 @@ export async function listarAtendimentos(filtro: Filtro): Promise<Atendimento[]>
 
   let consulta = supabase
     .from("appointments")
-    .select("id, patient_id, descricao_avulsa, inicio, local, status, obs, patients(nome)")
+    .select("id, patient_id, package_id, descricao_avulsa, inicio, local, status, obs, patients(nome)")
     .eq("org_id", orgId);
 
-  consulta =
-    "pacienteId" in filtro
-      ? consulta.eq("patient_id", filtro.pacienteId).order("inicio", { ascending: false }).limit(200)
-      : consulta
-          .gte("inicio", paraInstante(filtro.de, "00:00", dados.fuso).toISOString())
-          .lt("inicio", paraInstante(somarDias(filtro.ate, 1), "00:00", dados.fuso).toISOString())
-          .order("inicio");
+  if ("pacienteId" in filtro) {
+    consulta = consulta.eq("patient_id", filtro.pacienteId).order("inicio", { ascending: false }).limit(200);
+  } else if ("semBaixaAntes" in filtro) {
+    consulta = consulta
+      .in("status", ["agendado", "confirmado"])
+      .lt("inicio", paraInstante(filtro.semBaixaAntes, "00:00", dados.fuso).toISOString())
+      .order("inicio", { ascending: false })
+      .limit(50);
+  } else {
+    consulta = consulta
+      .gte("inicio", paraInstante(filtro.de, "00:00", dados.fuso).toISOString())
+      .lt("inicio", paraInstante(somarDias(filtro.ate, 1), "00:00", dados.fuso).toISOString())
+      .order("inicio");
+  }
 
   const { data, error } = await consulta;
   if (error) throw new Error(`Falha ao carregar a agenda: ${error.message}`);
@@ -42,6 +50,7 @@ export async function listarAtendimentos(filtro: Filtro): Promise<Atendimento[]>
         local: a.local as Local,
         status: a.status as Status,
         obs: a.obs ?? "",
+        pacoteId: a.package_id ?? "",
       };
     })
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));

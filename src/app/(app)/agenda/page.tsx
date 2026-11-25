@@ -21,6 +21,7 @@ import { DIAS_SEMANA } from "@/domain/horarios";
 import { listarAtendimentos } from "@/lib/agenda";
 import { carregarConsultorio } from "@/lib/consultorio";
 import { listarPacientes } from "@/lib/pacientes";
+import { listarPacotes } from "@/lib/pacotes";
 
 export const metadata: Metadata = { title: "Agenda" };
 
@@ -35,7 +36,11 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
   const calendario = mes ? diasDoCalendario(data) : [];
   const de = mes ? calendario[0] : semana ? inicioDaSemana(data) : data;
   const ate = mes ? calendario[calendario.length - 1] : semana ? somarDias(de, 6) : data;
-  const [atendimentos, pacientes] = await Promise.all([listarAtendimentos({ de, ate }), listarPacientes()]);
+  const [atendimentos, pacientes, pacotes] = await Promise.all([
+    listarAtendimentos({ de, ate }),
+    listarPacientes(),
+    listarPacotes(),
+  ]);
   const opcoes = pacientes.map(({ id, nome }) => ({ id, nome }));
 
   const url = (d: string, visao: string = ver) => `/agenda?data=${d}${visao === "dia" ? "" : `&ver=${visao}`}`;
@@ -57,7 +62,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
         {itens.length > 0 ? (
           <div className="list">
             {itens.map((a) => (
-              <AtendimentoItem key={a.id} atendimento={a} pacientes={opcoes} />
+              <AtendimentoItem key={a.id} atendimento={a} pacientes={opcoes} pacotes={pacotes} />
             ))}
           </div>
         ) : (
@@ -140,6 +145,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
       <Sheet titulo="Novo agendamento" classeGatilho="fab" rotuloGatilho="Novo agendamento" gatilho="+">
         <AtendimentoForm
           pacientes={opcoes}
+          pacotes={pacotes}
           inicial={{
             pacienteId: "",
             descricao: "",
@@ -148,6 +154,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
             local: periodosDo(data)[0]?.local ?? "consultorio",
             status: "agendado",
             obs: "",
+            pacoteId: "",
           }}
         />
       </Sheet>

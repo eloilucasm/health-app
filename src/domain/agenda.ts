@@ -24,11 +24,12 @@ export type Atendimento = {
   local: Local;
   status: Status;
   obs: string;
+  pacoteId: string;
 };
 
 export type DadosAtendimento = Pick<
   Atendimento,
-  "pacienteId" | "descricao" | "data" | "hora" | "local" | "status" | "obs"
+  "pacienteId" | "descricao" | "data" | "hora" | "local" | "status" | "obs" | "pacoteId"
 >;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -47,6 +48,7 @@ export function lerAtendimento(bruto: unknown): { dados: DadosAtendimento; erro:
     local: Object.hasOwn(LOCAIS, String(b.local)) ? (b.local as Local) : "consultorio",
     status: statusValido(b.status) ? b.status : "agendado",
     obs: texto(b.obs, 500),
+    pacoteId: pacienteId && uuidValido(b.pacoteId) ? b.pacoteId : "",
   };
   let erro: string | null = null;
   if (!dados.pacienteId && !dados.descricao) erro = "Escolha um paciente ou descreva o atendimento.";

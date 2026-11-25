@@ -26,6 +26,7 @@ export async function salvarAtendimento(id: string | null, bruto: unknown): Prom
     local: dados.local,
     status: dados.status,
     obs: dados.obs || null,
+    package_id: dados.pacoteId || null,
   };
 
   const supabase = await createClient();
@@ -33,6 +34,8 @@ export async function salvarAtendimento(id: string | null, bruto: unknown): Prom
     ? supabase.from("appointments").update(valores).eq("org_id", orgId).eq("id", id)
     : supabase.from("appointments").insert({ org_id: orgId, ...valores });
   const { data, error } = await consulta.select("id").maybeSingle();
+  // P0001: regras do banco com mensagem para a usuária (ex.: troca de paciente com prontuário).
+  if (error?.code === "P0001") return { erro: error.message };
   if (error || !data) return { erro: FALHA };
 
   revalidatePath("/", "layout");

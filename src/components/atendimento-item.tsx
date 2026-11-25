@@ -5,23 +5,34 @@ import { useState, useTransition } from "react";
 import { STATUS, type Atendimento, type Status } from "@/domain/agenda";
 import { dataLonga, diaMes } from "@/domain/datas";
 import { LOCAIS } from "@/domain/horarios";
+import { usoDoPacote, type Pacote } from "@/domain/pacotes";
 import { mudarStatus } from "@/lib/agenda-actions";
 import { AtendimentoForm, type OpcaoPaciente } from "./atendimento-form";
+import { PontosSessoes } from "./pontos-sessoes";
 import { Sheet } from "./sheet";
 
 /** Linha da agenda. Tocar abre a folha com status e edição. */
 export function AtendimentoItem({
   atendimento: a,
   pacientes,
+  pacotes,
   mostrarData = false,
   linkFicha = true,
 }: {
   atendimento: Atendimento;
   pacientes: OpcaoPaciente[];
+  pacotes: Pacote[];
   mostrarData?: boolean;
   linkFicha?: boolean;
 }) {
-  const detalhes = [mostrarData ? diaMes(a.data) : null, a.local !== "consultorio" ? LOCAIS[a.local] : null, a.obs || null]
+  const pacote = pacotes.find((p) => p.id === a.pacoteId);
+  const uso = pacote && usoDoPacote(pacote);
+  const detalhes = [
+    mostrarData ? diaMes(a.data) : null,
+    a.local !== "consultorio" ? LOCAIS[a.local] : null,
+    uso ? `Pacote ${uso.usadas}/${uso.total}` : null,
+    a.obs || null,
+  ]
     .filter(Boolean)
     .join(" · ");
 
@@ -40,7 +51,7 @@ export function AtendimentoItem({
         </>
       }
     >
-      <Detalhe atendimento={a} pacientes={pacientes} linkFicha={linkFicha} />
+      <Detalhe atendimento={a} pacientes={pacientes} pacotes={pacotes} linkFicha={linkFicha} />
     </Sheet>
   );
 }
@@ -48,10 +59,12 @@ export function AtendimentoItem({
 function Detalhe({
   atendimento: a,
   pacientes,
+  pacotes,
   linkFicha,
 }: {
   atendimento: Atendimento;
   pacientes: OpcaoPaciente[];
+  pacotes: Pacote[];
   linkFicha: boolean;
 }) {
   const [editando, setEditando] = useState(false);
@@ -64,7 +77,10 @@ function Detalhe({
       ? [...pacientes, { id: a.pacienteId, nome: a.titulo }]
       : pacientes;
 
-  if (editando) return <AtendimentoForm id={a.id} inicial={a} pacientes={opcoes} />;
+  const pacote = pacotes.find((p) => p.id === a.pacoteId);
+  const ativo = Boolean(a.pacienteId) && pacientes.some((p) => p.id === a.pacienteId);
+
+  if (editando) return <AtendimentoForm id={a.id} inicial={a} pacientes={opcoes} pacotes={pacotes} />;
 
   return (
     <div className="stack form-sheet">
@@ -96,7 +112,23 @@ function Detalhe({
           {erro}
         </p>
       )}
-      {linkFicha && a.pacienteId && pacientes.some((p) => p.id === a.pacienteId) && (
+      {pacote && (
+        <div className="pack">
+          <span className="ph">
+            <b>Pacote</b>
+            <span className="count">
+              {usoDoPacote(pacote).restantes} <small>restantes</small>
+            </span>
+          </span>
+          <PontosSessoes usadas={usoDoPacote(pacote).usadas} total={pacote.total} />
+        </div>
+      )}
+      {ativo && (
+        <Link className="btn" href={`/pacientes/${a.pacienteId}/evolucao?atendimento=${a.id}`}>
+          Evolução desta sessão
+        </Link>
+      )}
+      {linkFicha && ativo && (
         <Link className="btn ghost" href={`/pacientes/${a.pacienteId}`}>
           Abrir ficha
         </Link>
