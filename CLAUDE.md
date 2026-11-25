@@ -21,15 +21,15 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - `src/lib/supabase/`: clientes `server.ts` (Server Components/Actions), `client.ts` (navegador), `proxy.ts`.
 - `src/lib/auth.ts`: `requireUser()` e `getMembership()`; chame em toda página/ação protegida.
 - `src/app/(app)/`: telas com cabeçalho e barra de abas; o layout exige consultório cadastrado e aplica a cor escolhida. `src/app/onboarding/` fica fora dele.
-- `src/domain/`: regras puras (horários, slug, tema, dados do consultório) com testes ao lado. Regra de negócio nova entra aqui.
-- `src/components/`: `Sheet` (folha sobre `<dialog>`), `TabBar`, `ConsultorioForm`. Estilos em `src/app/globals.css`.
-- `src/lib/consultorio.ts` (leitura, `requireMembership()`) e `consultorio-actions.ts` (Server Actions).
+- `src/domain/`: regras puras (horários, datas e fuso, agenda, pacientes, slug, tema, consultório) com testes ao lado. Regra de negócio nova entra aqui.
+- `src/components/`: `Sheet` (folha sobre `<dialog>`; feche com `useFecharFolha()`), `TabBar`, `BotaoConfirmar`, formulários de consultório, paciente e atendimento. Estilos em `src/app/globals.css`.
+- `src/lib/`: leitura em `consultorio.ts`, `pacientes.ts`, `agenda.ts`; Server Actions nos arquivos `*-actions.ts`. Converta data/hora só com `src/domain/datas.ts`.
 - Logo do produto em `public/icons/*.svg`; os PNG saem de `node scripts/gerar-icones.mjs`.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
 - `tests/db/`: testes de isolamento (RLS) contra o Supabase local.
 
 ## Comandos
-- `npm run dev`: app em http://localhost:3000
+- `npm run dev`: app em http://localhost:3000. Se o CSS alterado por script não aparecer, salve `globals.css` de novo (o observador não percebe).
 - `npm run db:start` / `db:stop` / `db:reset`: Supabase local (precisa do Docker Desktop aberto). E-mails de login caem no Mailpit: http://127.0.0.1:54324
 - `npm run check`: lint + typecheck + testes unitários
 - `npm run test:db`: testes de RLS (com o Supabase local ligado). Obrigatório antes de fechar sessão que mexa no banco.

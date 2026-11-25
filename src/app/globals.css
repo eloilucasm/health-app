@@ -512,3 +512,293 @@ h2 {
 .swatches {
   margin-bottom: 8px;
 }
+
+/* ---- Pacientes e agenda (Dia 3), do protótipo ---- */
+a.btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+.btn.danger {
+  background: none;
+  color: var(--miss);
+  border: 1px solid var(--line);
+}
+.form-sheet {
+  padding-top: 14px;
+}
+.form-sheet p {
+  margin: 0;
+}
+textarea.input {
+  resize: vertical;
+}
+.fab {
+  position: fixed;
+  right: max(16px, calc(50% - 264px));
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  z-index: 24;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--rose);
+  color: var(--on-rose);
+  font-size: 30px;
+  line-height: 1;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.search {
+  margin-top: 14px;
+}
+.prow,
+.appt {
+  width: 100%;
+  text-align: left;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.prow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--blush);
+  color: var(--rose);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+}
+.p-body,
+.who {
+  flex: 1;
+  min-width: 0;
+}
+.p-body b,
+.p-body span,
+.who b,
+.who span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.p-body span,
+.who span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.appt {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+.appt .time {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+.appt.s-realizado,
+.appt.s-cancelado {
+  opacity: 0.72;
+}
+.appt.s-cancelado b {
+  text-decoration: line-through;
+}
+.pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill.agendado,
+.pill.cancelado {
+  background: var(--idle-bg);
+  color: var(--idle);
+}
+.pill.confirmado {
+  background: var(--conf-bg);
+  color: var(--conf);
+}
+.pill.realizado {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.pill.faltou {
+  background: var(--miss-bg);
+  color: var(--miss);
+}
+.statusbtns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.statusbtns button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.statusbtns button[aria-pressed="true"] {
+  border-color: currentColor;
+}
+.statusbtns .agendado[aria-pressed="true"],
+.statusbtns .cancelado[aria-pressed="true"] {
+  background: var(--idle-bg);
+  color: var(--idle);
+}
+.statusbtns .confirmado[aria-pressed="true"] {
+  background: var(--conf-bg);
+  color: var(--conf);
+}
+.statusbtns .realizado[aria-pressed="true"] {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.statusbtns .faltou[aria-pressed="true"] {
+  background: var(--miss-bg);
+  color: var(--miss);
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 8px;
+}
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.seg a {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.seg a[aria-current="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.datenav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.round,
+.small-btn {
+  display: grid;
+  place-items: center;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 999px;
+}
+.round {
+  width: 36px;
+  font-size: 20px;
+}
+.small-btn {
+  padding: 0 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.daygroup {
+  margin-top: 18px;
+}
+.dh {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+.dh h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+.dh span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.daygroup.today .dh h2 {
+  color: var(--rose);
+}
+.back {
+  display: inline-block;
+  margin-top: 8px;
+  text-decoration: none;
+}
+.info {
+  margin: 12px 0 0;
+  padding: 4px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.info > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.info > div:first-child {
+  border-top: 0;
+}
+.info dt {
+  flex: none;
+  max-width: 45%;
+  font-size: 13px;
+  color: var(--muted);
+}
+.info dd {
+  margin: 0;
+  min-width: 0;
+  text-align: right;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
