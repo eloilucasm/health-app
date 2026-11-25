@@ -6,6 +6,30 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 2 · 2026-11-25 · Dia 2: cadastro do consultório e moldura do app
+
+**Adicionado**
+- Cadastro do consultório no primeiro acesso: nome, especialidade, registro no conselho, telefone, endereço, Instagram, fuso horário e cor do app (RF-02)
+- Horários de atendimento por dia da semana, com vários períodos por dia, local de cada um e duração da sessão. Períodos sobrepostos ou invertidos são recusados (RF-03)
+- Tela de ajustes para mudar esses dados depois
+- App com cabeçalho do consultório, barra de abas (Hoje, Agenda, Pacientes, Pacotes, Financeiro) e folhas que sobem de baixo, nos temas claro e escuro (RF-04)
+- Tela Hoje provisória, com a saudação e o horário de atendimento do dia
+- App instalável no celular (RF-04)
+- Logo do produto na tela de login e nos ícones do app
+
+**Alterado**
+- Logo próprio de cada consultório saiu do MVP e fica para o futuro (D-14)
+- Cor escolhida entre 6 opções (D-12). App instalável sem funcionamento offline (D-13)
+
+**Pendências**
+- Instalação ainda não testada em celular de verdade: precisa do app publicado
+- As abas Agenda, Pacientes, Pacotes e Financeiro são telas provisórias
+- Pendências da Sessão 1 continuam: login com Google, e-mail de acesso em inglês, Supabase de produção, Vercel, Meta, Asaas e advogado
+
+**Verificação:** lint, typecheck e build de produção passam, assim como os 8 testes de regras e os 22 de banco; `supabase db lint` sem erros. Fluxo de cadastro e ajustes testado no navegador em tamanho de celular.
+
+**Próxima sessão:** Dia 3. Pacientes (lista, busca, ficha) e Agenda (dia e semana, com os horários cadastrados) (RF-05, RF-06).
+
 ### Sessão 1 · 2026-11-23 · Dia 1: base, banco com RLS e login
 
 **Adicionado**

@@ -91,7 +91,7 @@ Para não travar, cada um desses itens tem um **plano B que funciona no dia 10**
 | Dia | Entrega |
 |---|---|
 | **1** | Repositório, Supabase (São Paulo), esquema + migrações + **RLS**, login. Abrir os processos da Meta, do Asaas e do jurídico. |
-| **2** | Onboarding (nome, especialidade, conselho, horários, logo e cor), layout PWA com os tokens do protótipo, barra de abas e folhas. |
+| **2** | Onboarding (nome, especialidade, conselho, horários e cor; logo próprio adiado, D-14 do PRD), layout PWA com os tokens do protótipo, barra de abas e folhas. |
 | **3** | Pacientes (lista, busca, ficha) e Agenda (dia/semana, horários vindos de `working_hours`). |
 | **4** | Evolução guiada pelo esquema (EVA como campo `scale`), Pacotes e a tela Hoje (KPIs e alertas). Testes de `domain/`. |
 | **5** | Financeiro, **importador do backup JSON** e exportação de dados. **Marco: a Alanna migra para a versão nova.** |

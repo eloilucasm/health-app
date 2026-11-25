@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.1 |
-| **Última atualização** | 2026-11-23 (Sessão 1) |
-| **Status do produto** | Dia 1 concluído: banco com RLS e login por e-mail funcionando no ambiente local |
+| **Versão do PRD** | 1.2 |
+| **Última atualização** | 2026-11-25 (Sessão 2) |
+| **Status do produto** | Dia 2 concluído: cadastro do consultório, horários, moldura do app e logo do produto, no ambiente local |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -54,9 +54,9 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
 | RF-01 | Cadastro e login por e-mail (link mágico) e Google. E-mail: pronto e testado. Google: código pronto, aguarda credenciais do Google Cloud | 1 | em andamento |
-| RF-02 | Onboarding: nome, especialidade, conselho e registro, endereço, telefone, logo e cor | 2 | planejado |
-| RF-03 | Horários de atendimento configuráveis por dia da semana (substitui os dias fixos do protótipo) | 2 | planejado |
-| RF-04 | App instalável no celular (PWA) com tema claro e escuro | 2 | planejado |
+| RF-02 | Onboarding: nome, especialidade, conselho e registro, endereço, telefone e cor (logo próprio adiado, D-14) | 2 | pronto |
+| RF-03 | Horários de atendimento configuráveis por dia da semana (substitui os dias fixos do protótipo) | 2 | pronto |
+| RF-04 | App instalável no celular (PWA) com tema claro e escuro. Falta testar a instalação em um celular, o que exige o app publicado | 2 | em andamento |
 
 ### 5.2 Rotina do consultório (paridade com o protótipo)
 | ID | Requisito | Dia | Status |
@@ -103,6 +103,7 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 - Perfis completos de especialidades além da fisioterapia (fono e psico entram como esboço)
 - Clínicas com várias profissionais e recepção (o modelo de dados já comporta)
 - Relatório de evolução em PDF, tela de métricas de faltas, login em duas etapas, bloqueio automático por inadimplência
+- Logo próprio de cada consultório, enviado pela usuária nos ajustes (D-14)
 - NFS-e, receita digital ICP-Brasil, odontograma, convênios (TISS), teleconsulta
 
 ## 8. Registro de decisões
@@ -122,10 +123,14 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-09 | 2026-11-23 | Banco local no Docker para desenvolver e testar; projeto na nuvem (São Paulo) só para produção | Testes de RLS criam usuários falsos; local é isolado, grátis e recriável |
 | D-10 | 2026-11-23 | Chaves estrangeiras compostas `(org_id, id)` em todas as relações entre tabelas de cliente | RLS sozinho deixaria ligar um registro ao paciente de outra organização; o banco passa a recusar |
 | D-11 | 2026-11-23 | Exclusão física bloqueada por gatilho em pacientes, prontuário, documentos e auditoria, além da ausência de política de DELETE | Segunda barreira, que vale até para acesso administrativo (RNF-05) |
+| D-12 | 2026-11-25 | Cor do app escolhida entre 6 opções fixas, não por seletor livre | Garante contraste legível (RNF-06) e impede que texto arbitrário vá para o CSS da página pública |
+| D-13 | 2026-11-25 | App instalável sem service worker (não funciona offline) | Evita guardar dados de saúde em cache no aparelho; a instalação não exige offline |
+| D-14 | 2026-11-25 | Logo próprio de cada consultório fica fora do MVP; no futuro, cada usuária configura o seu nos ajustes | Pedido do Lucas; o app já identifica o consultório pelo nome, pela inicial e pela cor |
 
 ## 9. Perguntas em aberto
 
-- [ ] Nome definitivo do produto e domínio
+- [ ] Nome definitivo do produto e domínio (o nome atual já está desenhado no logo)
+- [ ] Rever o símbolo do logo: lembra um estetoscópio, que remete mais a medicina do que às outras especialidades
 - [ ] Preço final (hipótese: R$ 59 a R$ 89/mês) e tamanho do pacote de WhatsApp incluso
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
