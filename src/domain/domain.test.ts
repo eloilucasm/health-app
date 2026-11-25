@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { lerDados } from "./consultorio";
 import { validarPeriodos, type Periodo } from "./horarios";
-import { comSufixo, gerarSlug } from "./slug";
+import { comSufixo, gerarSlug, paginaPublica } from "./slug";
 import { COR_PADRAO, corValida } from "./tema";
 
 describe("gerarSlug", () => {
@@ -10,6 +10,14 @@ describe("gerarSlug", () => {
   });
   it("não colide com rotas do app", () => {
     expect(gerarSlug("Agenda")).toBe("agenda-consultorio");
+  });
+  it("reconhece só a página pública, nunca as rotas do app", () => {
+    expect(paginaPublica("/alanna-viana")).toBe(true);
+    expect(paginaPublica("/agenda")).toBe(false);
+    expect(paginaPublica("/config")).toBe(false);
+    expect(paginaPublica("/pacientes/123")).toBe(false);
+    expect(paginaPublica("/")).toBe(false);
+    expect(paginaPublica("/Alanna")).toBe(false);
   });
   it("garante o tamanho mínimo e máximo", () => {
     expect(gerarSlug("!!")).toBe("consultorio-novo");

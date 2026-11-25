@@ -17,7 +17,7 @@ export async function listarAtendimentos(filtro: Filtro): Promise<Atendimento[]>
 
   let consulta = supabase
     .from("appointments")
-    .select("id, patient_id, package_id, descricao_avulsa, inicio, local, status, obs, patients(nome)")
+    .select("id, patient_id, package_id, descricao_avulsa, inicio, local, status, obs, origem, contato_telefone, patients(nome)")
     .eq("org_id", orgId);
 
   if ("pacienteId" in filtro) {
@@ -51,6 +51,8 @@ export async function listarAtendimentos(filtro: Filtro): Promise<Atendimento[]>
         status: a.status as Status,
         obs: a.obs ?? "",
         pacoteId: a.package_id ?? "",
+        origem: a.origem,
+        contato: a.contato_telefone ?? "",
       };
     })
     .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));

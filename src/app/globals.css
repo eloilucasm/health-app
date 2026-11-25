@@ -1400,3 +1400,134 @@ input[type="file"].input {
   font-size: 14px;
 }
 
+
+/* ---- Agendamento online (Dia 6) ---- */
+.public {
+  padding-top: calc(24px + env(safe-area-inset-top, 0px));
+}
+.pub-head {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.mark.big {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  font-size: 24px;
+}
+.brand-line {
+  margin: 4px 0;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rose);
+  font-weight: 700;
+}
+.pub-msg {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.daychips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.daychips button {
+  flex: none;
+  width: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.daychips b {
+  font-size: 18px;
+}
+.daychips small {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+.daychips button[aria-pressed="true"],
+.slots button[aria-pressed="true"] {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: var(--on-rose);
+}
+.daychips button[aria-pressed="true"] small {
+  color: inherit;
+}
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+}
+.slots button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.slots small {
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+}
+.consent input {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 1px;
+  accent-color: var(--rose);
+}
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.pub-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-top: 28px;
+  text-align: center;
+}
+.pub-foot a {
+  color: var(--rose);
+  font-weight: 600;
+}
+.link-out {
+  overflow-wrap: anywhere;
+}
+.banner a {
+  color: var(--rose);
+  font-weight: 700;
+}
+

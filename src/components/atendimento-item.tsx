@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { STATUS, type Atendimento, type Status } from "@/domain/agenda";
 import { dataLonga, diaMes } from "@/domain/datas";
 import { LOCAIS } from "@/domain/horarios";
+import { linkWhatsApp } from "@/domain/pacientes";
 import { usoDoPacote, type Pacote } from "@/domain/pacotes";
 import { mudarStatus } from "@/lib/agenda-actions";
 import { AtendimentoForm, type OpcaoPaciente } from "./atendimento-form";
@@ -30,6 +31,7 @@ export function AtendimentoItem({
   const uso = pacote && usoDoPacote(pacote);
   const detalhes = [
     mostrarData ? diaMes(a.data) : null,
+    a.origem === "online" ? "Online" : null,
     a.local !== "consultorio" ? LOCAIS[a.local] : null,
     uso ? `Pacote ${uso.usadas}/${uso.total}` : null,
     a.obs || null,
@@ -121,6 +123,20 @@ function Detalhe({
         <p className="error" role="alert">
           {erro}
         </p>
+      )}
+      {a.origem === "online" && (
+        <div className="banner">
+          <b>Pedido pelo agendamento online.</b> {a.contato && <>WhatsApp: {a.contato}. </>}
+          {!a.pacienteId && "Para ligar a um paciente cadastrado, use Editar agendamento."}
+          {a.contato && linkWhatsApp(a.contato) && (
+            <>
+              {" "}
+              <a href={linkWhatsApp(a.contato)!} target="_blank" rel="noopener noreferrer">
+                Abrir conversa
+              </a>
+            </>
+          )}
+        </div>
       )}
       {pacote && (
         <div className="pack">

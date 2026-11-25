@@ -18,6 +18,12 @@ export function gerarSlug(nome: string): string {
   return SLUGS_RESERVADOS.includes(base) ? `${base}-consultorio` : base;
 }
 
+/** O caminho é a página pública de um consultório (/{slug})? */
+export function paginaPublica(caminho: string): boolean {
+  const m = /^\/([a-z0-9][a-z0-9-]{1,38}[a-z0-9])\/?$/.exec(caminho);
+  return Boolean(m) && !SLUGS_RESERVADOS.includes(m![1]);
+}
+
 /** Acrescenta um sufixo quando o endereço já está em uso, sem passar de 40 caracteres. */
 export function comSufixo(slug: string, sufixo: string): string {
   return `${slug.slice(0, 39 - sufixo.length).replace(/-+$/, "")}-${sufixo}`;

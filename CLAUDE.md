@@ -28,6 +28,7 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - Evolução e pacote são gravados pelas funções `salvar_evolucao` e `criar_pacote` do banco; o uso dos pacotes vem da visão `pacotes_com_uso`.
 - Importação do backup: `src/domain/importacao.ts` valida e a função `importar_backup` grava. Exportação em `src/app/(app)/config/exportar/route.ts`; tabela nova com dados da usuária precisa entrar lá.
 - Backup real de paciente nunca entra no repositório; use `tests/fixtures/backup-exemplo.json` (fictício).
+- Página pública `src/app/[slug]/` (liberada no proxy por `paginaPublica()`): o visitante só acessa o banco pelas funções `agenda_publica`, `horarios_livres` e `agendar_online`. Toda função nova liberada para `anon` precisa devolver o mínimo e ter teste em `tests/db/agendamento-online.test.ts`. Funções internas sempre com `revoke ... from anon, public`.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
 - `tests/db/`: testes de isolamento (RLS) contra o Supabase local.
 

@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import { ConsultorioForm } from "@/components/consultorio-form";
+import { AjustesOnlineForm } from "@/components/ajustes-online";
 import { ImportarBackup } from "@/components/importar-backup";
 import { Sheet } from "@/components/sheet";
 import { requireUser } from "@/lib/auth";
+import { carregarAjustesOnline } from "@/lib/agendamento-online";
 import { carregarConsultorio, listarEspecialidades } from "@/lib/consultorio";
+import { siteUrl } from "@/lib/supabase/env";
 
 export const metadata: Metadata = { title: "Ajustes" };
 
 export default async function ConfigPage({ searchParams }: PageProps<"/config">) {
-  const [user, { dados }, especialidades, { aviso }] = await Promise.all([
+  const [user, { dados }, especialidades, { aviso }, online] = await Promise.all([
     requireUser(),
     carregarConsultorio(),
     listarEspecialidades(),
     searchParams,
+    carregarAjustesOnline(),
   ]);
 
   return (
@@ -24,6 +28,9 @@ export default async function ConfigPage({ searchParams }: PageProps<"/config">)
         </p>
       )}
       <ConsultorioForm modo="editar" inicial={dados} especialidades={especialidades} />
+
+      <h2 className="section">Agendamento online</h2>
+      <AjustesOnlineForm inicial={online} link={`${siteUrl().replace(/\/$/, "")}/${online.slug}`} />
 
       <h2 className="section">Seus dados</h2>
       <div className="stack">

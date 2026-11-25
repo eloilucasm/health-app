@@ -1,12 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { paginaPublica } from "@/domain/slug";
 import { supabasePublishableKey, supabaseUrl } from "./env";
 
-/** Rotas acessíveis sem login. A página pública de agendamento entra aqui no Dia 6. */
+/** Rotas acessíveis sem login, além da página pública de cada consultório (/{slug}). */
 const PUBLIC_PATHS = ["/login", "/auth"];
 
 function isPublic(pathname: string) {
-  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  return paginaPublica(pathname) || PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 /**

@@ -25,6 +25,9 @@ export type Atendimento = {
   status: Status;
   obs: string;
   pacoteId: string;
+  origem: string;
+  /** Telefone deixado no agendamento online. */
+  contato: string;
 };
 
 export type DadosAtendimento = Pick<
