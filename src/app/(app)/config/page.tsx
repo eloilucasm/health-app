@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ConsultorioForm } from "@/components/consultorio-form";
+import { ImportarBackup } from "@/components/importar-backup";
 import { Sheet } from "@/components/sheet";
 import { requireUser } from "@/lib/auth";
 import { carregarConsultorio, listarEspecialidades } from "@/lib/consultorio";
@@ -23,6 +24,19 @@ export default async function ConfigPage({ searchParams }: PageProps<"/config">)
         </p>
       )}
       <ConsultorioForm modo="editar" inicial={dados} especialidades={especialidades} />
+
+      <h2 className="section">Seus dados</h2>
+      <div className="stack">
+        <Sheet titulo="Importar backup" gatilho="Importar backup do app antigo">
+          <ImportarBackup />
+        </Sheet>
+        <a className="btn ghost" href="/config/exportar" download>
+          Exportar todos os dados
+        </a>
+        <p className="muted small">
+          O arquivo exportado contém dados de saúde dos seus pacientes. Guarde-o em local seguro.
+        </p>
+      </div>
 
       <h2 className="section">Aplicativo e conta</h2>
       <div className="stack">

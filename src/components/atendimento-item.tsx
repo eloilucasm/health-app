@@ -8,6 +8,7 @@ import { LOCAIS } from "@/domain/horarios";
 import { usoDoPacote, type Pacote } from "@/domain/pacotes";
 import { mudarStatus } from "@/lib/agenda-actions";
 import { AtendimentoForm, type OpcaoPaciente } from "./atendimento-form";
+import { LancamentoForm } from "./lancamento-form";
 import { PontosSessoes } from "./pontos-sessoes";
 import { Sheet } from "./sheet";
 
@@ -67,7 +68,7 @@ function Detalhe({
   pacotes: Pacote[];
   linkFicha: boolean;
 }) {
-  const [editando, setEditando] = useState(false);
+  const [modo, setModo] = useState<"detalhe" | "editar" | "receber">("detalhe");
   const [erro, setErro] = useState("");
   const [mudando, iniciar] = useTransition();
 
@@ -80,7 +81,16 @@ function Detalhe({
   const pacote = pacotes.find((p) => p.id === a.pacoteId);
   const ativo = Boolean(a.pacienteId) && pacientes.some((p) => p.id === a.pacienteId);
 
-  if (editando) return <AtendimentoForm id={a.id} inicial={a} pacientes={opcoes} pacotes={pacotes} />;
+  if (modo === "editar") return <AtendimentoForm id={a.id} inicial={a} pacientes={opcoes} pacotes={pacotes} />;
+  if (modo === "receber") {
+    return (
+      <LancamentoForm
+        inicial={{ descricao: a.titulo, data: a.data, pacienteId: ativo ? a.pacienteId : "", atendimentoId: a.id }}
+        pacientes={pacientes}
+        hoje={a.data}
+      />
+    );
+  }
 
   return (
     <div className="stack form-sheet">
@@ -133,7 +143,10 @@ function Detalhe({
           Abrir ficha
         </Link>
       )}
-      <button type="button" className="btn ghost" onClick={() => setEditando(true)}>
+      <button type="button" className="btn ghost" onClick={() => setModo("receber")}>
+        Lançar recebimento
+      </button>
+      <button type="button" className="btn ghost" onClick={() => setModo("editar")}>
         Editar agendamento
       </button>
     </div>

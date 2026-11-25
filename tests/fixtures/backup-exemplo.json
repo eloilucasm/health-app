@@ -1,0 +1,32 @@
+{
+  "app": "alanna-fisio",
+  "v": 1,
+  "pacientes": [
+    {"id": "p1", "nome": "Paciente Fictícia Um", "telefone": "(73) 90000-0001", "nascimento": "1985-03-10", "convenio": "Particular", "diagnostico": "Lombalgia"},
+    {"id": "p2", "nome": "Paciente Fictício Dois", "convenio": "Unimed", "nascimento": ""},
+    {"id": "p3", "nome": ""}
+  ],
+  "pacotes": [
+    {"id": "k1", "pacienteId": "p1", "total": 10, "usadasAntes": 3, "valor": 1250.5, "inicio": "2026-10-01", "ativo": true},
+    {"id": "k2", "pacienteId": "excluido", "total": 5}
+  ],
+  "agenda": [
+    {"id": "a1", "pacienteId": "p1", "data": "2026-11-02", "hora": "08:00", "tipo": "consultorio", "status": "realizado", "pacoteId": "k1"},
+    {"id": "a2", "pacienteId": "p2", "data": "2026-11-04", "hora": "09:30", "tipo": "domicilio", "status": "faltou", "pacoteId": "k1"},
+    {"id": "a3", "pacienteId": "", "pacienteNome": "Massagem avulsa", "data": "2026-11-06", "hora": "", "status": "agendado"},
+    {"id": "a4", "pacienteId": "excluido", "data": "2026-11-09", "hora": "10:00", "status": "estranho"},
+    {"id": "a5", "pacienteId": "p1", "data": "", "hora": "10:00"}
+  ],
+  "evolucoes": [
+    {"id": "e1", "pacienteId": "p1", "agendaId": "a1", "data": "2026-11-02", "queixa": "Dor ao sentar", "dor": 7, "condutas": ["Ventosa"], "condutasTexto": "", "obs": ""},
+    {"id": "e2", "pacienteId": "p2", "agendaId": "a1", "data": "2026-11-04", "queixa": "", "dor": 0, "condutas": []},
+    {"id": "e3", "pacienteId": "p1", "data": "2026-11-05", "queixa": "", "dor": "", "condutas": []}
+  ],
+  "financeiro": [
+    {"id": "f1", "tipo": "entrada", "descricao": "Pacote", "valor": 1250.5, "data": "2026-11-02", "forma": "Crédito", "status": "recebido", "pacienteId": "p1"},
+    {"id": "f2", "tipo": "entrada", "descricao": "Sessão", "valor": 150, "data": "2026-11-04", "forma": "Pix", "status": "pendente", "pacienteId": "p2"},
+    {"id": "f3", "tipo": "saida", "descricao": "Aluguel", "valor": 600.1, "data": "2026-10-05", "forma": "Pix", "status": "pendente"},
+    {"id": "f4", "tipo": "entrada", "descricao": "Zerado", "valor": 0, "data": "2026-11-05"}
+  ],
+  "config": {"saldoInicial": 200}
+}
