@@ -17,8 +17,12 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <main className="auth">
       <div className="auth-brand">
-        <span className="auth-mark" aria-hidden="true" />
-        <h1>Consultório no Bolso</h1>
+        <h1>
+          <picture>
+            <source srcSet="/icons/logo-horizontal-escuro.svg" media="(prefers-color-scheme: dark)" />
+            <img src="/icons/logo-horizontal.svg" alt="Consultório no Bolso" width={290} height={96} className="auth-logo" />
+          </picture>
+        </h1>
         <p className="muted">Agenda, pacientes e financeiro do seu consultório, no celular.</p>
       </div>
       {erro && (

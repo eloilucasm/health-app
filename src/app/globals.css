@@ -111,13 +111,11 @@ h2 {
   margin: 12px 0 4px;
   text-wrap: balance;
 }
-.auth-mark {
-  display: inline-block;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--blush);
-  box-shadow: inset 0 0 0 10px var(--rose);
+.auth-logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
 }
 .stack {
   display: flex;
