@@ -17,6 +17,7 @@ const body = Figtree({
 export const metadata: Metadata = {
   title: { default: "Consultório no Bolso", template: "%s · Consultório no Bolso" },
   description: "Agenda, pacientes, evolução, pacotes e financeiro do seu consultório, no celular.",
+  appleWebApp: { capable: true, title: "Consultório", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
