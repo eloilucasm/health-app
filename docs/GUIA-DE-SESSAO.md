@@ -109,9 +109,9 @@ Nunca commitar segredos (`.env`, chaves do Supabase, da Meta ou do Asaas).
 | Marco | Versão | Quando |
 |---|---|---|
 | Planejamento e documentação base | `0.0.0` | Sessão 0 (2026-11-22) |
-| Publicação da plataforma: Alanna migra, primeiras betas | `0.1.0` | F0, a penúltima fase |
-| WhatsApp com o número da profissional | `0.2.0` | F5, a última fase |
-| Abertura geral para venda | `1.0.0` | Ao fim da F5 |
+| Publicação da plataforma: Alanna migra, primeiras betas | `0.1.0` | F7, a penúltima fase |
+| WhatsApp com o número da profissional | `0.2.0` | F8, a última fase |
+| Abertura geral para venda | `1.0.0` | Ao fim da F8 |
 
 Ao fechar um marco:
 1. Renomear `## [Não lançado]` para `## [0.x.0] - AAAA-MM-DD` e criar um `## [Não lançado]` vazio acima.

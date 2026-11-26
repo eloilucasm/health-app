@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 2.0 |
+| **Versão do PRD** | 2.1 |
 | **Última atualização** | 2026-11-26 (Sessão 7) |
-| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS, na ordem F1 → F2 → F3 → F4 → F6 → F0 → F5; próxima: F1, fundação da plataforma |
+| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Segunda etapa, plataforma SaaS, em 8 fases (F1 a F8); próxima: F1, fundação da plataforma |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -48,7 +48,7 @@ O protótipo ([legacy/index.html](../legacy/index.html)) resolve isso para uma f
 
 ## 5. Requisitos funcionais (MVP)
 
-Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fase** segue o [PLANO.md](PLANO.md): números são dias do roadmap original (concluídos até o Dia 6); **F0 a F7** são as fases semanais da plataforma (PLANO §11).
+Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fase** segue o [PLANO.md](PLANO.md): números são dias do roadmap original (concluídos até o Dia 6); **F1 a F8** são as fases da plataforma, na ordem de execução (PLANO §11.3, equivalência com as siglas antigas em D-40).
 
 ### 5.1 Conta e configuração
 | ID | Requisito | Dia | Status |
@@ -74,17 +74,17 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
 | RF-13 | Página pública de agendamento online (`/{slug}`) com horários livres, consentimento LGPD e confirmação | 6 | pronto |
-| RF-14 | Lembrete por WhatsApp enviado do número da própria profissional (API oficial), 24 h antes, com botões Confirmar e Remarcar que atualizam o status (ver RF-34 a RF-37, D-32) | F5 | planejado |
-$1 F5 | planejado |
-$1 F3 | planejado |
-$1 F3 | planejado |
-$1 F3 | planejado |
+| RF-14 | Lembrete por WhatsApp enviado do número da própria profissional (API oficial), 24 h antes, com botões Confirmar e Remarcar que atualizam o status (ver RF-34 a RF-37, D-32) | F8 | planejado |
+| RF-15 | Plano B do RF-14: botão "Enviar lembretes de amanhã" que abre cada conversa com a mensagem pronta | F8 | planejado |
+| RF-16 | Anamnese por especialidade; evolução com versões (nada é apagado de verdade); anexos | F4 | planejado |
+| RF-17 | Documentos em PDF: atestado, declaração de comparecimento e recibo | F4 | planejado |
+| RF-18 | Trilha de auditoria de acesso a prontuários | F4 | planejado |
 
 ### 5.4 Negócio
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
-| RF-19 | Assinatura com teste grátis de 14 dias via Asaas (absorvido por RF-28 a RF-30) | F2 | planejado |
-$1 F2 | planejado |
+| RF-19 | Assinatura com teste grátis de 14 dias via Asaas (absorvido por RF-28 a RF-30) | F3 | planejado |
+| RF-20 | Landing page, termos de uso e política de privacidade | F3 | planejado |
 
 ### 5.5 Painel administrativo da plataforma
 | ID | Requisito | Fase | Status |
@@ -92,32 +92,32 @@ $1 F2 | planejado |
 | RF-21 | Acesso administrativo com papéis (admin, suporte) e login em duas etapas obrigatório; toda ação registrada em auditoria | F1 | planejado |
 | RF-22 | Clientes: lista com busca e filtros, detalhe sem dados clínicos, ações de estender teste, trocar plano, suspender e reativar | F1 | planejado |
 | RF-23 | Planos, recursos, limites e exceções por cliente | F1 | planejado |
-| RF-24 | Assinaturas: faturas, pagamentos, eventos do provedor e inadimplentes | F2 | planejado |
-| RF-25 | Métricas: receita recorrente (MRR), cadastros, ativação, conversão do teste, cancelamentos e uso | F2 | planejado |
-| RF-26 | Suporte: erros de integração e falhas de entrega de e-mail, WhatsApp e webhooks, sem o conteúdo das mensagens | F4 | planejado |
+| RF-24 | Assinaturas: faturas, pagamentos, eventos do provedor e inadimplentes | F3 | planejado |
+| RF-25 | Métricas: receita recorrente (MRR), cadastros, ativação, conversão do teste, cancelamentos e uso | F3 | planejado |
+| RF-26 | Suporte: erros de integração e falhas de entrega de e-mail, WhatsApp e webhooks, sem o conteúdo das mensagens | F5 | planejado |
 
 ### 5.6 Assinaturas e limites
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
 | RF-27 | Recursos e cotas do plano aplicados no banco (`tem_recurso`, `consumir_cota`), com exceções por cliente | F1 | planejado |
-| RF-28 | Assinatura recorrente via Asaas (Pix, boleto, cartão), com teste grátis e webhook idempotente | F2 | planejado |
-| RF-29 | Inadimplência: 7 dias de tolerância, depois modo somente leitura; exportar e pagar continuam permitidos | F1/F2 | planejado |
-| RF-30 | Tela Assinatura da profissional: plano, situação, faturas, trocar plano e forma de pagamento | F2 | planejado |
+| RF-28 | Assinatura recorrente via Asaas (Pix, boleto, cartão), com teste grátis e webhook idempotente | F3 | planejado |
+| RF-29 | Inadimplência: 7 dias de tolerância, depois modo somente leitura; exportar e pagar continuam permitidos | F1/F3 | planejado |
+| RF-30 | Tela Assinatura da profissional: plano, situação, faturas, trocar plano e forma de pagamento | F3 | planejado |
 
 ### 5.7 Conectores
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-31 | Base de conectores: integração por consultório, segredos no Supabase Vault, fila com novas tentativas e registro de eventos | F4 | planejado |
-| RF-32 | E-mail transacional com domínio próprio e modelos em português, inclusive o link de acesso | F0/F4 | planejado |
-| RF-33 | Google Agenda: sincronização de mão única (app → Google), sem o nome do paciente por padrão | F4 | planejado |
+| RF-31 | Base de conectores: integração por consultório, segredos no Supabase Vault, fila com novas tentativas e registro de eventos | F5 | planejado |
+| RF-32 | E-mail transacional com domínio próprio e modelos em português, inclusive o link de acesso | F7/F5 | planejado |
+| RF-33 | Google Agenda: sincronização de mão única (app → Google), sem o nome do paciente por padrão | F5 | planejado |
 
 ### 5.8 WhatsApp com o número da profissional
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-34 | Conectar o próprio número pelo Embedded Signup da Meta (plataforma como Tech Provider; intermediário oficial como plano B) | F5 | planejado |
-| RF-35 | Mensagens-modelo em português criadas e acompanhadas pela plataforma na conta de cada profissional | F5 | planejado |
-| RF-36 | Consentimento do paciente para receber mensagens, com data e origem | F5 | planejado |
-| RF-37 | Webhook do WhatsApp: Confirmar e Remarcar pelo botão, status de entrega e aviso de pedido online | F5 | planejado |
+| RF-34 | Conectar o próprio número pelo Embedded Signup da Meta (plataforma como Tech Provider; intermediário oficial como plano B) | F8 | planejado |
+| RF-35 | Mensagens-modelo em português criadas e acompanhadas pela plataforma na conta de cada profissional | F8 | planejado |
+| RF-36 | Consentimento do paciente para receber mensagens, com data e origem | F8 | planejado |
+| RF-37 | Webhook do WhatsApp: Confirmar e Remarcar pelo botão, status de entrega e aviso de pedido online | F8 | planejado |
 
 ### 5.9 API e webhooks
 | ID | Requisito | Fase | Status |
@@ -125,6 +125,18 @@ $1 F2 | planejado |
 | RF-38 | API v1 com chaves por consultório (guardadas como hash, com escopos e limite de requisições); prontuário fora | F6 | planejado |
 | RF-39 | Webhooks com assinatura HMAC, novas tentativas e registro de entregas visível à profissional | F6 | planejado |
 | RF-40 | Documentação da API em OpenAPI | F6 | planejado |
+
+### 5.10 Personalização por profissão
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-41 | Termos por profissão em todo o app (ex.: sessão ou consulta; evolução, registro de sessão ou evolução clínica) | F2 | planejado |
+| RF-42 | Abas e recursos por profissão (ex.: Pacotes desligado por padrão em medicina, odontologia e nutrição), que a profissional pode ligar e desligar | F2 | planejado |
+| RF-43 | Formulários de evolução completos para psicologia, fonoaudiologia, nutrição, odontologia e medicina, com novos tipos de campo (seleção, número com unidade, calculado como o IMC, seção) e gráfico de qualquer campo numérico marcado | F2 | planejado |
+| RF-44 | Campos do cadastro do paciente por profissão (ex.: responsável legal em psicologia e fonoaudiologia, objetivo na nutrição; diagnóstico de encaminhamento só onde faz sentido) | F2 | planejado |
+| RF-45 | Tipos de atendimento com duração por profissão (avaliação, sessão, retorno, consulta), usados na agenda e no agendamento online | F2 | planejado |
+| RF-46 | Ajustes da profissional: listas de condutas, procedimentos e tipos de atendimento, e recursos ligados ou desligados | F2 | planejado |
+| RF-47 | Painel administrativo: editar os modelos de profissão com versão; registros antigos continuam legíveis | F2 | planejado |
+| RF-48 | Tela Hoje e indicadores respeitam os recursos da profissão (ex.: sem escala de dor nem pacotes onde não existem) | F2 | planejado |
 
 ## 6. Requisitos não funcionais
 
@@ -142,6 +154,7 @@ $1 F2 | planejado |
 
 - Perfis completos de especialidades além da fisioterapia (fono e psico entram como esboço)
 - Clínicas com várias profissionais e recepção (o modelo de dados já comporta)
+- Editor completo de formulários pela profissional (criar campos, tipos e ordem); nesta etapa ela só ajusta listas e liga ou desliga recursos (D-41)
 - Relatório de evolução em PDF, tela de métricas de faltas, login em duas etapas para as profissionais (para o admin é obrigatório, RF-21)
 - Logo próprio de cada consultório, enviado pela usuária nos ajustes (D-14)
 - NFS-e, receita digital ICP-Brasil, odontograma, convênios (TISS), teleconsulta
@@ -177,7 +190,7 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-23 | 2026-11-25 | Exportação em um arquivo JSON, só para a dona do consultório, com registro na auditoria | Portabilidade (LGPD) sem permitir saída de dados de saúde por outros papéis |
 | D-24 | 2026-11-26 | Página pública fora dos buscadores (noindex) no MVP; o link é divulgado pela profissional | Menos exposição e raspagem enquanto não há limite por IP |
 | D-25 | 2026-11-26 | Pedido online entra como atendimento avulso, com nome e WhatsApp, sem ligar sozinho a um paciente pelo telefone | Ligar pelo telefone deixaria qualquer pessoa marcar em nome de um paciente e revelaria quem é paciente |
-$1
+| D-26 | 2026-11-26 | Proteções do agendamento online: consentimento obrigatório (versão "v1"), no máximo 2 horários futuros por telefone, 20 pedidos por hora por consultório, armadilha para robôs e trava contra horário duplo | Página aberta ao público, sem login |
 | D-27 | 2026-11-26 | A plataforma nunca acessa dados clínicos: o admin só lê conta, assinatura e uso por funções do banco; sem "entrar como a cliente" | A plataforma é operadora (LGPD); acesso mínimo necessário |
 | D-28 | 2026-11-26 | Segredos (tokens da Meta e do Google, segredos de webhook) no Supabase Vault; chaves de API só como hash | Vazamento de uma tabela não expõe credenciais |
 | D-29 | 2026-11-26 | WhatsApp, e-mail, cobrança e agenda atrás de uma interface única (`src/lib/conectores/`) | Trocar de provedor sem reescrever o produto |
@@ -188,9 +201,12 @@ $1
 | D-34 | 2026-11-26 | Evento no Google Agenda sem o nome do paciente por padrão (opção para incluir) | Minimiza dados de saúde enviados ao Google |
 | D-35 | 2026-11-26 | Prontuário fora da API v1 | Dado mais sensível; entra só com demanda e salvaguardas próprias |
 | D-36 | 2026-11-26 | Inadimplência: 7 dias de tolerância, depois só leitura; exportação sempre permitida | Não sequestra os dados da profissional (portabilidade) |
-$1
-$1
+| D-37 | 2026-11-26 | Roadmap de 10 dias substituído a partir do Dia 7 por fases semanais F0 a F7 (PLANO §11): publicar, fundação da plataforma, cobrança, prontuário, conectores, WhatsApp, API, lançamento | O escopo passou a incluir admin, assinaturas, conectores e WhatsApp por profissional |
+| D-38 | 2026-11-26 | Publicar (F0) só depois do painel administrativo (F1) e da cobrança (F2); ordem F1 → F2 → F0 → F3 → … | Pedido do Lucas: o app entra no ar já como plataforma; a migração da Alanna fica para depois |
 | D-39 | 2026-11-26 | WhatsApp (F5) vira a última fase e a publicação (F0) a penúltima: ordem F1 → F2 → F3 → F4 → F6 → F0 → F5. A F7 é distribuída: testes e revisão de segurança na F0, abertura geral (`v1.0.0`) ao fim da F5 | Pedido do Lucas; o WhatsApp tem a maior dependência externa e o app funciona sem ele |
+| D-40 | 2026-11-26 | Nova fase "Personalização por profissão" antes das assinaturas, e fases renumeradas de 1 a 8 pela ordem de execução: F1 Fundação, F2 Personalização, F3 Assinaturas, F4 Prontuário, F5 Conectores, F6 API, F7 Publicação, F8 WhatsApp. Equivalência com as siglas de D-37 a D-39: antiga F2 → F3, F3 → F4, F4 → F5, F0 → F7, F5 → F8; F1 e F6 não mudam | O desenho atual atende bem fisioterapeutas e fica devendo às outras profissões; isso afeta o produto e o preço, então vem antes da cobrança |
+| D-41 | 2026-11-26 | Profissão como configuração ampliada (estende a D-03): o modelo define termos, abas e recursos, formulários, campos do paciente, tipos de atendimento e indicadores. A profissional ajusta listas e liga ou desliga recursos; não há editor de formulários nesta etapa | Atende as cinco profissões sem multiplicar o código e sem fragmentar o prontuário |
+| D-42 | 2026-11-26 | Modelos de profissão com versão: cada registro guarda a versão do formulário; mudar o modelo não altera nem esconde registros antigos | Prontuário imutável (RNF-05) e leitura correta do histórico |
 
 ## 9. Perguntas em aberto
 
@@ -198,13 +214,14 @@ $1
 - [ ] Rever o símbolo do logo: lembra um estetoscópio, que remete mais a medicina do que às outras especialidades
 - [ ] P-1: oferecer créditos de WhatsApp inclusos nos planos no futuro? (hoje a profissional paga a Meta, D-33)
 - [ ] P-2: preço final dos planos (hipótese: R$ 59 a R$ 89/mês) e limite de lembretes por plano
+- [ ] P-4: quem valida o modelo de cada profissão (uma profissional de psicologia, fonoaudiologia, nutrição, odontologia e medicina), e as exigências de prontuário de cada conselho (CFP, CFFa, CFN, CFO, CFM)
 - [ ] P-3: por quanto tempo guardar os dados de quem cancela, antes de excluir (definir nos termos, com o advogado)
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
-- [ ] Publicar o app (Supabase de produção + Vercel): F0, a penúltima fase (D-39); só então a Alanna migra
+- [ ] Publicar o app (Supabase de produção + Vercel): F7, a penúltima fase (D-39, D-40); só então a Alanna migra
 - [ ] Limite de pedidos por IP no agendamento online (precisa da infraestrutura de produção)
-- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; por e-mail na F4, pelo WhatsApp no RF-37)
+- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; por e-mail na F5, pelo WhatsApp no RF-37)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel

@@ -11,17 +11,22 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 **Alterado**
 - O roadmap de 10 dias foi substituído, a partir do Dia 7, por fases semanais (F0 a F7) que transformam o app em plataforma para muitas profissionais (D-37, [PLANO §11](docs/PLANO.md))
 - WhatsApp passa a sair do número da própria profissional, pela API oficial, com a plataforma como parceira técnica da Meta (D-32, D-33)
-$1
+- Publicação adiada para depois do painel administrativo e da cobrança: ordem F1 → F2 → F0 → F3 → … (D-38). Marcos de versão do guia ajustados
 - Nova ordem: WhatsApp na última fase e publicação na penúltima (F1 → F2 → F3 → F4 → F6 → F0 → F5); a antiga fase de lançamento foi distribuída entre essas duas (D-39)
+- Nova fase "Personalização por profissão" antes das assinaturas, e fases renumeradas de 1 a 8 pela ordem de execução (D-40)
 
 **Adicionado**
 - Requisitos RF-21 a RF-40: painel administrativo, planos e assinaturas, conectores (e-mail, Google Agenda), WhatsApp por profissional, API e webhooks
 - Princípios da plataforma como decisões D-27 a D-31: nenhum acesso a dados clínicos pelo admin, segredos no Vault, provedores trocáveis, limites pelo plano e saídas por fila
-- Perguntas em aberto P-1 a P-3 (créditos de WhatsApp, preço dos planos, guarda de dados após cancelamento)
+- Perguntas em aberto P-1 a P-4 (créditos de WhatsApp, preço dos planos, guarda de dados após cancelamento, validação dos modelos por profissão)
+- Requisitos RF-41 a RF-48 e decisões D-41 e D-42: personalização por profissão (psicologia, fonoaudiologia, nutrição, odontologia e medicina)
+
+**Corrigido**
+- Linhas do PRD e do changelog apagadas por engano nas edições desta sessão (RF-15 a RF-18, RF-20, D-26, D-37, D-38): restauradas do histórico do git
 
 **Pendências**
 - Nada de código nesta sessão
-- Pedidos externos que entram já na Fase 0, por conta do Lucas: verificação da empresa na Meta e inscrição como Tech Provider, verificação do app no Google, conta no Asaas, domínio e advogado
+- Pedidos externos, por conta do Lucas, desde já: verificação da empresa na Meta e inscrição como Tech Provider, verificação do app no Google, conta no Asaas, domínio e advogado
 
 **Próxima sessão:** Fase 1, fundação da plataforma: administradores com login em duas etapas, planos, recursos, cotas e exceções, assinaturas com migração dos dados atuais, modo somente leitura, e admin de Clientes e de Planos (RF-21 a RF-23, RF-27, RF-29).
 

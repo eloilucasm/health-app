@@ -81,7 +81,7 @@ Porte para TypeScript, em módulos de domínio testáveis:
 
 ## 5. Roadmap: MVP em 10 dias
 
-> **Substituído a partir do Dia 7** pelas fases semanais da [seção 11](#11-fase-2-plataforma-saas) (decisão D-37 do PRD). Os Dias 1 a 6 foram concluídos como descrito abaixo; a tabela fica como histórico.
+> **Substituído a partir do Dia 7** pelas fases semanais da [seção 11](#11-plataforma-saas-segunda-etapa) (decisão D-37 do PRD). Os Dias 1 a 6 foram concluídos como descrito abaixo; a tabela fica como histórico.
 
 O código cabe em 10 dias com o Claude escrevendo a maior parte. **O que não cabe são os prazos externos**, que não dependem de nós e por isso começam no dia 1, em paralelo:
 - **WhatsApp Cloud API:** verificação da empresa na Meta, número dedicado e aprovação das mensagens-modelo podem levar de dias a semanas.
@@ -173,7 +173,7 @@ legacy/index.html         protótipo original preservado como referência
 2. Dia 1: inicializar o git, mover o protótipo para `legacy/`, criar o monorepo e o projeto Supabase (região São Paulo), e escrever esquema, RLS e login.
 3. No mesmo dia 1, você abre a verificação na Meta (WhatsApp Business), a conta no Asaas e o contato com o advogado. Essa parte depende de você, não do código.
 
-## 11. Fase 2: plataforma SaaS
+## 11. Plataforma SaaS (segunda etapa)
 
 Aprovada em 2026-11-26 (Sessão 7). O núcleo do consultório (Dias 1 a 6) está pronto; esta fase transforma o app em produto para muitas profissionais: painel administrativo, assinaturas, conectores e API, e WhatsApp com o número de cada profissional. Decisões do Lucas: WhatsApp com número próprio desde já, painel administrativo completo, conectores prioritários (e-mail, Google Agenda, API e webhooks) e prazo em fases semanais.
 
@@ -281,7 +281,7 @@ eventos(id, org_id, tipo: atendimento.criado|alterado|cancelado|..., entidade_id
 - Cada profissional conecta o próprio número por um fluxo da Meta dentro dos Ajustes, sem sair do app.
 - O número pode ser o que ela já usa no WhatsApp Business, com a coexistência entre o app do celular e a API, se o número for elegível. Também pode ser um número novo.
 
-**Pré-requisitos externos** (começam na Fase 0; são o caminho crítico):
+**Pré-requisitos externos** (começam antes da publicação, porque levam semanas):
 - verificação da empresa no Meta Business Manager;
 - app da Meta com o produto WhatsApp;
 - inscrição como **Tech Provider**;
@@ -317,27 +317,55 @@ eventos(id, org_id, tipo: atendimento.criado|alterado|cancelado|..., entidade_id
 
 Sem API não oficial em nenhuma hipótese (D-04).
 
+#### 11.2.6 Personalização por profissão
+
+Hoje o app fala a língua da fisioterapia (escala de dor, condutas, pacotes, "diagnóstico de encaminhamento"). A profissão passa a definir a experiência inteira, por configuração (D-41), não por código espalhado.
+
+**O que o modelo de cada profissão define** (amplia `specialty_profiles`, com versão, D-42):
+- **Termos:** como o app chama o atendimento, o registro e o cadastro (ex.: sessão ou consulta; evolução, registro de sessão ou evolução clínica). As telas leem os termos de um ponto único, sem texto fixo.
+- **Abas e recursos padrão:** Pacotes, escala de dor, agendamento online etc. Na tela, um recurso aparece só se o **plano** permitir (D-30) **e** ele estiver ligado para a profissão ou pela profissional.
+- **Formulários:** evolução e anamnese, com novos tipos de campo: seleção, número com unidade, calculado (ex.: IMC a partir de peso e altura) e seção. Qualquer campo numérico pode ser marcado para gráfico.
+- **Campos do paciente:** extras por profissão, guardados em `patients.dados_extra` (jsonb), validados pelo modelo.
+- **Tipos de atendimento:** nome e duração (avaliação, sessão, retorno, consulta), usados na agenda e no agendamento online.
+- **Indicadores e alertas** da tela Hoje.
+
+**Ponto de partida por profissão** (a validar com uma profissional de cada área, P-4):
+
+| Profissão | Atendimento | Registro | Formulário principal | Pacotes | Paciente |
+|---|---|---|---|---|---|
+| Fisioterapia | Sessão | Evolução | Já pronto (queixa, escala de dor, condutas) | Sim | Diagnóstico de encaminhamento, quem encaminhou |
+| Psicologia | Sessão | Registro de sessão | Demanda, resumo da sessão, intervenções, encaminhamentos (registro documental do CFP) | Sim | Responsável legal (menores) |
+| Fonoaudiologia | Sessão | Evolução | Objetivos, áreas trabalhadas, desempenho, orientações à família | Sim | Responsável legal |
+| Nutrição | Consulta | Acompanhamento | Peso, altura, IMC calculado, circunferências, conduta e plano alimentar, com gráfico de peso | Não (retornos) | Objetivo |
+| Odontologia | Consulta | Evolução clínica | Formato SOAP (queixa, exame, avaliação, plano), procedimentos e dentes envolvidos | Não | — |
+| Medicina | Consulta | Evolução médica | Formato SOAP e CID-10 em texto | Não | — |
+
+**O que a profissional ajusta** (sem editor de formulários, D-41): listas de condutas, procedimentos e tipos de atendimento, e recursos ligados ou desligados. **O que o admin ajusta** (painel da F1): os modelos de cada profissão, gerando nova versão.
+
+**Fora desta etapa:** editor completo de formulários, odontograma, receita digital e troca de profissão depois do cadastro.
+
 ### 11.3 Roadmap em fases semanais
 
-**Ordem de execução (D-38, D-39): F1 → F2 → F3 → F4 → F6 → F0 → F5.** A publicação (F0) é a penúltima e o WhatsApp (F5) é a última fase. Os nomes das fases não mudam, para não renumerar os requisitos. A antiga F7 (lançamento) foi distribuída: testes de fim a fim e revisão de segurança entram na publicação; a abertura geral (`v1.0.0`) vem ao fim do WhatsApp.
+**Ordem de execução: Fase 1 a Fase 8** (D-38 a D-40). As fases foram renumeradas pela ordem; a equivalência com as siglas antigas está na D-40 do PRD. A antiga fase de lançamento foi distribuída: testes de fim a fim e revisão de segurança entram na publicação (F7); a abertura geral (`v1.0.0`) vem ao fim do WhatsApp (F8).
 
-**Já, em paralelo** (não depende de publicar): conta no Asaas (sandbox para a F2), verificação do app no Google (para a F4), domínio e advogado. A verificação na Meta e a inscrição como Tech Provider deixam de ser urgentes, mas convém começá-las antes da publicação, porque levam semanas. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
+**Já, em paralelo** (não depende de publicar): uma profissional de cada área para validar os modelos (F2), conta no Asaas (sandbox para a F3), verificação do app no Google (para a F5), domínio e advogado. A verificação na Meta e a inscrição como Tech Provider (F8) levam semanas: convém começá-las antes da publicação. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
 
-| Ordem | Fase | Duração | Entrega | Modelo |
-|---|---|---|---|---|
-| 1º | **F1. Fundação da plataforma** | 1 semana | `platform_admins` + duas etapas; planos, recursos, cotas e exceções; `subscriptions` com migração dos dados atuais; modo somente leitura; admin: Clientes e Planos e recursos | Opus |
-| 2º | **F2. Assinaturas e cobrança** | 1 semana | Asaas: assinatura, checkout, webhook idempotente, faturas, inadimplência; tela Assinatura da profissional; admin: Assinaturas e Métricas; termos de uso e privacidade. Testada no sandbox do Asaas, com túnel local para os webhooks | Opus |
-| 3º | **F3. Prontuário e documentos** | 1 semana | Itens originais do Dia 8 (RF-16 a RF-18): anamnese, anexos, auditoria de acesso, PDFs | Opus no banco, Sonnet nas telas |
-| 4º | **F4. Conectores** | 1 semana | Base (`integrations`, Vault, fila, outbox); e-mails transacionais, inclusive o aviso de pedido online para a profissional; Google Agenda; admin: Suporte | Opus |
-| 5º | **F6. API e webhooks** | 1 semana | `/api/v1`, chaves, escopos, limite de requisições, OpenAPI, webhooks assinados com registro de entrega | Opus |
-| 6º | **F0. Publicar** | 3 a 5 dias | Testes de fim a fim e revisão de segurança; Supabase de produção (São Paulo), Vercel (região `gru1`), Resend com SMTP no Supabase, domínio. **A Alanna migra e entram as primeiras betas, já com cobrança → `v0.1.0`** | Opus |
-| 7º | **F5. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, aviso de pedido online pelo WhatsApp, botão de link para quem não conectou → `v0.2.0`; depois, abertura geral → `v1.0.0` | Opus |
+| Fase | Duração | Entrega | Modelo |
+|---|---|---|---|
+| **F1. Fundação da plataforma** | 1 semana | `platform_admins` + duas etapas; planos, recursos, cotas e exceções; `subscriptions` com migração dos dados atuais; modo somente leitura; admin: Clientes e Planos e recursos | Opus |
+| **F2. Personalização por profissão** | 1 a 1,5 semana | Modelos com versão para psicologia, fonoaudiologia, nutrição, odontologia e medicina (termos, abas e recursos, formulários, campos do paciente, tipos de atendimento, indicadores); novos tipos de campo; ajustes da profissional; admin: editar modelos (§11.2.6) | Opus no banco e nos modelos, Sonnet nas telas |
+| **F3. Assinaturas e cobrança** | 1 semana | Asaas: assinatura, checkout, webhook idempotente, faturas, inadimplência; tela Assinatura da profissional; admin: Assinaturas e Métricas; termos de uso e privacidade. Testada no sandbox do Asaas, com túnel local para os webhooks | Opus |
+| **F4. Prontuário e documentos** | 1 semana | Itens originais do Dia 8 (RF-16 a RF-18): anamnese, anexos, auditoria de acesso, PDFs, já com os modelos de cada profissão | Opus no banco, Sonnet nas telas |
+| **F5. Conectores** | 1 semana | Base (`integrations`, Vault, fila, outbox); e-mails transacionais, inclusive o aviso de pedido online para a profissional; Google Agenda; admin: Suporte | Opus |
+| **F6. API e webhooks** | 1 semana | `/api/v1`, chaves, escopos, limite de requisições, OpenAPI, webhooks assinados com registro de entrega | Opus |
+| **F7. Publicação** | 3 a 5 dias | Testes de fim a fim e revisão de segurança; Supabase de produção (São Paulo), Vercel (região `gru1`), Resend com SMTP no Supabase, domínio. **A Alanna migra e entram as primeiras betas, já com cobrança → `v0.1.0`** | Opus |
+| **F8. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, aviso de pedido online pelo WhatsApp, botão de link para quem não conectou → `v0.2.0`; depois, abertura geral → `v1.0.0` | Opus |
 
 **Por que nessa ordem**
+- Personalização antes das assinaturas (D-40): o produto precisa servir às cinco profissões antes de ser cobrado delas, e isso pesa no preço e nos planos.
 - Plataforma antes de publicar (D-38): o app entra no ar já controlando clientes, assinaturas e integrações. O custo é a Alanna migrar mais tarde.
-- WhatsApp por último (D-39): é a fase com mais dependência externa (aprovação da Meta) e custo para a profissional; o app funciona sem ele, e o e-mail (F4) cobre os avisos até lá.
+- WhatsApp por último (D-39): é a fase com mais dependência externa (aprovação da Meta) e custo para a profissional; o app funciona sem ele, e o e-mail (F5) cobre os avisos até lá.
 - Planos e assinaturas antes dos conectores e da API: eles dependem de recursos e cotas.
-- WhatsApp depois da base de conectores: ele usa a fila, o Vault e as cotas.
 
 ### 11.4 Documentação (primeiro passo depois da aprovação)
 
@@ -345,7 +373,7 @@ Sem API não oficial em nenhuma hipótese (D-04).
 - **PRD:**
   - novos requisitos RF-21 a RF-40 (admin, assinaturas, conectores, API, WhatsApp);
   - RF-14 reescrito para "número próprio via Embedded Signup";
-  - RF-19 absorvido pela Fase 2;
+  - RF-19 absorvido pela fase de assinaturas (F3);
   - decisões D-27 em diante (os seis princípios, Tech Provider, quem paga a Meta, privacidade no Google, prontuário fora da API);
   - perguntas em aberto P-1 (créditos de WhatsApp), P-2 (preço dos planos) e P-3 (prazo de guarda após cancelamento).
 - **CHANGELOG:** entrada "Replanejamento" na Sessão 7.
@@ -355,8 +383,8 @@ Sem API não oficial em nenhuma hipótese (D-04).
 
 | Risco | Efeito | Resposta |
 |---|---|---|
-| App Review da Meta demorar ou ser negado | Fase 5 atrasa | Pedir na Fase 0; BSP como plano B; botão de link continua |
-| Verificação do Google (escopo sensível) | Agenda limitada a 100 usuárias | Pedir na Fase 0; funciona em teste até lá |
+| App Review da Meta demorar ou ser negado | Fase 8 atrasa | Pedir antes da publicação; BSP como plano B; botão de link continua |
+| Verificação do Google (escopo sensível) | Agenda limitada a 100 usuárias | Pedir já; funciona em teste até lá |
 | Dados de pacientes indo para Meta e Google (transferência internacional) | Exigência da LGPD | Consentimento explícito, mínimo de dados (sem nome no Google por padrão), cláusulas nos termos e no contrato de dados; validar com o advogado |
 | Escopo cresce de novo | Lançamento nunca chega | Cada fase fecha com versão e changelog; ideia nova vai para o PRD |
 
