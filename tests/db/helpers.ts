@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process";
+import { createHmac } from "node:crypto";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 type Env = { url: string; publishableKey: string; secretKey: string };
@@ -59,7 +60,47 @@ export async function createUserClient(label: string) {
   const { error: signInError } = await client.auth.signInWithPassword({ email, password });
   if (signInError) throw new Error(`Falha ao logar pessoa de teste: ${signInError.message}`);
 
-  return { client, userId: data.user.id, email };
+  return { client, userId: data.user.id, email, password };
+}
+
+/** Código TOTP de 6 dígitos (RFC 6238), como um app autenticador geraria. */
+export function codigoTotp(segredoBase32: string, agora = Date.now()): string {
+  const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  let bits = "";
+  for (const c of segredoBase32.replace(/=+$/, "").toUpperCase()) {
+    bits += alfabeto.indexOf(c).toString(2).padStart(5, "0");
+  }
+  const chave = Buffer.from(bits.match(/.{8}/g)!.map((b) => parseInt(b, 2)));
+  const contador = Buffer.alloc(8);
+  contador.writeBigUInt64BE(BigInt(Math.floor(agora / 1000 / 30)));
+  const hmac = createHmac("sha1", chave).update(contador).digest();
+  const deslocamento = hmac[hmac.length - 1] & 0xf;
+  const numero = (hmac.readUInt32BE(deslocamento) & 0x7fffffff) % 1_000_000;
+  return String(numero).padStart(6, "0");
+}
+
+/**
+ * Pessoa da equipe da plataforma. Devolve o cliente já com as duas etapas
+ * (aal2) e outro, da mesma pessoa, só com a senha (aal1).
+ */
+export async function createPlatformAdmin(papel: "admin" | "suporte") {
+  const pessoa = await createUserClient(`plataforma-${papel}`);
+  const { error } = await adminClient().from("platform_admins").insert({ user_id: pessoa.userId, papel });
+  if (error) throw new Error(`Falha ao cadastrar administrador: ${error.message}`);
+
+  const fator = await pessoa.client.auth.mfa.enroll({ factorType: "totp" });
+  if (fator.error) throw new Error(`Falha ao cadastrar o autenticador: ${fator.error.message}`);
+  const verificado = await pessoa.client.auth.mfa.challengeAndVerify({
+    factorId: fator.data.id,
+    code: codigoTotp(fator.data.totp.secret),
+  });
+  if (verificado.error) throw new Error(`Falha na segunda etapa: ${verificado.error.message}`);
+
+  const soSenha = anonClient();
+  const login = await soSenha.auth.signInWithPassword({ email: pessoa.email, password: pessoa.password });
+  if (login.error) throw new Error(`Falha ao logar só com senha: ${login.error.message}`);
+
+  return { comDuasEtapas: pessoa.client, soComSenha: soSenha, userId: pessoa.userId };
 }
 
 /** Cria a organização da pessoa via RPC, como o onboarding fará. */

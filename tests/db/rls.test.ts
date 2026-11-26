@@ -84,11 +84,19 @@ describe("isolamento entre organizações", () => {
     expect(orgs ?? []).toHaveLength(0);
   });
 
-  it("a profissional não muda o próprio plano de cobrança", async () => {
-    await ana.from("organizations").update({ plano: "solo", nome: "Clinica Ana Renomeada" }).eq("id", orgA);
-    const { data } = await ana.from("organizations").select("plano, nome").eq("id", orgA).single();
-    expect(data?.plano).toBe("trial");
+  it("a profissional renomeia o consultório, mas não muda a própria assinatura", async () => {
+    await ana.from("organizations").update({ nome: "Clinica Ana Renomeada" }).eq("id", orgA);
+    const { data } = await ana.from("organizations").select("nome").eq("id", orgA).single();
     expect(data?.nome).toBe("Clinica Ana Renomeada");
+
+    const { data: alteradas } = await ana
+      .from("subscriptions")
+      .update({ plan_id: "completo", status: "active" })
+      .eq("org_id", orgA)
+      .select("org_id");
+    expect(alteradas ?? []).toHaveLength(0);
+    const { data: assinatura } = await ana.from("subscriptions").select("plan_id, status").eq("org_id", orgA).single();
+    expect(assinatura).toEqual({ plan_id: "teste", status: "trial" });
   });
 
   it("não cria um segundo consultório para a mesma pessoa", async () => {

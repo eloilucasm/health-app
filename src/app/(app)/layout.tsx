@@ -1,11 +1,19 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { TabBar } from "@/components/tab-bar";
+import { avisoDaAssinatura } from "@/domain/assinatura";
+import { noFuso } from "@/domain/datas";
+import { carregarAssinatura } from "@/lib/assinatura";
 import { carregarConsultorio, listarEspecialidades } from "@/lib/consultorio";
 
 /** Moldura do app: cabeçalho fixo, conteúdo e barra de abas, na cor escolhida. */
 export default async function AppLayout({ children }: LayoutProps<"/">) {
-  const [{ dados }, especialidades] = await Promise.all([carregarConsultorio(), listarEspecialidades()]);
+  const [{ dados }, especialidades, assinatura] = await Promise.all([
+    carregarConsultorio(),
+    listarEspecialidades(),
+    carregarAssinatura(),
+  ]);
+  const aviso = avisoDaAssinatura(assinatura.situacao, assinatura.trialAte, noFuso(new Date(), dados.fuso).data);
   const especialidade = especialidades.find((e) => e.id === dados.especialidade)?.nome ?? "";
 
   return (
@@ -27,6 +35,11 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
             </svg>
           </Link>
         </header>
+        {aviso && (
+          <p className={`plan-banner ${aviso.tipo}`} role={aviso.tipo === "alerta" ? "alert" : "status"}>
+            {aviso.texto}
+          </p>
+        )}
         <main>{children}</main>
       </div>
       <TabBar />

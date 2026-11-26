@@ -38,8 +38,11 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - Importação do backup: `src/domain/importacao.ts` valida e a função `importar_backup` grava. Exportação em `src/app/(app)/config/exportar/route.ts`; tabela nova com dados da usuária precisa entrar lá.
 - Backup real de paciente nunca entra no repositório; use `tests/fixtures/backup-exemplo.json` (fictício).
 - Página pública `src/app/[slug]/` (liberada no proxy por `paginaPublica()`): o visitante só acessa o banco pelas funções `agenda_publica`, `horarios_livres` e `agendar_online`. Toda função nova liberada para `anon` precisa devolver o mínimo e ter teste em `tests/db/agendamento-online.test.ts`. Funções internas sempre com `revoke ... from anon, public`.
+- Painel da plataforma em `src/app/admin/`: `(painel)/` exige `requireAdmin()` (`src/lib/admin.ts`: equipe + duas etapas); `verificar/` cadastra e confere o app autenticador. Dados só pelas funções `admin_*` do banco; ações em `src/lib/admin-actions.ts`. Acesso: `npm run admin:conceder -- <e-mail> admin|suporte|remover`.
+- Assinatura da profissional: `carregarAssinatura()` e `temRecurso()` em `src/lib/assinatura.ts` (função `minha_assinatura` do banco); regras de situação e avisos em `src/domain/assinatura.ts`.
+- No banco: `private.situacao`, `pode_escrever` (somente leitura nas políticas de escrita), `tem_recurso`, `limite_do_recurso` e `consumir_cota`. Recurso novo: cadastrar em `recursos` e nos planos, e conferir dentro da função do banco que o usa.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
-- `tests/db/`: testes de isolamento (RLS) contra o Supabase local.
+- `tests/db/`: testes de isolamento (RLS) contra o Supabase local. Para testar o painel, `createPlatformAdmin()` (em `tests/db/helpers.ts`) cria alguém da equipe já com as duas etapas.
 
 ## Comandos
 - `npm run dev`: app em http://localhost:3000. Se o CSS alterado por script não aparecer, salve `globals.css` de novo (o observador não percebe).
