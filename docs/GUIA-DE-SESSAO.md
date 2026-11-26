@@ -109,9 +109,9 @@ Nunca commitar segredos (`.env`, chaves do Supabase, da Meta ou do Asaas).
 | Marco | Versão | Quando |
 |---|---|---|
 | Planejamento e documentação base | `0.0.0` | Sessão 0 (2026-11-22) |
-| Alanna migra para a versão nova | `0.1.0` | Dia 5 (ou 6, se o WhatsApp subir para o dia 5) |
-| Beta no ar | `0.2.0` | Dia 10 |
-| Primeira profissional pagante | `0.3.0` | Semanas seguintes |
+| Publicação com admin e cobrança: Alanna migra, primeiras betas | `0.1.0` | Fase 0 (depois das Fases 1 e 2) |
+| Prontuário completo e conectores | `0.2.0` | Fase 4 |
+| WhatsApp com o número da profissional | `0.3.0` | Fase 5 |
 | Produto estável para venda aberta | `1.0.0` | A definir |
 
 Ao fechar um marco:

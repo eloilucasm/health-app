@@ -4,7 +4,7 @@
 |---|---|
 | **Versão do PRD** | 2.0 |
 | **Última atualização** | 2026-11-26 (Sessão 7) |
-| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS em fases semanais (F0 a F7); próxima: F0, publicação |
+| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS (F0 a F7), na ordem F1 → F2 → F0 → …; próxima: F1, fundação da plataforma |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -188,7 +188,8 @@ $1
 | D-34 | 2026-11-26 | Evento no Google Agenda sem o nome do paciente por padrão (opção para incluir) | Minimiza dados de saúde enviados ao Google |
 | D-35 | 2026-11-26 | Prontuário fora da API v1 | Dado mais sensível; entra só com demanda e salvaguardas próprias |
 | D-36 | 2026-11-26 | Inadimplência: 7 dias de tolerância, depois só leitura; exportação sempre permitida | Não sequestra os dados da profissional (portabilidade) |
-| D-37 | 2026-11-26 | Roadmap de 10 dias substituído a partir do Dia 7 por fases semanais F0 a F7 (PLANO §11): publicar, fundação da plataforma, cobrança, prontuário, conectores, WhatsApp, API, lançamento | O escopo passou a incluir admin, assinaturas, conectores e WhatsApp por profissional |
+$1
+| D-38 | 2026-11-26 | Publicar (F0) só depois do painel administrativo (F1) e da cobrança (F2); ordem F1 → F2 → F0 → F3 → … | Pedido do Lucas: o app entra no ar já como plataforma; a migração da Alanna fica para depois |
 
 ## 9. Perguntas em aberto
 
@@ -201,7 +202,7 @@ $1
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
-- [ ] Publicar o app (Supabase de produção + Vercel): sem isso a Alanna não consegue migrar (marco do Dia 5)
+- [ ] Publicar o app (Supabase de produção + Vercel): Fase 0, depois das Fases 1 e 2 (D-38); só então a Alanna migra
 - [ ] Limite de pedidos por IP no agendamento online (precisa da infraestrutura de produção)
 - [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; previsto no RF-37)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
