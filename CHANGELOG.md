@@ -6,6 +6,23 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 7 · 2026-11-26 · Replanejamento: plataforma SaaS
+
+**Alterado**
+- O roadmap de 10 dias foi substituído, a partir do Dia 7, por fases semanais (F0 a F7) que transformam o app em plataforma para muitas profissionais (D-37, [PLANO §11](docs/PLANO.md))
+- WhatsApp passa a sair do número da própria profissional, pela API oficial, com a plataforma como parceira técnica da Meta (D-32, D-33)
+
+**Adicionado**
+- Requisitos RF-21 a RF-40: painel administrativo, planos e assinaturas, conectores (e-mail, Google Agenda), WhatsApp por profissional, API e webhooks
+- Princípios da plataforma como decisões D-27 a D-31: nenhum acesso a dados clínicos pelo admin, segredos no Vault, provedores trocáveis, limites pelo plano e saídas por fila
+- Perguntas em aberto P-1 a P-3 (créditos de WhatsApp, preço dos planos, guarda de dados após cancelamento)
+
+**Pendências**
+- Nada de código nesta sessão
+- Pedidos externos que entram já na Fase 0, por conta do Lucas: verificação da empresa na Meta e inscrição como Tech Provider, verificação do app no Google, conta no Asaas, domínio e advogado
+
+**Próxima sessão:** Fase 0. Publicar o núcleo (Supabase de produção em São Paulo, Vercel, e-mail próprio com domínio), migrar a Alanna (`v0.1.0`) e revisar o prontuário com o Opus.
+
 ### Sessão 6 · 2026-11-26 · Dia 6: agendamento online
 
 **Adicionado**

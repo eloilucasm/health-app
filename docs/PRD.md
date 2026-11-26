@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.6 |
-| **Última atualização** | 2026-11-26 (Sessão 6) |
-| **Status do produto** | Dia 6 concluído no ambiente local: agendamento online. Marco da migração da Alanna pendente da publicação |
+| **Versão do PRD** | 2.0 |
+| **Última atualização** | 2026-11-26 (Sessão 7) |
+| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS em fases semanais (F0 a F7); próxima: F0, publicação |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -48,7 +48,7 @@ O protótipo ([legacy/index.html](../legacy/index.html)) resolve isso para uma f
 
 ## 5. Requisitos funcionais (MVP)
 
-Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** segue o roadmap do [PLANO.md](PLANO.md).
+Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fase** segue o [PLANO.md](PLANO.md): números são dias do roadmap original (concluídos até o Dia 6); **F0 a F7** são as fases semanais da plataforma (PLANO §11).
 
 ### 5.1 Conta e configuração
 | ID | Requisito | Dia | Status |
@@ -74,17 +74,57 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
 | RF-13 | Página pública de agendamento online (`/{slug}`) com horários livres, consentimento LGPD e confirmação | 6 | pronto |
-| RF-14 | Lembrete por WhatsApp 24 h antes, com botões Confirmar e Remarcar que atualizam o status | 7 (ou 5) | planejado |
-| RF-15 | Plano B do RF-14: botão "Enviar lembretes de amanhã" que abre cada conversa com a mensagem pronta | 7 | planejado |
-| RF-16 | Anamnese por especialidade; evolução com versões (nada é apagado de verdade); anexos | 8 | planejado |
-| RF-17 | Documentos em PDF: atestado, declaração de comparecimento e recibo | 8 | planejado |
-| RF-18 | Trilha de auditoria de acesso a prontuários | 8 | planejado |
+| RF-14 | Lembrete por WhatsApp enviado do número da própria profissional (API oficial), 24 h antes, com botões Confirmar e Remarcar que atualizam o status (ver RF-34 a RF-37, D-32) | F5 | planejado |
+$1 F5 | planejado |
+$1 F3 | planejado |
+$1 F3 | planejado |
+$1 F3 | planejado |
 
 ### 5.4 Negócio
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
-| RF-19 | Assinatura com teste grátis de 14 dias via Asaas (plano B: link Pix e liberação manual) | 9 | planejado |
-| RF-20 | Landing page, termos de uso e política de privacidade | 9 | planejado |
+| RF-19 | Assinatura com teste grátis de 14 dias via Asaas (absorvido por RF-28 a RF-30) | F2 | planejado |
+$1 F2 | planejado |
+
+### 5.5 Painel administrativo da plataforma
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-21 | Acesso administrativo com papéis (admin, suporte) e login em duas etapas obrigatório; toda ação registrada em auditoria | F1 | planejado |
+| RF-22 | Clientes: lista com busca e filtros, detalhe sem dados clínicos, ações de estender teste, trocar plano, suspender e reativar | F1 | planejado |
+| RF-23 | Planos, recursos, limites e exceções por cliente | F1 | planejado |
+| RF-24 | Assinaturas: faturas, pagamentos, eventos do provedor e inadimplentes | F2 | planejado |
+| RF-25 | Métricas: receita recorrente (MRR), cadastros, ativação, conversão do teste, cancelamentos e uso | F2 | planejado |
+| RF-26 | Suporte: erros de integração e falhas de entrega de e-mail, WhatsApp e webhooks, sem o conteúdo das mensagens | F4 | planejado |
+
+### 5.6 Assinaturas e limites
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-27 | Recursos e cotas do plano aplicados no banco (`tem_recurso`, `consumir_cota`), com exceções por cliente | F1 | planejado |
+| RF-28 | Assinatura recorrente via Asaas (Pix, boleto, cartão), com teste grátis e webhook idempotente | F2 | planejado |
+| RF-29 | Inadimplência: 7 dias de tolerância, depois modo somente leitura; exportar e pagar continuam permitidos | F1/F2 | planejado |
+| RF-30 | Tela Assinatura da profissional: plano, situação, faturas, trocar plano e forma de pagamento | F2 | planejado |
+
+### 5.7 Conectores
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-31 | Base de conectores: integração por consultório, segredos no Supabase Vault, fila com novas tentativas e registro de eventos | F4 | planejado |
+| RF-32 | E-mail transacional com domínio próprio e modelos em português, inclusive o link de acesso | F0/F4 | planejado |
+| RF-33 | Google Agenda: sincronização de mão única (app → Google), sem o nome do paciente por padrão | F4 | planejado |
+
+### 5.8 WhatsApp com o número da profissional
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-34 | Conectar o próprio número pelo Embedded Signup da Meta (plataforma como Tech Provider; intermediário oficial como plano B) | F5 | planejado |
+| RF-35 | Mensagens-modelo em português criadas e acompanhadas pela plataforma na conta de cada profissional | F5 | planejado |
+| RF-36 | Consentimento do paciente para receber mensagens, com data e origem | F5 | planejado |
+| RF-37 | Webhook do WhatsApp: Confirmar e Remarcar pelo botão, status de entrega e aviso de pedido online | F5 | planejado |
+
+### 5.9 API e webhooks
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-38 | API v1 com chaves por consultório (guardadas como hash, com escopos e limite de requisições); prontuário fora | F6 | planejado |
+| RF-39 | Webhooks com assinatura HMAC, novas tentativas e registro de entregas visível à profissional | F6 | planejado |
+| RF-40 | Documentação da API em OpenAPI | F6 | planejado |
 
 ## 6. Requisitos não funcionais
 
@@ -102,7 +142,7 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 
 - Perfis completos de especialidades além da fisioterapia (fono e psico entram como esboço)
 - Clínicas com várias profissionais e recepção (o modelo de dados já comporta)
-- Relatório de evolução em PDF, tela de métricas de faltas, login em duas etapas, bloqueio automático por inadimplência
+- Relatório de evolução em PDF, tela de métricas de faltas, login em duas etapas para as profissionais (para o admin é obrigatório, RF-21)
 - Logo próprio de cada consultório, enviado pela usuária nos ajustes (D-14)
 - NFS-e, receita digital ICP-Brasil, odontograma, convênios (TISS), teleconsulta
 
@@ -137,19 +177,32 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-23 | 2026-11-25 | Exportação em um arquivo JSON, só para a dona do consultório, com registro na auditoria | Portabilidade (LGPD) sem permitir saída de dados de saúde por outros papéis |
 | D-24 | 2026-11-26 | Página pública fora dos buscadores (noindex) no MVP; o link é divulgado pela profissional | Menos exposição e raspagem enquanto não há limite por IP |
 | D-25 | 2026-11-26 | Pedido online entra como atendimento avulso, com nome e WhatsApp, sem ligar sozinho a um paciente pelo telefone | Ligar pelo telefone deixaria qualquer pessoa marcar em nome de um paciente e revelaria quem é paciente |
-| D-26 | 2026-11-26 | Proteções do agendamento online: consentimento obrigatório (versão "v1"), no máximo 2 horários futuros por telefone, 20 pedidos por hora por consultório, armadilha para robôs e trava contra horário duplo | Página aberta ao público, sem login |
+$1
+| D-27 | 2026-11-26 | A plataforma nunca acessa dados clínicos: o admin só lê conta, assinatura e uso por funções do banco; sem "entrar como a cliente" | A plataforma é operadora (LGPD); acesso mínimo necessário |
+| D-28 | 2026-11-26 | Segredos (tokens da Meta e do Google, segredos de webhook) no Supabase Vault; chaves de API só como hash | Vazamento de uma tabela não expõe credenciais |
+| D-29 | 2026-11-26 | WhatsApp, e-mail, cobrança e agenda atrás de uma interface única (`src/lib/conectores/`) | Trocar de provedor sem reescrever o produto |
+| D-30 | 2026-11-26 | Recursos e limites vêm do plano, conferidos dentro do banco (`tem_recurso`, `consumir_cota`) | Nenhuma regra de plano espalhada pelas telas; o admin controla tudo |
+| D-31 | 2026-11-26 | Tudo que sai do sistema passa por fila com novas tentativas (outbox) | Falha externa nunca derruba a ação da profissional |
+| D-32 | 2026-11-26 | WhatsApp pelo número da própria profissional, via Cloud API + Embedded Signup, com a plataforma como Tech Provider; intermediário oficial (BSP) como plano B. Mantém a D-04 | Pedido do Lucas; mensagem sai do número dela, a resposta volta para ela e cada número tem a própria reputação |
+| D-33 | 2026-11-26 | O custo das mensagens da Meta é pago pela profissional, na conta WhatsApp Business dela; os planos só limitam a quantidade | A plataforma não intermedeia cobrança de terceiros |
+| D-34 | 2026-11-26 | Evento no Google Agenda sem o nome do paciente por padrão (opção para incluir) | Minimiza dados de saúde enviados ao Google |
+| D-35 | 2026-11-26 | Prontuário fora da API v1 | Dado mais sensível; entra só com demanda e salvaguardas próprias |
+| D-36 | 2026-11-26 | Inadimplência: 7 dias de tolerância, depois só leitura; exportação sempre permitida | Não sequestra os dados da profissional (portabilidade) |
+| D-37 | 2026-11-26 | Roadmap de 10 dias substituído a partir do Dia 7 por fases semanais F0 a F7 (PLANO §11): publicar, fundação da plataforma, cobrança, prontuário, conectores, WhatsApp, API, lançamento | O escopo passou a incluir admin, assinaturas, conectores e WhatsApp por profissional |
 
 ## 9. Perguntas em aberto
 
 - [ ] Nome definitivo do produto e domínio (o nome atual já está desenhado no logo)
 - [ ] Rever o símbolo do logo: lembra um estetoscópio, que remete mais a medicina do que às outras especialidades
-- [ ] Preço final (hipótese: R$ 59 a R$ 89/mês) e tamanho do pacote de WhatsApp incluso
+- [ ] P-1: oferecer créditos de WhatsApp inclusos nos planos no futuro? (hoje a profissional paga a Meta, D-33)
+- [ ] P-2: preço final dos planos (hipótese: R$ 59 a R$ 89/mês) e limite de lembretes por plano
+- [ ] P-3: por quanto tempo guardar os dados de quem cancela, antes de excluir (definir nos termos, com o advogado)
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
 - [ ] Publicar o app (Supabase de produção + Vercel): sem isso a Alanna não consegue migrar (marco do Dia 5)
 - [ ] Limite de pedidos por IP no agendamento online (precisa da infraestrutura de produção)
-- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; o WhatsApp do Dia 7 pode cobrir)
+- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; previsto no RF-37)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel

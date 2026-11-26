@@ -16,6 +16,15 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - Escopo congelado: ideia nova vai para o PRD (perguntas em aberto ou fora do escopo), não para o código.
 - Decisão de produto ou arquitetura vira linha nova no Registro de decisões do PRD.
 
+## Princípios da plataforma (obrigatórios; PRD D-27 a D-31, PLANO §11)
+1. **A plataforma nunca vê dados clínicos.** Código de admin, suporte ou log só lê conta, assinatura, uso e erros, por funções `admin_*` no banco. Sem "entrar como a cliente".
+2. **Tudo novo tem `org_id` e RLS**, inclusive integrações, cotas, chaves de API e webhooks.
+3. **Segredos no Supabase Vault**, nunca em coluna comum nem no navegador; chave de API só como hash. A chave de serviço só em `/api/jobs/*` e `/api/webhooks/*`.
+4. **Provedores atrás de `src/lib/conectores/`**: nada de chamar Meta, Google, Asaas ou Resend direto de uma tela.
+5. **Recursos e limites pelo plano**, conferidos no banco com `tem_recurso` e `consumir_cota`; nunca `if plano === ...`.
+6. **Saídas externas pela fila** (`jobs`/`eventos`), com novas tentativas.
+- O repositório é **público**: nenhum segredo, dado real de paciente ou dado pessoal novo em commit.
+
 ## Estrutura
 - `src/app/`: rotas do Next.js (App Router). `src/proxy.ts` renova a sessão e redireciona para `/login`.
 - `src/lib/supabase/`: clientes `server.ts` (Server Components/Actions), `client.ts` (navegador), `proxy.ts`.
