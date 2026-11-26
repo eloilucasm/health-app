@@ -6,6 +6,27 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 6 · 2026-11-26 · Dia 6: agendamento online
+
+**Adicionado**
+- Página pública de agendamento (`/{nome-do-consultorio}`): o paciente escolhe dia e horário livre, informa nome e WhatsApp e autoriza o uso dos dados, sem precisar de login (RF-13)
+- Nos Ajustes: ligar ou desligar o agendamento online, antecedência mínima, dias de agenda aberta, mensagem da página e o link para copiar
+- Na agenda, o pedido aparece marcado como "Online", com o WhatsApp do contato e atalho para a conversa
+- Proteções: visitante não vê nenhum dado do consultório além do perfil público e dos horários livres; sem horário duplo; limite de pedidos por telefone e por hora (D-26)
+
+**Alterado**
+- A página pública não aparece em buscadores (D-24)
+- Pedido online não é ligado automaticamente a um paciente cadastrado (D-25)
+
+**Pendências**
+- A profissional não é avisada de um pedido novo: ele só aparece na agenda
+- Sem limite de pedidos por endereço IP (depende da publicação)
+- Pendências das sessões anteriores continuam: publicação (Supabase de produção, Vercel, envio de e-mail), migração da Alanna, instalação em celular, login com Google, e-mail de acesso em inglês, revisão do prontuário com o Opus, Meta, Asaas e advogado
+
+**Verificação:** lint, typecheck e build de produção passam, assim como os 27 testes de regras e os 47 de banco, executados no commit do agendamento online; no fechamento o Docker estava desligado e os testes de banco não foram repetidos. Fluxo testado no navegador em tamanho de celular, com um visitante sem login.
+
+**Próxima sessão:** Dia 7. Lembretes por WhatsApp (RF-14). Sem a aprovação da Meta, entra o botão "Enviar lembretes de amanhã" (RF-15).
+
 ### Sessão 5 · 2026-11-25 · Dia 5: financeiro, importação e exportação
 
 **Adicionado**

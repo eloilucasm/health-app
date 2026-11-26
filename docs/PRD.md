@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 1.5 |
-| **Última atualização** | 2026-11-25 (Sessão 5) |
-| **Status do produto** | Dia 5 concluído no ambiente local: financeiro, importação e exportação. Marco da migração da Alanna pendente da publicação |
+| **Versão do PRD** | 1.6 |
+| **Última atualização** | 2026-11-26 (Sessão 6) |
+| **Status do produto** | Dia 6 concluído no ambiente local: agendamento online. Marco da migração da Alanna pendente da publicação |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -73,7 +73,7 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia** 
 ### 5.3 Diferenciais
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
-| RF-13 | Página pública de agendamento online (`/{slug}`) com horários livres, consentimento LGPD e confirmação | 6 | planejado |
+| RF-13 | Página pública de agendamento online (`/{slug}`) com horários livres, consentimento LGPD e confirmação | 6 | pronto |
 | RF-14 | Lembrete por WhatsApp 24 h antes, com botões Confirmar e Remarcar que atualizam o status | 7 (ou 5) | planejado |
 | RF-15 | Plano B do RF-14: botão "Enviar lembretes de amanhã" que abre cada conversa com a mensagem pronta | 7 | planejado |
 | RF-16 | Anamnese por especialidade; evolução com versões (nada é apagado de verdade); anexos | 8 | planejado |
@@ -135,6 +135,9 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-21 | 2026-11-25 | O WhatsApp automático fica no Dia 7; o Dia 5 é Financeiro e importação (aplica a regra da D-06) | A aprovação da Meta não saiu até o fim do Dia 4 |
 | D-22 | 2026-11-25 | A importação do backup grava tudo de uma vez, pode ser repetida sem duplicar e mostra antes o que ficará de fora | Dados reais podem ter falhas; nada some em silêncio e uma segunda tentativa é segura |
 | D-23 | 2026-11-25 | Exportação em um arquivo JSON, só para a dona do consultório, com registro na auditoria | Portabilidade (LGPD) sem permitir saída de dados de saúde por outros papéis |
+| D-24 | 2026-11-26 | Página pública fora dos buscadores (noindex) no MVP; o link é divulgado pela profissional | Menos exposição e raspagem enquanto não há limite por IP |
+| D-25 | 2026-11-26 | Pedido online entra como atendimento avulso, com nome e WhatsApp, sem ligar sozinho a um paciente pelo telefone | Ligar pelo telefone deixaria qualquer pessoa marcar em nome de um paciente e revelaria quem é paciente |
+| D-26 | 2026-11-26 | Proteções do agendamento online: consentimento obrigatório (versão "v1"), no máximo 2 horários futuros por telefone, 20 pedidos por hora por consultório, armadilha para robôs e trava contra horário duplo | Página aberta ao público, sem login |
 
 ## 9. Perguntas em aberto
 
@@ -146,5 +149,7 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
 - [ ] Publicar o app (Supabase de produção + Vercel): sem isso a Alanna não consegue migrar (marco do Dia 5)
+- [ ] Limite de pedidos por IP no agendamento online (precisa da infraestrutura de produção)
+- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; o WhatsApp do Dia 7 pode cobrir)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel
