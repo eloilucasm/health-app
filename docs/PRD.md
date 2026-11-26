@@ -4,7 +4,7 @@
 |---|---|
 | **Versão do PRD** | 2.0 |
 | **Última atualização** | 2026-11-26 (Sessão 7) |
-| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS (F0 a F7), na ordem F1 → F2 → F0 → …; próxima: F1, fundação da plataforma |
+| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Replanejado como plataforma SaaS, na ordem F1 → F2 → F3 → F4 → F6 → F0 → F5; próxima: F1, fundação da plataforma |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -189,7 +189,8 @@ $1
 | D-35 | 2026-11-26 | Prontuário fora da API v1 | Dado mais sensível; entra só com demanda e salvaguardas próprias |
 | D-36 | 2026-11-26 | Inadimplência: 7 dias de tolerância, depois só leitura; exportação sempre permitida | Não sequestra os dados da profissional (portabilidade) |
 $1
-| D-38 | 2026-11-26 | Publicar (F0) só depois do painel administrativo (F1) e da cobrança (F2); ordem F1 → F2 → F0 → F3 → … | Pedido do Lucas: o app entra no ar já como plataforma; a migração da Alanna fica para depois |
+$1
+| D-39 | 2026-11-26 | WhatsApp (F5) vira a última fase e a publicação (F0) a penúltima: ordem F1 → F2 → F3 → F4 → F6 → F0 → F5. A F7 é distribuída: testes e revisão de segurança na F0, abertura geral (`v1.0.0`) ao fim da F5 | Pedido do Lucas; o WhatsApp tem a maior dependência externa e o app funciona sem ele |
 
 ## 9. Perguntas em aberto
 
@@ -202,8 +203,8 @@ $1
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10
 - [ ] Credenciais do Google Cloud para o login com Google (RF-01)
 - [ ] Avisar quando dois atendimentos caírem no mesmo horário?
-- [ ] Publicar o app (Supabase de produção + Vercel): Fase 0, depois das Fases 1 e 2 (D-38); só então a Alanna migra
+- [ ] Publicar o app (Supabase de produção + Vercel): F0, a penúltima fase (D-39); só então a Alanna migra
 - [ ] Limite de pedidos por IP no agendamento online (precisa da infraestrutura de produção)
-- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; previsto no RF-37)
+- [ ] Avisar a profissional de um novo pedido online (hoje ele só aparece na agenda; por e-mail na F4, pelo WhatsApp no RF-37)
 - [ ] E-mails de login em português (hoje o modelo padrão do Supabase está em inglês)
 - [ ] Criação do projeto Supabase de produção (região São Paulo) e da conta na Vercel

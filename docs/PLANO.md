@@ -319,26 +319,25 @@ Sem API não oficial em nenhuma hipótese (D-04).
 
 ### 11.3 Roadmap em fases semanais
 
-**Ordem de execução (D-38): F1 → F2 → F0 → F3 → F4 → F5 → F6 → F7.** A publicação (F0) acontece depois do painel administrativo e da cobrança, para o app já entrar no ar como plataforma. Os nomes das fases não mudam, para não renumerar os requisitos.
+**Ordem de execução (D-38, D-39): F1 → F2 → F3 → F4 → F6 → F0 → F5.** A publicação (F0) é a penúltima e o WhatsApp (F5) é a última fase. Os nomes das fases não mudam, para não renumerar os requisitos. A antiga F7 (lançamento) foi distribuída: testes de fim a fim e revisão de segurança entram na publicação; a abertura geral (`v1.0.0`) vem ao fim do WhatsApp.
 
-**Já, em paralelo** (não depende de publicar, e é o caminho crítico): verificação da empresa na Meta e inscrição como Tech Provider, pedido de verificação do app no Google, conta no Asaas (sandbox para a F2), domínio e advogado. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
+**Já, em paralelo** (não depende de publicar): conta no Asaas (sandbox para a F2), verificação do app no Google (para a F4), domínio e advogado. A verificação na Meta e a inscrição como Tech Provider deixam de ser urgentes, mas convém começá-las antes da publicação, porque levam semanas. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
 
-| Fase | Duração | Entrega | Modelo |
-|---|---|---|---|
-| **1. Fundação da plataforma** | 1 semana | `platform_admins` + duas etapas; planos, recursos, cotas e exceções; `subscriptions` com migração dos dados atuais; modo somente leitura; admin: Clientes e Planos e recursos | Opus |
-| **2. Assinaturas e cobrança** | 1 semana | Asaas: assinatura, checkout, webhook idempotente, faturas, inadimplência; tela Assinatura da profissional; admin: Assinaturas e Métricas; termos de uso e privacidade. Testada no sandbox do Asaas, com túnel local para os webhooks | Opus |
-| **0. Publicar** | 2 a 3 dias | Supabase de produção (São Paulo), Vercel (região `gru1`), Resend com SMTP no Supabase e e-mails em português, domínio. **Publicação já com painel administrativo e cobrança: a Alanna migra e entram as primeiras betas → `v0.1.0`.** Revisão do prontuário com o Opus | Opus |
-| **3. Prontuário e documentos** | 1 semana | Itens originais do Dia 8 (RF-16 a RF-18): anamnese, anexos, auditoria de acesso, PDFs | Opus no banco, Sonnet nas telas |
-| **4. Conectores** | 1 semana | Base (`integrations`, Vault, fila, outbox); e-mails transacionais; Google Agenda; admin: Suporte → `v0.2.0` | Opus |
-| **5. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, avisos de pedido online, botão de link para quem não conectou → `v0.3.0` | Opus |
-| **6. API e webhooks** | 1 semana | `/api/v1`, chaves, escopos, limite de requisições, OpenAPI, webhooks assinados com registro de entrega | Opus |
-| **7. Lançamento** | contínuo | Testes de fim a fim, revisão de segurança, abertura geral → `v1.0.0` | Opus |
+| Ordem | Fase | Duração | Entrega | Modelo |
+|---|---|---|---|---|
+| 1º | **F1. Fundação da plataforma** | 1 semana | `platform_admins` + duas etapas; planos, recursos, cotas e exceções; `subscriptions` com migração dos dados atuais; modo somente leitura; admin: Clientes e Planos e recursos | Opus |
+| 2º | **F2. Assinaturas e cobrança** | 1 semana | Asaas: assinatura, checkout, webhook idempotente, faturas, inadimplência; tela Assinatura da profissional; admin: Assinaturas e Métricas; termos de uso e privacidade. Testada no sandbox do Asaas, com túnel local para os webhooks | Opus |
+| 3º | **F3. Prontuário e documentos** | 1 semana | Itens originais do Dia 8 (RF-16 a RF-18): anamnese, anexos, auditoria de acesso, PDFs | Opus no banco, Sonnet nas telas |
+| 4º | **F4. Conectores** | 1 semana | Base (`integrations`, Vault, fila, outbox); e-mails transacionais, inclusive o aviso de pedido online para a profissional; Google Agenda; admin: Suporte | Opus |
+| 5º | **F6. API e webhooks** | 1 semana | `/api/v1`, chaves, escopos, limite de requisições, OpenAPI, webhooks assinados com registro de entrega | Opus |
+| 6º | **F0. Publicar** | 3 a 5 dias | Testes de fim a fim e revisão de segurança; Supabase de produção (São Paulo), Vercel (região `gru1`), Resend com SMTP no Supabase, domínio. **A Alanna migra e entram as primeiras betas, já com cobrança → `v0.1.0`** | Opus |
+| 7º | **F5. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, aviso de pedido online pelo WhatsApp, botão de link para quem não conectou → `v0.2.0`; depois, abertura geral → `v1.0.0` | Opus |
 
 **Por que nessa ordem**
-- Admin e cobrança antes de publicar (D-38): a plataforma entra no ar já controlando clientes e assinaturas. O custo é a Alanna migrar mais tarde.
-- Planos e assinaturas antes dos conectores: os conectores dependem de recursos e cotas.
+- Plataforma antes de publicar (D-38): o app entra no ar já controlando clientes, assinaturas e integrações. O custo é a Alanna migrar mais tarde.
+- WhatsApp por último (D-39): é a fase com mais dependência externa (aprovação da Meta) e custo para a profissional; o app funciona sem ele, e o e-mail (F4) cobre os avisos até lá.
+- Planos e assinaturas antes dos conectores e da API: eles dependem de recursos e cotas.
 - WhatsApp depois da base de conectores: ele usa a fila, o Vault e as cotas.
-- A Fase 5 também depende da Meta. Se a aprovação atrasar, as Fases 4 e 6 sobem na frente.
 
 ### 11.4 Documentação (primeiro passo depois da aprovação)
 

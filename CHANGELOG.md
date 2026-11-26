@@ -11,7 +11,8 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 **Alterado**
 - O roadmap de 10 dias foi substituído, a partir do Dia 7, por fases semanais (F0 a F7) que transformam o app em plataforma para muitas profissionais (D-37, [PLANO §11](docs/PLANO.md))
 - WhatsApp passa a sair do número da própria profissional, pela API oficial, com a plataforma como parceira técnica da Meta (D-32, D-33)
-- Publicação adiada para depois do painel administrativo e da cobrança: ordem F1 → F2 → F0 → F3 → … (D-38). Marcos de versão do guia ajustados
+$1
+- Nova ordem: WhatsApp na última fase e publicação na penúltima (F1 → F2 → F3 → F4 → F6 → F0 → F5); a antiga fase de lançamento foi distribuída entre essas duas (D-39)
 
 **Adicionado**
 - Requisitos RF-21 a RF-40: painel administrativo, planos e assinaturas, conectores (e-mail, Google Agenda), WhatsApp por profissional, API e webhooks
