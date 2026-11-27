@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 2.1 |
-| **Última atualização** | 2026-11-26 (Sessão 7) |
-| **Status do produto** | Núcleo do consultório pronto no ambiente local (Dias 1 a 6). Segunda etapa, plataforma SaaS, em 8 fases (F1 a F8); próxima: F1, fundação da plataforma |
+| **Versão do PRD** | 2.2 |
+| **Última atualização** | 2026-11-27 (Sessão 8) |
+| **Status do produto** | Núcleo do consultório (Dias 1 a 6) e F1 (fundação da plataforma) prontos no ambiente local; próxima: F2, personalização por profissão |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -89,9 +89,9 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 ### 5.5 Painel administrativo da plataforma
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-21 | Acesso administrativo com papéis (admin, suporte) e login em duas etapas obrigatório; toda ação registrada em auditoria | F1 | planejado |
-| RF-22 | Clientes: lista com busca e filtros, detalhe sem dados clínicos, ações de estender teste, trocar plano, suspender e reativar | F1 | planejado |
-| RF-23 | Planos, recursos, limites e exceções por cliente | F1 | planejado |
+| RF-21 | Acesso administrativo com papéis (admin, suporte) e login em duas etapas obrigatório; toda ação registrada em auditoria | F1 | pronto |
+| RF-22 | Clientes: lista com busca e filtros, detalhe sem dados clínicos, ações de estender teste, trocar plano, suspender e reativar | F1 | pronto |
+| RF-23 | Planos, recursos, limites e exceções por cliente | F1 | pronto |
 | RF-24 | Assinaturas: faturas, pagamentos, eventos do provedor e inadimplentes | F3 | planejado |
 | RF-25 | Métricas: receita recorrente (MRR), cadastros, ativação, conversão do teste, cancelamentos e uso | F3 | planejado |
 | RF-26 | Suporte: erros de integração e falhas de entrega de e-mail, WhatsApp e webhooks, sem o conteúdo das mensagens | F5 | planejado |
@@ -99,9 +99,9 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 ### 5.6 Assinaturas e limites
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-27 | Recursos e cotas do plano aplicados no banco (`tem_recurso`, `consumir_cota`), com exceções por cliente | F1 | planejado |
+| RF-27 | Recursos e cotas do plano aplicados no banco (`tem_recurso`, `consumir_cota`), com exceções por cliente | F1 | pronto |
 | RF-28 | Assinatura recorrente via Asaas (Pix, boleto, cartão), com teste grátis e webhook idempotente | F3 | planejado |
-| RF-29 | Inadimplência: 7 dias de tolerância, depois modo somente leitura; exportar e pagar continuam permitidos | F1/F3 | planejado |
+| RF-29 | Inadimplência: 7 dias de tolerância, depois modo somente leitura; exportar e pagar continuam permitidos | F1/F3 | em andamento |
 | RF-30 | Tela Assinatura da profissional: plano, situação, faturas, trocar plano e forma de pagamento | F3 | planejado |
 
 ### 5.7 Conectores
@@ -207,6 +207,11 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-40 | 2026-11-26 | Nova fase "Personalização por profissão" antes das assinaturas, e fases renumeradas de 1 a 8 pela ordem de execução: F1 Fundação, F2 Personalização, F3 Assinaturas, F4 Prontuário, F5 Conectores, F6 API, F7 Publicação, F8 WhatsApp. Equivalência com as siglas de D-37 a D-39: antiga F2 → F3, F3 → F4, F4 → F5, F0 → F7, F5 → F8; F1 e F6 não mudam | O desenho atual atende bem fisioterapeutas e fica devendo às outras profissões; isso afeta o produto e o preço, então vem antes da cobrança |
 | D-41 | 2026-11-26 | Profissão como configuração ampliada (estende a D-03): o modelo define termos, abas e recursos, formulários, campos do paciente, tipos de atendimento e indicadores. A profissional ajusta listas e liga ou desliga recursos; não há editor de formulários nesta etapa | Atende as cinco profissões sem multiplicar o código e sem fragmentar o prontuário |
 | D-42 | 2026-11-26 | Modelos de profissão com versão: cada registro guarda a versão do formulário; mudar o modelo não altera nem esconde registros antigos | Prontuário imutável (RNF-05) e leitura correta do histórico |
+| D-43 | 2026-11-27 | Dois papéis na equipe da plataforma: admin (consulta e age) e suporte (só consulta). Acesso pelo comando `npm run admin:conceder`, nunca pela tela | Separa quem apoia de quem decide; ninguém se promove a admin pelo app |
+| D-44 | 2026-11-27 | O painel responde "não encontrado" para quem não é da equipe, e cada função do banco confere de novo o papel e as duas etapas (aal2) | Não revela que o painel existe; a tela nunca é a única barreira |
+| D-45 | 2026-11-27 | Toda ação do admin exige motivo; cada consulta ao detalhe de um cliente também fica na auditoria (a tela mostra só as ações) | Rastreabilidade de quem viu e mudou o quê, como operadora (LGPD) |
+| D-46 | 2026-11-27 | Planos iniciais: Teste grátis (14 dias, todos os recursos, não aparece para escolha), Essencial (R$ 59) e Completo (R$ 89, com API). Preços e limites ainda são hipótese (P-2) e o admin altera pelo painel | Ponto de partida para a cobrança da F3 |
+| D-47 | 2026-11-27 | A cota do agendamento online só conta pedidos que de fato são gravados; pedido recusado por horário ocupado ou limite de telefone não consome | A profissional não perde cota por tentativas inválidas |
 
 ## 9. Perguntas em aberto
 
@@ -215,6 +220,7 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] P-1: oferecer créditos de WhatsApp inclusos nos planos no futuro? (hoje a profissional paga a Meta, D-33)
 - [ ] P-2: preço final dos planos (hipótese: R$ 59 a R$ 89/mês) e limite de lembretes por plano
 - [ ] P-4: quem valida o modelo de cada profissão (uma profissional de psicologia, fonoaudiologia, nutrição, odontologia e medicina), e as exigências de prontuário de cada conselho (CFP, CFFa, CFN, CFO, CFM)
+- [ ] Mensagem clara quando a profissional tenta gravar em somente leitura (hoje aparece "Não foi possível salvar"; o aviso no topo explica o motivo)
 - [ ] P-3: por quanto tempo guardar os dados de quem cancela, antes de excluir (definir nos termos, com o advogado)
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)
 - [ ] Quem são as 3 a 5 profissionais beta do dia 10

@@ -6,6 +6,34 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 8 · 2026-11-27 · F1: fundação da plataforma
+
+**Adicionado**
+- Painel da plataforma em `/admin`, com login em duas etapas obrigatório (app autenticador). Quem não é da equipe recebe "página não encontrada" (RF-21, D-43, D-44)
+- Clientes: lista com busca e filtros por situação e plano, detalhe com conta, assinatura e uso só em números, e ações de estender teste, trocar plano, suspender e reativar, todas com motivo e histórico (RF-22, D-45)
+- Planos e recursos: Teste grátis, Essencial e Completo, com recursos e limites editáveis, e exceções por cliente (RF-23, D-46)
+- Recursos e cotas conferidos no banco; o agendamento online respeita o plano e só conta pedidos gravados (RF-27, D-47)
+- Modo somente leitura: teste vencido, atraso de mais de 7 dias, conta suspensa ou cancelada impedem gravar; consultar e exportar continuam (RF-29)
+- Aviso no topo do app quando o teste está acabando ou a conta está em somente leitura; agendamento online aparece como "não incluído no seu plano" quando for o caso
+- Comando `npm run admin:conceder` para dar ou tirar acesso ao painel
+- 16 testes novos de banco (64 no total), provando que o admin não lê pacientes nem prontuário, mesmo com as duas etapas
+
+**Alterado**
+- Plano e data do teste saíram do cadastro do consultório e passaram para a assinatura; os consultórios existentes foram migrados
+
+**Corrigido**
+- Gatilho de data de alteração quebrava ao editar planos e assinaturas (coluna com nome diferente), encontrado pelos testes antes do commit
+
+**Pendências**
+- A marcação automática de atraso vem com a cobrança (F3); por isso o RF-29 segue em andamento
+- Quem tenta gravar em somente leitura vê só "Não foi possível salvar" (o aviso no topo explica)
+- Cada rodada de testes deixa consultórios e planos de teste no banco local (`npm run db:reset` limpa)
+- No teste no navegador, um consultório de teste foi suspenso por engano e reativado; ficou um paciente de teste "Não deve gravar" na conta local "Alanna Viana"
+
+**Verificação:** lint, typecheck e build passam, assim como os 31 testes de regras e os 64 de banco; `supabase db lint` sem erros. Painel testado no navegador: duas etapas com código errado e certo, lista, detalhe sem dados de pacientes, ação sem motivo recusada, suspensão com o lado da profissional em somente leitura (aviso, gravação bloqueada, exportação liberada) e reativação.
+
+**Próxima sessão:** F2, personalização por profissão: modelos com versão para psicologia, fonoaudiologia, nutrição, odontologia e medicina, novos tipos de campo, ajustes da profissional e edição dos modelos no painel (RF-41 a RF-48).
+
 ### Sessão 7 · 2026-11-26 · Replanejamento: plataforma SaaS
 
 **Alterado**
