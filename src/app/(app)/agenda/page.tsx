@@ -155,6 +155,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
             status: "agendado",
             obs: "",
             pacoteId: "",
+            tipo: "",
           }}
         />
       </Sheet>

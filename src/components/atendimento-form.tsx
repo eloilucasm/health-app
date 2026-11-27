@@ -6,6 +6,7 @@ import { LOCAIS } from "@/domain/horarios";
 import { emAndamento, pacoteAtivo, usoDoPacote, type Pacote } from "@/domain/pacotes";
 import { excluirAtendimento, salvarAtendimento } from "@/lib/agenda-actions";
 import { BotaoConfirmar } from "./botao-confirmar";
+import { useProfissao } from "./profissao-context";
 import { useFecharFolha } from "./sheet";
 
 export type OpcaoPaciente = { id: string; nome: string };
@@ -21,7 +22,12 @@ export function AtendimentoForm({
   pacientes: OpcaoPaciente[];
   pacotes: Pacote[];
 }) {
-  const [dados, setDados] = useState(inicial);
+  const { recursos, tiposAtendimento } = useProfissao();
+  const [dados, setDados] = useState(() => ({ ...inicial, tipo: inicial.tipo || tiposAtendimento[0]?.nome || "" }));
+  // O tipo atual continua na lista mesmo que a profissional tenha mudado os tipos depois.
+  const tipos = dados.tipo && !tiposAtendimento.some((t) => t.nome === dados.tipo)
+    ? [...tiposAtendimento, { nome: dados.tipo, duracao_min: 0 }]
+    : tiposAtendimento;
   const [erro, setErro] = useState("");
   const [salvando, iniciar] = useTransition();
   const fechar = useFecharFolha();
@@ -75,7 +81,18 @@ export function AtendimentoForm({
           <input className="input" {...campo("descricao")} maxLength={120} placeholder="Ex.: Avaliação" />
         </label>
       )}
-      {opcoesDePacote.length > 0 && (
+      <label className="field">
+        <span className="label">Tipo de atendimento</span>
+        <select className="input" {...campo("tipo")}>
+          {tipos.map((t) => (
+            <option key={t.nome} value={t.nome}>
+              {t.nome}
+              {t.duracao_min ? ` · ${t.duracao_min} min` : ""}
+            </option>
+          ))}
+        </select>
+      </label>
+      {recursos.pacotes && opcoesDePacote.length > 0 && (
         <label className="field">
           <span className="label">Pacote</span>
           <select className="input" {...campo("pacoteId")}>

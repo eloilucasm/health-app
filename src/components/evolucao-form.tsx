@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
-import { corDaEscala, type Campo, type Conteudo, type Esquema } from "@/domain/evolucao";
+import { calcular, corDaEscala, formatarValor, type Campo, type Conteudo, type Esquema } from "@/domain/evolucao";
 import { anularEvolucao, salvarEvolucao } from "@/lib/evolucao-actions";
+import { useProfissao } from "./profissao-context";
 
 type Valor = string | number | string[] | undefined;
 
@@ -32,6 +33,7 @@ export function EvolucaoForm({
   const [anulando, setAnulando] = useState(false);
   const [salvando, iniciar] = useTransition();
   const router = useRouter();
+  const { termos } = useProfissao();
   const voltar = () => router.push(`/pacientes/${pacienteId}`);
 
   const mudar = (chave: string, valor: Valor) => {
@@ -112,6 +114,41 @@ export function EvolucaoForm({
       );
     }
 
+    if (c.type === "section") {
+      return (
+        <h2 key={c.key} className="section">
+          {c.label}
+        </h2>
+      );
+    }
+
+    if (c.type === "computed") {
+      // Mostra o cálculo ao vivo; o servidor refaz a conta ao salvar.
+      const resultado = calcular(c, conteudo);
+      return (
+        <div key={c.key} className="field">
+          <span className="label">{c.label}</span>
+          <output className="input computed">{resultado === undefined ? "—" : formatarValor(c, resultado)}</output>
+        </div>
+      );
+    }
+
+    if (c.type === "select") {
+      return (
+        <label key={c.key} className="field">
+          <span className="label">{c.label}</span>
+          <select className="input" value={typeof valor === "string" ? valor : ""} onChange={(e) => mudar(c.key, e.target.value || undefined)}>
+            <option value="">Não informado</option>
+            {(c.options ?? []).map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        </label>
+      );
+    }
+
     const comum = {
       className: "input",
       value: typeof valor === "string" || typeof valor === "number" ? valor : "",
@@ -120,11 +157,17 @@ export function EvolucaoForm({
     };
     return (
       <label key={c.key} className="field">
-        <span className="label">{c.label}</span>
+        <span className="label">
+          {c.label}
+          {c.unit && <span className="muted"> ({c.unit})</span>}
+        </span>
         {c.type === "textarea" ? (
           <textarea {...comum} rows={3} maxLength={5000} />
+        ) : c.type === "number" ? (
+          // Texto com teclado decimal: o campo numérico do navegador recusa a vírgula.
+          <input {...comum} type="text" inputMode="decimal" pattern="[0-9]+([,.][0-9]+)?" autoComplete="off" />
         ) : (
-          <input {...comum} type={c.type === "number" ? "number" : c.type === "date" ? "date" : "text"} />
+          <input {...comum} type={c.type === "date" ? "date" : "text"} />
         )}
       </label>
     );
@@ -133,7 +176,7 @@ export function EvolucaoForm({
   return (
     <form onSubmit={enviar} className="stack form-sheet">
       <label className="field">
-        <span className="label">Data da sessão</span>
+        <span className="label">Data da {termos.atendimento}</span>
         <input className="input" type="date" value={data} onChange={(e) => setData(e.target.value)} required />
       </label>
       {esquema.fields.map(campo)}
@@ -146,7 +189,7 @@ export function EvolucaoForm({
         </p>
       )}
       <button type="submit" className="btn" disabled={salvando}>
-        {salvando ? "Salvando…" : marcaRealizado ? "Salvar e marcar como realizado" : "Salvar evolução"}
+        {salvando ? "Salvando…" : marcaRealizado ? "Salvar e marcar como realizado" : "Salvar"}
       </button>
 
       {registro &&
@@ -179,7 +222,7 @@ export function EvolucaoForm({
           </>
         ) : (
           <button type="button" className="btn danger" onClick={() => setAnulando(true)}>
-            Anular esta evolução
+            Anular este registro
           </button>
         ))}
     </form>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import { PACIENTE_VAZIO, type DadosPaciente } from "@/domain/pacientes";
 import { arquivarPaciente, salvarPaciente } from "@/lib/pacientes-actions";
+import { useProfissao } from "./profissao-context";
 import { BotaoConfirmar } from "./botao-confirmar";
 import { useFecharFolha } from "./sheet";
 
@@ -21,8 +22,10 @@ export function PacienteForm({
   const [salvando, iniciar] = useTransition();
   const fechar = useFecharFolha();
   const router = useRouter();
+  const { paciente: modelo } = useProfissao();
+  const mudarExtra = (chave: string, valor: string) => setDados((d) => ({ ...d, extra: { ...d.extra, [chave]: valor } }));
 
-  const campo = (nome: keyof DadosPaciente) => ({
+  const campo = (nome: Exclude<keyof DadosPaciente, "extra">) => ({
     value: dados[nome],
     onChange: (e: { target: { value: string } }) => setDados((d) => ({ ...d, [nome]: e.target.value })),
   });
@@ -62,14 +65,37 @@ export function PacienteForm({
           ))}
         </datalist>
       </label>
-      <label className="field">
-        <span className="label">Diagnóstico de encaminhamento</span>
-        <textarea className="input" rows={2} {...campo("diagnostico")} maxLength={1000} />
-      </label>
-      <label className="field">
-        <span className="label">Quem encaminhou</span>
-        <input className="input" {...campo("medico")} maxLength={160} />
-      </label>
+      {(modelo.base.diagnostico || dados.diagnostico) && (
+        <label className="field">
+          <span className="label">{modelo.base.diagnostico || "Diagnóstico de encaminhamento"}</span>
+          <textarea className="input" rows={2} {...campo("diagnostico")} maxLength={1000} />
+        </label>
+      )}
+      {(modelo.base.medico || dados.medico) && (
+        <label className="field">
+          <span className="label">{modelo.base.medico || "Quem encaminhou"}</span>
+          <input className="input" {...campo("medico")} maxLength={160} />
+        </label>
+      )}
+      {modelo.fields.map((c) => (
+        <label key={c.key} className="field">
+          <span className="label">{c.label}</span>
+          {c.type === "select" ? (
+            <select className="input" value={dados.extra[c.key] ?? ""} onChange={(e) => mudarExtra(c.key, e.target.value)}>
+              <option value="">Não informado</option>
+              {(c.options ?? []).map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
+          ) : c.type === "textarea" ? (
+            <textarea className="input" rows={2} value={dados.extra[c.key] ?? ""} onChange={(e) => mudarExtra(c.key, e.target.value)} maxLength={2000} />
+          ) : (
+            <input className="input" value={dados.extra[c.key] ?? ""} onChange={(e) => mudarExtra(c.key, e.target.value)} placeholder={c.placeholder} maxLength={200} />
+          )}
+        </label>
+      ))}
       <label className="field">
         <span className="label">Observações</span>
         <textarea className="input" rows={3} {...campo("obs")} maxLength={2000} />

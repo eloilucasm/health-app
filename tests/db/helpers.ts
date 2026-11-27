@@ -104,12 +104,12 @@ export async function createPlatformAdmin(papel: "admin" | "suporte") {
 }
 
 /** Cria a organização da pessoa via RPC, como o onboarding fará. */
-export async function createOrg(client: SupabaseClient, nome: string) {
+export async function createOrg(client: SupabaseClient, nome: string, especialidade = "fisioterapia") {
   const slug = `${nome.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Math.random().toString(36).slice(2, 8)}`;
   const { data, error } = await client.rpc("criar_organizacao", {
     p_nome: nome,
     p_slug: slug,
-    p_especialidade: "fisioterapia",
+    p_especialidade: especialidade,
   });
   if (error) throw new Error(`Falha ao criar organização: ${error.message}`);
   return data as string;

@@ -1,24 +1,27 @@
 import type { Metadata } from "next";
 import { ConsultorioForm } from "@/components/consultorio-form";
 import { AjustesOnlineForm } from "@/components/ajustes-online";
+import { AjustesProfissaoForm } from "@/components/ajustes-profissao";
 import { ImportarBackup } from "@/components/importar-backup";
 import { Sheet } from "@/components/sheet";
 import { requireUser } from "@/lib/auth";
 import { carregarAjustesOnline } from "@/lib/agendamento-online";
 import { temRecurso } from "@/lib/assinatura";
 import { carregarConsultorio, listarEspecialidades } from "@/lib/consultorio";
+import { carregarAjustesProfissao } from "@/lib/profissao";
 import { siteUrl } from "@/lib/supabase/env";
 
 export const metadata: Metadata = { title: "Ajustes" };
 
 export default async function ConfigPage({ searchParams }: PageProps<"/config">) {
-  const [user, { dados }, especialidades, { aviso }, online, comAgendamentoOnline] = await Promise.all([
+  const [user, { dados }, especialidades, { aviso }, online, comAgendamentoOnline, ajustesProfissao] = await Promise.all([
     requireUser(),
     carregarConsultorio(),
     listarEspecialidades(),
     searchParams,
     carregarAjustesOnline(),
     temRecurso("agendamento_online"),
+    carregarAjustesProfissao(),
   ]);
 
   return (
@@ -30,6 +33,9 @@ export default async function ConfigPage({ searchParams }: PageProps<"/config">)
         </p>
       )}
       <ConsultorioForm modo="editar" inicial={dados} especialidades={especialidades} />
+
+      <h2 className="section">Sua profissão</h2>
+      <AjustesProfissaoForm inicial={ajustesProfissao} />
 
       <h2 className="section">Agendamento online</h2>
       {comAgendamentoOnline ? (

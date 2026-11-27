@@ -25,6 +25,8 @@ export type Atendimento = {
   status: Status;
   obs: string;
   pacoteId: string;
+  /** Tipo de atendimento da profissão (ex.: Avaliação, Retorno). */
+  tipo: string;
   origem: string;
   /** Telefone deixado no agendamento online. */
   contato: string;
@@ -32,7 +34,7 @@ export type Atendimento = {
 
 export type DadosAtendimento = Pick<
   Atendimento,
-  "pacienteId" | "descricao" | "data" | "hora" | "local" | "status" | "obs" | "pacoteId"
+  "pacienteId" | "descricao" | "data" | "hora" | "local" | "status" | "obs" | "pacoteId" | "tipo"
 >;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -52,6 +54,7 @@ export function lerAtendimento(bruto: unknown): { dados: DadosAtendimento; erro:
     status: statusValido(b.status) ? b.status : "agendado",
     obs: texto(b.obs, 500),
     pacoteId: pacienteId && uuidValido(b.pacoteId) ? b.pacoteId : "",
+    tipo: texto(b.tipo, 60),
   };
   let erro: string | null = null;
   if (!dados.pacienteId && !dados.descricao) erro = "Escolha um paciente ou descreva o atendimento.";

@@ -41,11 +41,13 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - Painel da plataforma em `src/app/admin/`: `(painel)/` exige `requireAdmin()` (`src/lib/admin.ts`: equipe + duas etapas); `verificar/` cadastra e confere o app autenticador. Dados só pelas funções `admin_*` do banco; ações em `src/lib/admin-actions.ts`. Acesso: `npm run admin:conceder -- <e-mail> admin|suporte|remover`.
 - Assinatura da profissional: `carregarAssinatura()` e `temRecurso()` em `src/lib/assinatura.ts` (função `minha_assinatura` do banco); regras de situação e avisos em `src/domain/assinatura.ts`.
 - No banco: `private.situacao`, `pode_escrever` (somente leitura nas políticas de escrita), `tem_recurso`, `limite_do_recurso` e `consumir_cota`. Recurso novo: cadastrar em `recursos` e nos planos, e conferir dentro da função do banco que o usa.
+- Profissão (D-41): `carregarProfissao()` em `src/lib/profissao.ts` junta o modelo (`specialty_profiles`) com os ajustes do consultório; no navegador, `useProfissao()` (`src/components/profissao-context.tsx`). Nenhum texto fixo de fisioterapia nas telas: use `termos` (sessão/consulta, evolução/registro…), `recursos.pacotes`, `tiposAtendimento` e `paciente` (campos extras em `patients.dados_extra`). Regras e validação em `src/domain/profissao.ts`; tipos de campo em `src/domain/evolucao.ts`.
+- Modelos têm versão: o admin salva por `admin_salvar_profissao` (gera linha em `specialty_profile_versions`); registros guardam `schema_version` e são exibidos com `carregarVersoesDoRegistro()`. Não renomear chaves de campos em uso.
 - `supabase/migrations/`: esquema, RLS e dados de referência. Nunca editar migração já aplicada em produção: criar uma nova.
 - `tests/db/`: testes de isolamento (RLS) contra o Supabase local. Para testar o painel, `createPlatformAdmin()` (em `tests/db/helpers.ts`) cria alguém da equipe já com as duas etapas.
 
 ## Comandos
-- `npm run dev`: app em http://localhost:3000. Se o CSS alterado por script não aparecer, salve `globals.css` de novo (o observador não percebe).
+- `npm run dev`: app em http://localhost:3000. Se o CSS alterado por script não aparecer, salve `globals.css` de novo (o observador não percebe). Se uma ação do servidor recém-criada falhar com "reading 'apply'", reinicie o `npm run dev` (o processo antigo do Node pode continuar vivo na porta 3000).
 - `npm run db:start` / `db:stop` / `db:reset`: Supabase local (precisa do Docker Desktop aberto). E-mails de login caem no Mailpit: http://127.0.0.1:54324
 - `npm run check`: lint + typecheck + testes unitários
 - `npm run test:db`: testes de RLS (com o Supabase local ligado). Obrigatório antes de fechar sessão que mexa no banco.

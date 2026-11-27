@@ -13,9 +13,11 @@ import { carregarConsultorio } from "@/lib/consultorio";
 import { carregarTotais } from "@/lib/financeiro";
 import { listarPacientes } from "@/lib/pacientes";
 import { listarPacotes } from "@/lib/pacotes";
+import { capitalizar } from "@/domain/profissao";
+import { carregarProfissao } from "@/lib/profissao";
 
 export default async function Hoje() {
-  const { dados: consultorio } = await carregarConsultorio();
+  const [{ dados: consultorio }, profissao] = await Promise.all([carregarConsultorio(), carregarProfissao()]);
   const agora = noFuso(new Date(), consultorio.fuso);
   const hoje = agora.data;
   const hora = Number(agora.hora.slice(0, 2));
@@ -65,7 +67,7 @@ export default async function Hoje() {
         <div className="list">{atendimentos.filter((a) => a.data === proximoDia).map((a) => linha(a, true))}</div>
       )}
 
-      {pacotesAcabando.length > 0 && (
+      {profissao.recursos.pacotes && pacotesAcabando.length > 0 && (
         <>
           <h2 className="section">Pacotes acabando</h2>
           <div className="list">
@@ -132,8 +134,8 @@ export default async function Hoje() {
         </div>
         {[
           ["Atendimentos na semana", numeros.atendimentosNaSemana, `${numeros.realizadosNaSemana} realizado${numeros.realizadosNaSemana === 1 ? "" : "s"}`],
-          ["Sessões no mês", numeros.sessoesNoMes, "realizadas"],
-          ["Faltas no mês", numeros.faltasNoMes, `${numeros.taxaDeFaltas}% das sessões`],
+          [`${capitalizar(profissao.termos.atendimentos)} no mês`, numeros.sessoesNoMes, "realizadas"],
+          ["Faltas no mês", numeros.faltasNoMes, `${numeros.taxaDeFaltas}% das ${profissao.termos.atendimentos}`],
           ["Pacientes ativos", numeros.pacientesAtivos, "atendidos ou agendados em 45 dias"],
         ].map(([rotulo, valor, nota]) => (
           <div key={rotulo} className="kpi">
@@ -162,6 +164,7 @@ export default async function Hoje() {
             status: "agendado",
             obs: "",
             pacoteId: "",
+            tipo: "",
           }}
         />
       </Sheet>

@@ -11,6 +11,7 @@ import { mudarStatus } from "@/lib/agenda-actions";
 import { AtendimentoForm, type OpcaoPaciente } from "./atendimento-form";
 import { LancamentoForm } from "./lancamento-form";
 import { PontosSessoes } from "./pontos-sessoes";
+import { useProfissao } from "./profissao-context";
 import { Sheet } from "./sheet";
 
 /** Linha da agenda. Tocar abre a folha com status e edição. */
@@ -31,6 +32,7 @@ export function AtendimentoItem({
   const uso = pacote && usoDoPacote(pacote);
   const detalhes = [
     mostrarData ? diaMes(a.data) : null,
+    a.tipo || null,
     a.origem === "online" ? "Online" : null,
     a.local !== "consultorio" ? LOCAIS[a.local] : null,
     uso ? `Pacote ${uso.usadas}/${uso.total}` : null,
@@ -71,6 +73,7 @@ function Detalhe({
   linkFicha: boolean;
 }) {
   const [modo, setModo] = useState<"detalhe" | "editar" | "receber">("detalhe");
+  const { termos, recursos } = useProfissao();
   const [erro, setErro] = useState("");
   const [mudando, iniciar] = useTransition();
 
@@ -138,7 +141,7 @@ function Detalhe({
           )}
         </div>
       )}
-      {pacote && (
+      {recursos.pacotes && pacote && (
         <div className="pack">
           <span className="ph">
             <b>Pacote</b>
@@ -151,7 +154,7 @@ function Detalhe({
       )}
       {ativo && (
         <Link className="btn" href={`/pacientes/${a.pacienteId}/evolucao?atendimento=${a.id}`}>
-          Evolução desta sessão
+          {termos.registro_do_atendimento}
         </Link>
       )}
       {linkFicha && ativo && (

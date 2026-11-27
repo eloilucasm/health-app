@@ -1,10 +1,12 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { ProfissaoProvider } from "@/components/profissao-context";
 import { TabBar } from "@/components/tab-bar";
 import { avisoDaAssinatura } from "@/domain/assinatura";
 import { noFuso } from "@/domain/datas";
 import { carregarAssinatura } from "@/lib/assinatura";
 import { carregarConsultorio, listarEspecialidades } from "@/lib/consultorio";
+import { carregarProfissao } from "@/lib/profissao";
 
 /** Moldura do app: cabeçalho fixo, conteúdo e barra de abas, na cor escolhida. */
 export default async function AppLayout({ children }: LayoutProps<"/">) {
@@ -13,10 +15,19 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
     listarEspecialidades(),
     carregarAssinatura(),
   ]);
+  const profissao = await carregarProfissao();
   const aviso = avisoDaAssinatura(assinatura.situacao, assinatura.trialAte, noFuso(new Date(), dados.fuso).data);
   const especialidade = especialidades.find((e) => e.id === dados.especialidade)?.nome ?? "";
 
   return (
+    <ProfissaoProvider
+      valor={{
+        termos: profissao.termos,
+        recursos: profissao.recursos,
+        tiposAtendimento: profissao.tiposAtendimento,
+        paciente: profissao.paciente,
+      }}
+    >
     <div className="themed" style={{ "--brand": dados.cor } as CSSProperties}>
       <div className="app with-tabs">
         <header className="top">
@@ -42,7 +53,8 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
         )}
         <main>{children}</main>
       </div>
-      <TabBar />
+      <TabBar pacotes={profissao.recursos.pacotes} />
     </div>
+    </ProfissaoProvider>
   );
 }

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { uuidValido } from "@/domain/agenda";
+import { validarModelo } from "@/domain/profissao";
 import { requireAdmin } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -103,5 +104,17 @@ export async function salvarPlano(p: DadosPlano): Promise<ResultadoAdmin> {
       })),
     },
     "/admin/planos",
+  );
+}
+
+/** Novo modelo da profissão (gera versão). Validado aqui e conferido de novo no banco. */
+export async function salvarProfissao(id: string, modelo: unknown, motivo: string): Promise<ResultadoAdmin> {
+  if (!/^[a-z_]{2,40}$/.test(String(id))) return { erro: "Profissão inválida." };
+  const erro = validarModelo(modelo);
+  if (erro) return { erro };
+  return executar(
+    "admin_salvar_profissao",
+    { p_id: id, p_modelo: modelo, p_motivo: texto(motivo, 300) },
+    `/admin/profissoes/${id}`,
   );
 }

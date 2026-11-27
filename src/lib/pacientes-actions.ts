@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { uuidValido } from "@/domain/agenda";
 import { lerPaciente } from "@/domain/pacientes";
+import { lerDadosExtra } from "@/domain/profissao";
 import { requireMembership } from "@/lib/consultorio";
+import { carregarProfissao } from "@/lib/profissao";
 import { createClient } from "@/lib/supabase/server";
 
 export type ResultadoPaciente = { erro: string } | { id: string };
@@ -16,6 +18,9 @@ export async function salvarPaciente(id: string | null, bruto: unknown): Promise
   const { dados, erro } = lerPaciente(bruto);
   if (erro) return { erro };
   if (id !== null && !uuidValido(id)) return { erro: FALHA };
+  const profissao = await carregarProfissao();
+  const extra = lerDadosExtra(profissao.paciente.fields, (bruto as { extra?: unknown } | null)?.extra);
+  if (extra.erro) return { erro: extra.erro };
 
   const valores = {
     nome: dados.nome,
@@ -25,6 +30,7 @@ export async function salvarPaciente(id: string | null, bruto: unknown): Promise
     diagnostico: dados.diagnostico || null,
     medico_encaminhador: dados.medico || null,
     obs: dados.obs || null,
+    dados_extra: extra.dados,
   };
 
   const supabase = await createClient();

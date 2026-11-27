@@ -6,9 +6,11 @@ import { noFuso } from "@/domain/datas";
 import { listarAtendimentos } from "@/lib/agenda";
 import { carregarConsultorio } from "@/lib/consultorio";
 import { carregarFormulario, listarEvolucoes } from "@/lib/evolucao";
+import { capitalizar } from "@/domain/profissao";
+import { carregarProfissao } from "@/lib/profissao";
 import { buscarPaciente } from "@/lib/pacientes";
 
-export const metadata: Metadata = { title: "Evolução" };
+export const metadata: Metadata = { title: "Registro do atendimento" };
 
 /** ?registro=<grupo> edita; ?atendimento=<id> registra (ou abre a já existente) daquela sessão. */
 export default async function EvolucaoPage({ params, searchParams }: PageProps<"/pacientes/[id]/evolucao">) {
@@ -33,13 +35,14 @@ export default async function EvolucaoPage({ params, searchParams }: PageProps<"
   }
 
   const hoje = noFuso(new Date(), consultorio.fuso).data;
+  const { termos } = await carregarProfissao();
 
   return (
     <>
       <Link href={`/pacientes/${id}`} className="linkbtn back">
         ‹ {paciente.nome}
       </Link>
-      <h1 className="title">{registro ? "Evolução da sessão" : "Nova evolução"}</h1>
+      <h1 className="title">{registro ? capitalizar(termos.registro) : termos.novo_registro}</h1>
       <EvolucaoForm
         key={registro?.id ?? atendimento?.id ?? "nova"}
         esquema={esquema}

@@ -18,6 +18,7 @@ export default async function PainelLayout({ children }: LayoutProps<"/admin">) 
         <nav aria-label="Painel">
           <Link href="/admin/clientes">Clientes</Link>
           <Link href="/admin/planos">Planos</Link>
+          <Link href="/admin/profissoes">Profissões</Link>
         </nav>
         <span className="muted small">
           {email} · {papel === "admin" ? "admin" : "suporte"}

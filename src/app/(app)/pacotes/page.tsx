@@ -7,10 +7,22 @@ import { emAndamento } from "@/domain/pacotes";
 import { carregarConsultorio } from "@/lib/consultorio";
 import { listarPacientes } from "@/lib/pacientes";
 import { listarPacotes } from "@/lib/pacotes";
+import { carregarProfissao } from "@/lib/profissao";
 
 export const metadata: Metadata = { title: "Pacotes" };
 
 export default async function PacotesPage() {
+  if (!(await carregarProfissao()).recursos.pacotes) {
+    return (
+      <>
+        <h1 className="title">Pacotes de sessões</h1>
+        <div className="empty">
+          <b>Pacotes desligados</b>
+          Ligue em Ajustes, na parte “Sua profissão”, se quiser usar pacotes de sessões.
+        </div>
+      </>
+    );
+  }
   const [{ dados: consultorio }, pacientes, pacotes] = await Promise.all([
     carregarConsultorio(),
     listarPacientes(),

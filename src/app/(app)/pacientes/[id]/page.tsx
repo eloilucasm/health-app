@@ -13,9 +13,11 @@ import { linkWhatsApp } from "@/domain/pacientes";
 import { pacoteAtivo } from "@/domain/pacotes";
 import { listarAtendimentos } from "@/lib/agenda";
 import { carregarConsultorio } from "@/lib/consultorio";
-import { carregarFormulario, listarEvolucoes } from "@/lib/evolucao";
+import { listarEvolucoes } from "@/lib/evolucao";
 import { buscarPaciente, listarPacientes } from "@/lib/pacientes";
 import { listarPacotes } from "@/lib/pacotes";
+import { capitalizar } from "@/domain/profissao";
+import { carregarProfissao, carregarVersoesDoRegistro } from "@/lib/profissao";
 
 // Título genérico de propósito: nome de paciente não vai para o histórico do navegador.
 export const metadata: Metadata = { title: "Ficha do paciente" };
@@ -25,13 +27,14 @@ export default async function FichaPage({ params }: PageProps<"/pacientes/[id]">
   const paciente = await buscarPaciente(id);
   if (!paciente) notFound();
 
-  const [{ dados: consultorio }, atendimentos, todos, pacotes, evolucoes, { esquema }] = await Promise.all([
+  const [{ dados: consultorio }, atendimentos, todos, pacotes, evolucoes, profissao, versoes] = await Promise.all([
     carregarConsultorio(),
     listarAtendimentos({ pacienteId: id }),
     listarPacientes(),
     listarPacotes(id),
     listarEvolucoes(id),
-    carregarFormulario(),
+    carregarProfissao(),
+    carregarVersoesDoRegistro(),
   ]);
 
   const agora = noFuso(new Date(), consultorio.fuso);
@@ -47,8 +50,9 @@ export default async function FichaPage({ params }: PageProps<"/pacientes/[id]">
   const informacoes = [
     ["Telefone", paciente.telefone || "Não informado"],
     ["Convênio", paciente.convenio || "Não informado"],
-    ["Diagnóstico de encaminhamento", paciente.diagnostico || "Não informado"],
-    ["Encaminhado por", paciente.medico],
+    [profissao.paciente.base.diagnostico ?? "Diagnóstico de encaminhamento", paciente.diagnostico],
+    [profissao.paciente.base.medico ?? "Encaminhado por", paciente.medico],
+    ...profissao.paciente.fields.map((c) => [c.label, paciente.extra[c.key] ?? ""]),
     ["Nascimento", paciente.nascimento && dataCurta(paciente.nascimento)],
     ["Observações", paciente.obs],
     ["Histórico", `${realizadas} realizada${realizadas === 1 ? "" : "s"} · ${faltas} falta${faltas === 1 ? "" : "s"}`],
@@ -92,21 +96,25 @@ export default async function FichaPage({ params }: PageProps<"/pacientes/[id]">
         <div className="empty">Nenhum atendimento futuro.</div>
       )}
 
-      <h2 className="section">Pacotes</h2>
-      <div className="list">
-        {pacotes.map((p) => (
-          <PacoteCartao key={p.id} pacote={p} pacientes={opcoes} hoje={hoje} />
-        ))}
-        <Sheet titulo="Novo pacote" gatilho="Novo pacote">
-          <PacoteForm pacientes={opcoes} pacienteId={id} hoje={hoje} />
-        </Sheet>
-      </div>
+      {profissao.recursos.pacotes && (
+        <>
+          <h2 className="section">Pacotes</h2>
+          <div className="list">
+            {pacotes.map((p) => (
+              <PacoteCartao key={p.id} pacote={p} pacientes={opcoes} hoje={hoje} />
+            ))}
+            <Sheet titulo="Novo pacote" gatilho="Novo pacote">
+              <PacoteForm pacientes={opcoes} pacienteId={id} hoje={hoje} />
+            </Sheet>
+          </div>
+        </>
+      )}
 
-      <h2 className="section">Evolução</h2>
+      <h2 className="section">{capitalizar(profissao.termos.registros)}</h2>
       <Link className="btn ghost new-evo" href={`/pacientes/${id}/evolucao`}>
-        Nova evolução
+        {profissao.termos.novo_registro}
       </Link>
-      <Evolucoes esquema={esquema} evolucoes={evolucoes} />
+      <Evolucoes esquema={profissao.evolucao} versoes={versoes} evolucoes={evolucoes} vazio={profissao.termos.sem_registros} />
 
       {passados.length > 0 && (
         <>
@@ -132,6 +140,7 @@ export default async function FichaPage({ params }: PageProps<"/pacientes/[id]">
             status: "agendado",
             obs: "",
             pacoteId: pacoteAtivo(pacotes, paciente.id)?.id ?? "",
+            tipo: "",
           }}
         />
       </Sheet>

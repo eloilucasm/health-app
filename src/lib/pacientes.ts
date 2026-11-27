@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export type Paciente = DadosPaciente & { id: string };
 
-const COLUNAS = "id, nome, telefone, nascimento, convenio, diagnostico, medico_encaminhador, obs";
+const COLUNAS = "id, nome, telefone, nascimento, convenio, diagnostico, medico_encaminhador, obs, dados_extra";
 
 type Linha = {
   id: string;
@@ -17,6 +17,7 @@ type Linha = {
   diagnostico: string | null;
   medico_encaminhador: string | null;
   obs: string | null;
+  dados_extra: Record<string, string> | null;
 };
 
 const paraPaciente = (p: Linha): Paciente => ({
@@ -28,6 +29,7 @@ const paraPaciente = (p: Linha): Paciente => ({
   diagnostico: p.diagnostico ?? "",
   medico: p.medico_encaminhador ?? "",
   obs: p.obs ?? "",
+  extra: p.dados_extra ?? {},
 });
 
 /** Pacientes não arquivados, em ordem alfabética. */

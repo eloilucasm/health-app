@@ -1730,3 +1730,25 @@ input[type="file"].input {
 .inline .btn {
   white-space: nowrap;
 }
+
+/* ---- Personalização por profissão (Fase 2) ---- */
+.computed {
+  display: block;
+  background: var(--surface-2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.period.tipo {
+  grid-template-columns: 1fr 96px 36px;
+}
+.period.tipo .remove {
+  grid-column: 3;
+}
+.json {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 420px;
+  white-space: pre;
+}
+

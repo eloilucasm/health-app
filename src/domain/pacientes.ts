@@ -8,6 +8,8 @@ export type DadosPaciente = {
   diagnostico: string;
   medico: string;
   obs: string;
+  /** Campos extras da profissão (patients.dados_extra). */
+  extra: Record<string, string>;
 };
 
 export const PACIENTE_VAZIO: DadosPaciente = {
@@ -18,6 +20,7 @@ export const PACIENTE_VAZIO: DadosPaciente = {
   diagnostico: "",
   medico: "",
   obs: "",
+  extra: {},
 };
 
 const texto = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -32,6 +35,7 @@ export function lerPaciente(bruto: unknown): { dados: DadosPaciente; erro: strin
     diagnostico: texto(b.diagnostico, 1000),
     medico: texto(b.medico, 160),
     obs: texto(b.obs, 2000),
+    extra: {},
   };
   let erro: string | null = null;
   if (!dados.nome) erro = "Informe o nome.";

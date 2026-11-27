@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { lerAtendimento, statusValido, uuidValido } from "@/domain/agenda";
 import { paraInstante } from "@/domain/datas";
 import { carregarConsultorio } from "@/lib/consultorio";
+import { carregarProfissao } from "@/lib/profissao";
 import { createClient } from "@/lib/supabase/server";
 
 export type ResultadoAgenda = { erro: string } | { ok: true };
@@ -18,11 +19,15 @@ export async function salvarAtendimento(id: string | null, bruto: unknown): Prom
   if (id !== null && !uuidValido(id)) return { erro: FALHA };
 
   const inicio = paraInstante(dados.data, dados.hora, consultorio.fuso);
+  // A duração vem do tipo de atendimento escolhido; sem tipo, a duração padrão do consultório.
+  const tipo = (await carregarProfissao()).tiposAtendimento.find((t) => t.nome === dados.tipo);
+  const duracao = tipo?.duracao_min ?? consultorio.duracaoMin;
   const valores = {
     patient_id: dados.pacienteId || null,
     descricao_avulsa: dados.descricao || null,
     inicio: inicio.toISOString(),
-    fim: new Date(inicio.getTime() + consultorio.duracaoMin * 60_000).toISOString(),
+    fim: new Date(inicio.getTime() + duracao * 60_000).toISOString(),
+    tipo_atendimento: dados.tipo || null,
     local: dados.local,
     status: dados.status,
     obs: dados.obs || null,

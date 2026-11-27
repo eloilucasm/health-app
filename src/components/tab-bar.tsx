@@ -58,12 +58,13 @@ const ABAS = [
   },
 ];
 
-export function TabBar() {
+export function TabBar({ pacotes = true }: { pacotes?: boolean }) {
   const caminho = usePathname();
+  const abas = ABAS.filter((a) => pacotes || a.href !== "/pacotes");
   return (
     <nav className="tabs" aria-label="Seções">
-      <div>
-        {ABAS.map((aba) => {
+      <div style={{ gridTemplateColumns: `repeat(${abas.length}, 1fr)` }}>
+        {abas.map((aba) => {
           const ativa = aba.href === "/" ? caminho === "/" : caminho.startsWith(aba.href);
           return (
             <Link key={aba.href} href={aba.href} aria-current={ativa ? "page" : undefined}>
