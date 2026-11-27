@@ -344,11 +344,35 @@ Hoje o app fala a língua da fisioterapia (escala de dor, condutas, pacotes, "di
 
 **Fora desta etapa:** editor completo de formulários, odontograma, receita digital e troca de profissão depois do cadastro.
 
+#### 11.2.7 Receita Saúde (recibos digitais oficiais)
+
+O Receita Saúde é a plataforma da Receita Federal para profissionais de saúde emitirem recibos digitais de atendimentos particulares. A fase deixa o app pronto para isso, sem que a profissional digite tudo duas vezes.
+
+**O que ainda não está confirmado.** Na Sessão 10 não foi possível ler as fontes oficiais: a página do serviço no gov.br respondeu "não encontrada" e as buscas foram bloqueadas. Por isso, **a primeira etapa da fase é a verificação** (RF-49), em fonte oficial (gov.br, Instrução Normativa da RFB) e com o contador ou advogado (P-5):
+- norma vigente, quem é obrigado (profissões; pessoa física ou também pessoa jurídica) e desde quando;
+- dados exigidos no recibo, prazo de emissão, cancelamento e relação com o Carnê-Leão;
+- **se existe API ou web service** para software de terceiros emitir em nome da profissional, e qual autorização exige (procuração eletrônica, certificado digital, conta gov.br).
+
+**Dois caminhos, decididos pela verificação:**
+
+| Caminho | Quando | O que o app faz |
+|---|---|---|
+| **A. Integração direta** | Existe API oficial disponível | A partir do recebimento lançado no Financeiro, o app emite o recibo no Receita Saúde, guarda o número e o status, e permite cancelar quando a regra deixar. A credencial ou autorização fica no Supabase Vault (D-28), atrás de `src/lib/conectores/` (D-29), com envio pela fila (D-31) |
+| **B. Assistente de emissão** | Não há API, ou ela ainda não está aberta | Lista os recebimentos ainda sem recibo, monta os dados prontos para copiar no app da Receita (um toque por campo), registra que o recibo foi emitido e o número informado, e lembra das pendências |
+
+**Nos dois caminhos:**
+- CPF do paciente e, quando for outra pessoa, do **pagador** (ex.: responsável legal), na ficha e no lançamento de recebimento, exibidos mascarados e incluídos na exportação de dados (RF-12);
+- cada recebimento de paciente mostra a situação do recibo (pendente, emitido, cancelado, não se aplica);
+- relatório mensal dos recebimentos e recibos, útil para o Carnê-Leão;
+- recurso `receita_saude` no catálogo de planos (D-30).
+
+**O que não faremos:** automatizar o aplicativo da Receita, guardar a senha gov.br da profissional ou usar qualquer meio não oficial para emitir em nome dela (D-53).
+
 ### 11.3 Roadmap em fases semanais
 
-**Ordem de execução: Fase 1 a Fase 8** (D-38 a D-40). As fases foram renumeradas pela ordem; a equivalência com as siglas antigas está na D-40 do PRD. A antiga fase de lançamento foi distribuída: testes de fim a fim e revisão de segurança entram na publicação (F7); a abertura geral (`v1.0.0`) vem ao fim do WhatsApp (F8).
+**Ordem de execução: Fase 1 a Fase 9** (D-38 a D-40, D-52). As fases seguem a ordem; a equivalência com as siglas antigas está na D-40 do PRD, e o Receita Saúde (F8) entrou na Sessão 10, empurrando o WhatsApp para F9. A antiga fase de lançamento foi distribuída: testes de fim a fim e revisão de segurança entram na publicação (F7); a abertura geral (`v1.0.0`) vem ao fim do WhatsApp (F9).
 
-**Já, em paralelo** (não depende de publicar): uma profissional de cada área para validar os modelos (F2), conta no Asaas (sandbox para a F3), verificação do app no Google (para a F5), domínio e advogado. A verificação na Meta e a inscrição como Tech Provider (F8) levam semanas: convém começá-las antes da publicação. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
+**Já, em paralelo** (não depende de publicar): uma profissional de cada área para validar os modelos (F2), conta no Asaas (sandbox para a F3), verificação do app no Google (para a F5), domínio e advogado. A verificação na Meta e a inscrição como Tech Provider (F9) levam semanas: convém começá-las antes da publicação. A Meta e o Google costumam pedir um site no domínio com política de privacidade; uma página simples basta.
 
 | Fase | Duração | Entrega | Modelo |
 |---|---|---|---|
@@ -359,11 +383,13 @@ Hoje o app fala a língua da fisioterapia (escala de dor, condutas, pacotes, "di
 | **F5. Conectores** | 1 semana | Base (`integrations`, Vault, fila, outbox); e-mails transacionais, inclusive o aviso de pedido online para a profissional; Google Agenda; admin: Suporte | Opus |
 | **F6. API e webhooks** | 1 semana | `/api/v1`, chaves, escopos, limite de requisições, OpenAPI, webhooks assinados com registro de entrega | Opus |
 | **F7. Publicação** | 3 a 5 dias | Testes de fim a fim e revisão de segurança; Supabase de produção (São Paulo), Vercel (região `gru1`), Resend com SMTP no Supabase, domínio. **A Alanna migra e entram as primeiras betas, já com cobrança → `v0.1.0`** | Opus |
-| **F8. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, aviso de pedido online pelo WhatsApp, botão de link para quem não conectou → `v0.2.0`; depois, abertura geral → `v1.0.0` | Opus |
+| **F8. Receita Saúde** | 1 semana (depende da verificação) | Verificação em fonte oficial; CPF do paciente e do pagador; situação do recibo por recebimento; integração direta (caminho A) ou assistente de emissão (caminho B); relatório mensal para o Carnê-Leão (§11.2.7) → `v0.2.0` | Opus |
+| **F9. WhatsApp com número próprio** | 1 a 2 semanas (depende da Meta) | Embedded Signup, mensagens-modelo, consentimento, lembretes, webhook, aviso de pedido online pelo WhatsApp, botão de link para quem não conectou → `v0.3.0`; depois, abertura geral → `v1.0.0` | Opus |
 
 **Por que nessa ordem**
 - Personalização antes das assinaturas (D-40): o produto precisa servir às cinco profissões antes de ser cobrado delas, e isso pesa no preço e nos planos.
 - Plataforma antes de publicar (D-38): o app entra no ar já controlando clientes, assinaturas e integrações. O custo é a Alanna migrar mais tarde.
+- Receita Saúde depois da publicação (D-52): é obrigação legal das profissionais, mas depende de confirmar como a Receita permite integrar; o app pode ser publicado sem ela.
 - WhatsApp por último (D-39): é a fase com mais dependência externa (aprovação da Meta) e custo para a profissional; o app funciona sem ele, e o e-mail (F5) cobre os avisos até lá.
 - Planos e assinaturas antes dos conectores e da API: eles dependem de recursos e cotas.
 
@@ -383,7 +409,8 @@ Hoje o app fala a língua da fisioterapia (escala de dor, condutas, pacotes, "di
 
 | Risco | Efeito | Resposta |
 |---|---|---|
-| App Review da Meta demorar ou ser negado | Fase 8 atrasa | Pedir antes da publicação; BSP como plano B; botão de link continua |
+| Receita Saúde sem API para terceiros | Integração direta impossível | Caminho B (assistente de emissão); voltar ao caminho A se a Receita abrir a API |
+| App Review da Meta demorar ou ser negado | Fase 9 atrasa | Pedir antes da publicação; BSP como plano B; botão de link continua |
 | Verificação do Google (escopo sensível) | Agenda limitada a 100 usuárias | Pedir já; funciona em teste até lá |
 | Dados de pacientes indo para Meta e Google (transferência internacional) | Exigência da LGPD | Consentimento explícito, mínimo de dados (sem nome no Google por padrão), cláusulas nos termos e no contrato de dados; validar com o advogado |
 | Escopo cresce de novo | Lançamento nunca chega | Cada fase fecha com versão e changelog; ideia nova vai para o PRD |
