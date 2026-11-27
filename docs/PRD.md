@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 2.3 |
-| **Última atualização** | 2026-11-27 (Sessão 9) |
+| **Versão do PRD** | 2.4 |
+| **Última atualização** | 2026-11-27 (Sessão 10) |
 | **Status do produto** | Núcleo do consultório (Dias 1 a 6), F1 (fundação da plataforma) e F2 (personalização por profissão) prontos no ambiente local; próxima: F3, assinaturas e cobrança |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
@@ -48,7 +48,7 @@ O protótipo ([legacy/index.html](../legacy/index.html)) resolve isso para uma f
 
 ## 5. Requisitos funcionais (MVP)
 
-Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fase** segue o [PLANO.md](PLANO.md): números são dias do roadmap original (concluídos até o Dia 6); **F1 a F8** são as fases da plataforma, na ordem de execução (PLANO §11.3, equivalência com as siglas antigas em D-40).
+A coluna **Dia/Fase** segue o [PLANO.md](PLANO.md): números são dias do roadmap original (concluídos até o Dia 6); **F1 a F9** são as fases da plataforma, na ordem de execução (PLANO §11.3; equivalência com siglas antigas em D-40 e D-52).
 
 ### 5.1 Conta e configuração
 | ID | Requisito | Dia | Status |
@@ -74,8 +74,8 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 | ID | Requisito | Dia | Status |
 |---|---|---|---|
 | RF-13 | Página pública de agendamento online (`/{slug}`) com horários livres, consentimento LGPD e confirmação | 6 | pronto |
-| RF-14 | Lembrete por WhatsApp enviado do número da própria profissional (API oficial), 24 h antes, com botões Confirmar e Remarcar que atualizam o status (ver RF-34 a RF-37, D-32) | F8 | planejado |
-| RF-15 | Plano B do RF-14: botão "Enviar lembretes de amanhã" que abre cada conversa com a mensagem pronta | F8 | planejado |
+| RF-14 | Lembrete por WhatsApp enviado do número da própria profissional (API oficial), 24 h antes, com botões Confirmar e Remarcar que atualizam o status (ver RF-34 a RF-37, D-32) | F9 | planejado |
+| RF-15 | Plano B do RF-14: botão "Enviar lembretes de amanhã" que abre cada conversa com a mensagem pronta | F9 | planejado |
 | RF-16 | Anamnese por especialidade; evolução com versões (nada é apagado de verdade); anexos | F4 | planejado |
 | RF-17 | Documentos em PDF: atestado, declaração de comparecimento e recibo | F4 | planejado |
 | RF-18 | Trilha de auditoria de acesso a prontuários | F4 | planejado |
@@ -114,10 +114,10 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 ### 5.8 WhatsApp com o número da profissional
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-34 | Conectar o próprio número pelo Embedded Signup da Meta (plataforma como Tech Provider; intermediário oficial como plano B) | F8 | planejado |
-| RF-35 | Mensagens-modelo em português criadas e acompanhadas pela plataforma na conta de cada profissional | F8 | planejado |
-| RF-36 | Consentimento do paciente para receber mensagens, com data e origem | F8 | planejado |
-| RF-37 | Webhook do WhatsApp: Confirmar e Remarcar pelo botão, status de entrega e aviso de pedido online | F8 | planejado |
+| RF-34 | Conectar o próprio número pelo Embedded Signup da Meta (plataforma como Tech Provider; intermediário oficial como plano B) | F9 | planejado |
+| RF-35 | Mensagens-modelo em português criadas e acompanhadas pela plataforma na conta de cada profissional | F9 | planejado |
+| RF-36 | Consentimento do paciente para receber mensagens, com data e origem | F9 | planejado |
+| RF-37 | Webhook do WhatsApp: Confirmar e Remarcar pelo botão, status de entrega e aviso de pedido online | F9 | planejado |
 
 ### 5.9 API e webhooks
 | ID | Requisito | Fase | Status |
@@ -137,6 +137,16 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 | RF-46 | Ajustes da profissional: listas de condutas, procedimentos e tipos de atendimento, e recursos ligados ou desligados | F2 | pronto |
 | RF-47 | Painel administrativo: editar os modelos de profissão com versão; registros antigos continuam legíveis | F2 | pronto |
 | RF-48 | Tela Hoje e indicadores respeitam os recursos da profissão (ex.: sem escala de dor nem pacotes onde não existem) | F2 | pronto |
+
+### 5.11 Receita Saúde
+| ID | Requisito | Fase | Status |
+|---|---|---|---|
+| RF-49 | Verificar em fonte oficial a norma do Receita Saúde, quem é obrigado, os dados do recibo e se há API para terceiros (define o caminho A ou B) | F8 | planejado |
+| RF-50 | CPF do paciente e do pagador (quando outra pessoa paga) na ficha e no recebimento, exibidos mascarados | F8 | planejado |
+| RF-51 | Situação do recibo em cada recebimento de paciente (pendente, emitido, cancelado, não se aplica), com o número do recibo | F8 | planejado |
+| RF-52 | Caminho A: emitir e cancelar o recibo pelo app via API oficial, com a autorização exigida guardada no Vault | F8 | planejado |
+| RF-53 | Caminho B: assistente de emissão, com os dados prontos para copiar no app da Receita, registro do recibo emitido e lembrete das pendências | F8 | planejado |
+| RF-54 | Relatório mensal de recebimentos e recibos, para o Carnê-Leão | F8 | planejado |
 
 ## 6. Requisitos não funcionais
 
@@ -216,6 +226,8 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-49 | 2026-11-27 | Campos numéricos aceitam vírgula (campo de texto com teclado decimal) e todo cálculo, como o IMC, é refeito no servidor | O campo numérico do navegador recusa "78,5"; o valor calculado não pode vir do navegador |
 | D-50 | 2026-11-27 | A profissional sempre lê o modelo da profissão do próprio consultório, mesmo que o admin o desligue no cadastro | Desligar uma profissão não pode quebrar o app de quem já a usa |
 | D-51 | 2026-11-27 | Cada registro é exibido com o formulário da versão em que foi feito; campos que saíram do modelo aparecem com rótulo genérico | Nada do prontuário some quando o modelo muda (RNF-05, D-42) |
+| D-52 | 2026-11-27 | Nova fase "Receita Saúde" (F8) depois da publicação; o WhatsApp passa a ser a F9 e continua sendo a última fase | Pedido do Lucas; é obrigação legal das profissionais, mas o app pode ir ao ar sem ela |
+| D-53 | 2026-11-27 | A fase do Receita Saúde começa verificando em fonte oficial se há API para terceiros: com API, integração direta (caminho A); sem, assistente de emissão (caminho B). Nunca automatizar o app da Receita, guardar a senha gov.br da profissional ou usar meio não oficial | Não foi possível confirmar a existência da API na Sessão 10; o caminho depende disso, e a emissão é ato fiscal da profissional |
 
 ## 9. Perguntas em aberto
 
@@ -224,6 +236,7 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] P-1: oferecer créditos de WhatsApp inclusos nos planos no futuro? (hoje a profissional paga a Meta, D-33)
 - [ ] P-2: preço final dos planos (hipótese: R$ 59 a R$ 89/mês) e limite de lembretes por plano
 - [ ] P-4: quem valida o modelo de cada profissão (uma profissional de psicologia, fonoaudiologia, nutrição, odontologia e medicina), e as exigências de prontuário de cada conselho (CFP, CFFa, CFN, CFO, CFM)
+- [ ] P-5: confirmar com contador ou advogado as regras do Receita Saúde (quem é obrigado, pessoa física ou jurídica, prazos, Carnê-Leão) e o tratamento do CPF de paciente e pagador
 - [ ] Agendamento online escolher o tipo de atendimento (hoje usa a duração padrão do consultório; RF-45 em andamento)
 - [ ] Mensagem clara quando a profissional tenta gravar em somente leitura (hoje aparece "Não foi possível salvar"; o aviso no topo explica o motivo)
 - [ ] P-3: por quanto tempo guardar os dados de quem cancela, antes de excluir (definir nos termos, com o advogado)

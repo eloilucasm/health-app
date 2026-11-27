@@ -6,6 +6,20 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 10 · 2026-11-27 · Plano: fase Receita Saúde
+
+**Alterado**
+- Nova fase F8, Receita Saúde (recibos digitais oficiais), depois da publicação; o WhatsApp passa a ser a F9 e continua por último (D-52). Marcos de versão do guia ajustados: `0.2.0` Receita Saúde, `0.3.0` WhatsApp
+- [PLANO §11.2.7](docs/PLANO.md): o que a fase entrega, os dois caminhos (integração direta via API oficial ou assistente de emissão) e o que não será feito (D-53)
+
+**Adicionado**
+- Requisitos RF-49 a RF-54 e a pergunta em aberto P-5
+
+**Pendências**
+- Não foi possível confirmar em fonte oficial como o Receita Saúde funciona hoje (página do gov.br "não encontrada", buscas bloqueadas). A verificação é o primeiro passo da fase (RF-49)
+
+**Próxima sessão:** F3, assinaturas e cobrança pelo Asaas (precisa da chave do sandbox no `.env.local`).
+
 ### Sessão 9 · 2026-11-27 · F2: personalização por profissão
 
 **Adicionado**
