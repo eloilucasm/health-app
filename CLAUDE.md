@@ -52,6 +52,7 @@ SaaS para profissionais de saúde autônomas (agenda, pacientes, evolução, pac
 - `npm run check`: lint + typecheck + testes unitários
 - `npm run test:db`: testes de RLS (com o Supabase local ligado). Obrigatório antes de fechar sessão que mexa no banco.
 - Testes rodam via `scripts/vitest.mjs`, que corrige a letra do drive no Windows (`c:` → `C:`); não chame `npx vitest` direto.
+- `npm run demo:contas`: cria (ou reaproveita) uma conta de demonstração por profissão no Supabase local, com paciente, agenda e registros, e imprime links de entrada direta (rota `/auth/confirm`; valem 1 h e servem uma vez). Recusa rodar fora do banco local.
 - `npm run db:types`: regenera `src/lib/supabase/database.types.ts`
 
 ## Convenções técnicas (ver PLANO.md §3)

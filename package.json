@@ -16,7 +16,8 @@
     "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts",
     "check": "npm run lint && npm run typecheck && npm test",
     "test:db": "node scripts/vitest.mjs run --dir tests/db",
-    "admin:conceder": "node scripts/conceder-admin.mjs"
+    "admin:conceder": "node scripts/conceder-admin.mjs",
+    "demo:contas": "node scripts/contas-demo.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
