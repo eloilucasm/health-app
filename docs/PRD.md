@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Versão do PRD** | 2.2 |
-| **Última atualização** | 2026-11-27 (Sessão 8) |
-| **Status do produto** | Núcleo do consultório (Dias 1 a 6) e F1 (fundação da plataforma) prontos no ambiente local; próxima: F2, personalização por profissão |
+| **Versão do PRD** | 2.3 |
+| **Última atualização** | 2026-11-27 (Sessão 9) |
+| **Status do produto** | Núcleo do consultório (Dias 1 a 6), F1 (fundação da plataforma) e F2 (personalização por profissão) prontos no ambiente local; próxima: F3, assinaturas e cobrança |
 | **Plano de execução** | [PLANO.md](PLANO.md) |
 | **Histórico de mudanças** | [CHANGELOG.md](../CHANGELOG.md) |
 
@@ -129,14 +129,14 @@ Status: `planejado` · `em andamento` · `pronto` · `adiado`. A coluna **Dia/Fa
 ### 5.10 Personalização por profissão
 | ID | Requisito | Fase | Status |
 |---|---|---|---|
-| RF-41 | Termos por profissão em todo o app (ex.: sessão ou consulta; evolução, registro de sessão ou evolução clínica) | F2 | planejado |
-| RF-42 | Abas e recursos por profissão (ex.: Pacotes desligado por padrão em medicina, odontologia e nutrição), que a profissional pode ligar e desligar | F2 | planejado |
-| RF-43 | Formulários de evolução completos para psicologia, fonoaudiologia, nutrição, odontologia e medicina, com novos tipos de campo (seleção, número com unidade, calculado como o IMC, seção) e gráfico de qualquer campo numérico marcado | F2 | planejado |
-| RF-44 | Campos do cadastro do paciente por profissão (ex.: responsável legal em psicologia e fonoaudiologia, objetivo na nutrição; diagnóstico de encaminhamento só onde faz sentido) | F2 | planejado |
-| RF-45 | Tipos de atendimento com duração por profissão (avaliação, sessão, retorno, consulta), usados na agenda e no agendamento online | F2 | planejado |
-| RF-46 | Ajustes da profissional: listas de condutas, procedimentos e tipos de atendimento, e recursos ligados ou desligados | F2 | planejado |
-| RF-47 | Painel administrativo: editar os modelos de profissão com versão; registros antigos continuam legíveis | F2 | planejado |
-| RF-48 | Tela Hoje e indicadores respeitam os recursos da profissão (ex.: sem escala de dor nem pacotes onde não existem) | F2 | planejado |
+| RF-41 | Termos por profissão em todo o app (ex.: sessão ou consulta; evolução, registro de sessão ou evolução clínica) | F2 | pronto |
+| RF-42 | Abas e recursos por profissão (ex.: Pacotes desligado por padrão em medicina, odontologia e nutrição), que a profissional pode ligar e desligar | F2 | pronto |
+| RF-43 | Formulários de evolução completos para psicologia, fonoaudiologia, nutrição, odontologia e medicina, com novos tipos de campo (seleção, número com unidade, calculado como o IMC, seção) e gráfico de qualquer campo numérico marcado | F2 | pronto |
+| RF-44 | Campos do cadastro do paciente por profissão (ex.: responsável legal em psicologia e fonoaudiologia, objetivo na nutrição; diagnóstico de encaminhamento só onde faz sentido) | F2 | pronto |
+| RF-45 | Tipos de atendimento com duração por profissão (avaliação, sessão, retorno, consulta), usados na agenda e no agendamento online | F2 | em andamento |
+| RF-46 | Ajustes da profissional: listas de condutas, procedimentos e tipos de atendimento, e recursos ligados ou desligados | F2 | pronto |
+| RF-47 | Painel administrativo: editar os modelos de profissão com versão; registros antigos continuam legíveis | F2 | pronto |
+| RF-48 | Tela Hoje e indicadores respeitam os recursos da profissão (ex.: sem escala de dor nem pacotes onde não existem) | F2 | pronto |
 
 ## 6. Requisitos não funcionais
 
@@ -212,6 +212,10 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 | D-45 | 2026-11-27 | Toda ação do admin exige motivo; cada consulta ao detalhe de um cliente também fica na auditoria (a tela mostra só as ações) | Rastreabilidade de quem viu e mudou o quê, como operadora (LGPD) |
 | D-46 | 2026-11-27 | Planos iniciais: Teste grátis (14 dias, todos os recursos, não aparece para escolha), Essencial (R$ 59) e Completo (R$ 89, com API). Preços e limites ainda são hipótese (P-2) e o admin altera pelo painel | Ponto de partida para a cobrança da F3 |
 | D-47 | 2026-11-27 | A cota do agendamento online só conta pedidos que de fato são gravados; pedido recusado por horário ocupado ou limite de telefone não consome | A profissional não perde cota por tentativas inválidas |
+| D-48 | 2026-11-27 | O admin edita o modelo da profissão em JSON, validado antes de salvar (no navegador, no servidor e no banco); editor visual fica para depois | Uso da equipe da plataforma; entrega a edição sem atrasar a fase |
+| D-49 | 2026-11-27 | Campos numéricos aceitam vírgula (campo de texto com teclado decimal) e todo cálculo, como o IMC, é refeito no servidor | O campo numérico do navegador recusa "78,5"; o valor calculado não pode vir do navegador |
+| D-50 | 2026-11-27 | A profissional sempre lê o modelo da profissão do próprio consultório, mesmo que o admin o desligue no cadastro | Desligar uma profissão não pode quebrar o app de quem já a usa |
+| D-51 | 2026-11-27 | Cada registro é exibido com o formulário da versão em que foi feito; campos que saíram do modelo aparecem com rótulo genérico | Nada do prontuário some quando o modelo muda (RNF-05, D-42) |
 
 ## 9. Perguntas em aberto
 
@@ -220,6 +224,7 @@ Cada decisão de produto ou arquitetura entra aqui, com data e motivo. Decisões
 - [ ] P-1: oferecer créditos de WhatsApp inclusos nos planos no futuro? (hoje a profissional paga a Meta, D-33)
 - [ ] P-2: preço final dos planos (hipótese: R$ 59 a R$ 89/mês) e limite de lembretes por plano
 - [ ] P-4: quem valida o modelo de cada profissão (uma profissional de psicologia, fonoaudiologia, nutrição, odontologia e medicina), e as exigências de prontuário de cada conselho (CFP, CFFa, CFN, CFO, CFM)
+- [ ] Agendamento online escolher o tipo de atendimento (hoje usa a duração padrão do consultório; RF-45 em andamento)
 - [ ] Mensagem clara quando a profissional tenta gravar em somente leitura (hoje aparece "Não foi possível salvar"; o aviso no topo explica o motivo)
 - [ ] P-3: por quanto tempo guardar os dados de quem cancela, antes de excluir (definir nos termos, com o advogado)
 - [ ] Prazos de guarda de prontuário por conselho (confirmar com advogado)

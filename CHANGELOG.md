@@ -6,6 +6,35 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Sessão 9 · 2026-11-27 · F2: personalização por profissão
+
+**Adicionado**
+- Psicologia, fonoaudiologia, nutrição, odontologia e medicina disponíveis no cadastro, cada uma com o próprio modelo (RF-41 a RF-44)
+- Termos da profissão em todo o app: sessão ou consulta; evolução, registro de sessão, acompanhamento, evolução clínica ou evolução médica (RF-41)
+- Aba Pacotes só nas profissões que usam pacotes, e a profissional pode ligar ou desligar (RF-42, RF-46)
+- Formulários completos por profissão, com campos novos: seleção, número com unidade, IMC calculado e seções; curva de qualquer medida marcada, como o peso na nutrição (RF-43)
+- Campos do paciente por profissão, como responsável legal, objetivo, alergias e medicamentos (RF-44)
+- Tipos de atendimento com duração por profissão, usados na agenda (RF-45)
+- Em Ajustes, "Sua profissão": pacotes, tipos de atendimento e lista de condutas ou procedimentos, com volta ao padrão (RF-46)
+- No painel, Profissões: edição dos modelos com motivo e versão; registros antigos continuam exibidos com o formulário da versão em que foram feitos (RF-47, D-48, D-51)
+- Tela Hoje com os termos e recursos da profissão (RF-48)
+- Comando `npm run demo:contas`: uma conta de demonstração por profissão, com dados de exemplo e link de entrada direta (rota `/auth/confirm`)
+
+**Corrigido**
+- Desligar uma profissão no cadastro tiraria o modelo de quem já a usa; agora a profissional sempre lê a profissão do próprio consultório (D-50)
+- Campos numéricos recusavam vírgula ("78,5"); passam a aceitar, e o IMC é recalculado no servidor (D-49)
+- A primeira versão do comando de demonstração gravou os acompanhamentos de nutrição sem o IMC; corrigido, e as duas fichas locais receberam o IMC como nova versão (aparecem como "editada")
+
+**Pendências**
+- Os modelos das cinco profissões foram montados pelo Claude e precisam de revisão de uma profissional de cada área antes da venda, sobretudo psicologia (CFP) e medicina (P-4)
+- O agendamento online ainda não deixa o paciente escolher o tipo de atendimento; por isso o RF-45 segue em andamento
+- O editor de modelos do painel é em JSON (D-48); renomear a chave de um campo em uso faz os registros antigos mostrarem um rótulo genérico
+- O modelo local de psicologia está na versão 2, por causa do teste do editor (só um texto mudou)
+
+**Verificação:** lint, typecheck e build passam, assim como os 40 testes de regras e os 72 de banco; `supabase db lint` sem erros. No navegador: um consultório de nutrição completo (abas, termos, campos, tipos, IMC ao vivo com vírgula, curva de peso, ligar pacotes), a fisioterapia sem mudanças, o editor de modelos (JSON inválido recusado, nova versão com motivo) e as cinco contas de demonstração.
+
+**Próxima sessão:** F3, assinaturas e cobrança pelo Asaas: assinatura recorrente, checkout, webhook, faturas, inadimplência, tela Assinatura da profissional e, no painel, Assinaturas e Métricas (RF-24, RF-25, RF-28 a RF-30). Precisa da conta no sandbox do Asaas.
+
 ### Sessão 8 · 2026-11-27 · F1: fundação da plataforma
 
 **Adicionado**
